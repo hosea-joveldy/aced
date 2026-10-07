@@ -149,12 +149,12 @@
       "id": "T6",
       "title": "Deadline board and filtering",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T6.1",
           "title": "Deadline board grouped view and summary metrics strip",
-          "done": false,
+          "done": true,
           "done_when": [
             "Deadline board displays groups: Needs a date, Overdue, Due today, This week, Later, Done",
             "Summary strip displays counts for overdue, today, and missing due date",
@@ -165,7 +165,7 @@
         {
           "id": "T6.2",
           "title": "Subject filtering and task completion toggling",
-          "done": false,
+          "done": true,
           "done_when": [
             "Board can be filtered by subject and reset to show all",
             "Students can toggle assignment completion state, moving item to/from Done group",
