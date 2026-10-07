@@ -19,7 +19,7 @@
         {
           "id": "T1.2",
           "title": "Test tooling setup for Vitest and Playwright",
-          "done": false,
+          "done": true,
           "done_when": [
             "npm test runs vitest run --passWithNoTests and passes",
             "npx tsc --noEmit passes",
