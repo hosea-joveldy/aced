@@ -19,3 +19,5 @@
 [QA] T6: All gate checks passed (21 unit/component tests + 4 Playwright e2e specs).
 [QA] T7: Verified add/edit assignment modal, input validation, and change tracking.
 [QA] T7: All gate checks passed (25 unit/component tests + 5 Playwright e2e specs).
+[QA] T8: Verified audit history display, attribution details, confirmation modal, and one-tap undo.
+[QA] T8: All gate checks passed (27 unit/component tests + 6 Playwright e2e specs).
