@@ -6,7 +6,8 @@ import { getToday, getDeadlineGroup } from '@/lib/date';
 import { MetricsStrip } from '@/components/board/MetricsStrip';
 import { SubjectFilter } from '@/components/board/SubjectFilter';
 import { BoardGroup } from '@/components/board/BoardGroup';
-import { CalendarDays, AlertCircle, RotateCcw } from 'lucide-react';
+import { AssignmentModal } from '@/components/board/AssignmentModal';
+import { CalendarDays, AlertCircle, RotateCcw, Plus } from 'lucide-react';
 
 export function BoardScreen() {
   const repo = useRepository();
@@ -18,6 +19,8 @@ export function BoardScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
 
   const loadData = useCallback(async () => {
     if (!session) return;
@@ -50,6 +53,43 @@ export function BoardScreen() {
     return map;
   }, [subjects]);
 
+  const handleOpenAdd = () => {
+    setSelectedAssignment(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (assignment: Assignment) => {
+    setSelectedAssignment(assignment);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveAssignment = async (data: {
+    title: string;
+    subjectId: string;
+    dueDate: string | null;
+    notes?: string | null;
+  }) => {
+    if (!session) return;
+
+    if (selectedAssignment) {
+      const updated = await repo.updateAssignment(
+        selectedAssignment.id,
+        data,
+        session.displayName
+      );
+      setAssignments((prev) =>
+        prev.map((a) => (a.id === updated.id ? updated : a))
+      );
+    } else {
+      const created = await repo.createAssignment(
+        session.classId,
+        data,
+        session.displayName
+      );
+      setAssignments((prev) => [created, ...prev]);
+    }
+  };
+
   const handleToggleComplete = async (assignment: Assignment) => {
     if (!session) return;
     const nextCompleted = !assignment.completed;
@@ -67,7 +107,7 @@ export function BoardScreen() {
     }
   };
 
-  // Metrics (computed across all class assignments, before filter)
+  // Metrics
   const today = getToday();
   const metrics = useMemo(() => {
     let overdue = 0;
@@ -120,7 +160,7 @@ export function BoardScreen() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-foreground">
             Assignments & Deadlines
@@ -129,6 +169,14 @@ export function BoardScreen() {
             Crowdsourced by students in {session?.className}
           </p>
         </div>
+        <button
+          type="button"
+          onClick={handleOpenAdd}
+          className="flex min-h-[44px] items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Add Assignment</span>
+        </button>
       </div>
 
       {/* Metrics Strip */}
@@ -216,6 +264,14 @@ export function BoardScreen() {
           <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
             Be the first in your class to add an upcoming assignment or homework!
           </p>
+          <button
+            type="button"
+            onClick={handleOpenAdd}
+            className="flex min-h-[44px] items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-sm"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add First Assignment</span>
+          </button>
         </div>
       )}
 
@@ -228,6 +284,7 @@ export function BoardScreen() {
             assignments={grouped['needs-date']}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
 
           <BoardGroup
@@ -236,6 +293,7 @@ export function BoardScreen() {
             assignments={grouped.overdue}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
 
           <BoardGroup
@@ -244,6 +302,7 @@ export function BoardScreen() {
             assignments={grouped.today}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
 
           <BoardGroup
@@ -252,6 +311,7 @@ export function BoardScreen() {
             assignments={grouped['this-week']}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
 
           <BoardGroup
@@ -260,6 +320,7 @@ export function BoardScreen() {
             assignments={grouped.later}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
 
           <BoardGroup
@@ -268,9 +329,19 @@ export function BoardScreen() {
             assignments={grouped.done}
             subjectsMap={subjectsMap}
             onToggleComplete={handleToggleComplete}
+            onEdit={handleOpenEdit}
           />
         </div>
       )}
+
+      {/* Assignment Create / Edit Modal */}
+      <AssignmentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        assignment={selectedAssignment}
+        subjects={subjects}
+        onSave={handleSaveAssignment}
+      />
     </div>
   );
 }
