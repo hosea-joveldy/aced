@@ -179,12 +179,12 @@
       "id": "T7",
       "title": "Assignment creation and editing",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T7.1",
           "title": "Add assignment modal form with validation",
-          "done": false,
+          "done": true,
           "done_when": [
             "Dialog allows creating an assignment with title, subject selection, optional YYYY-MM-DD date, and notes",
             "Title is required; date validates YYYY-MM-DD format",
@@ -195,7 +195,7 @@
         {
           "id": "T7.2",
           "title": "Edit assignment details with change recording",
-          "done": false,
+          "done": true,
           "done_when": [
             "Assignment edit modal allows updating title, due date, subject, and notes",
             "Saving changes logs edit record with editor name, before/after values to history",
