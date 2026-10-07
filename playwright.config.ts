@@ -1,6 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const executablePath = process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH || undefined;
+import fs from 'node:fs';
+
+const nixChromium = [
+  '/etc/profiles/per-user/lumi/bin/chromium',
+  '/run/current-system/sw/bin/chromium',
+  '/usr/bin/chromium',
+].find((p) => fs.existsSync(p));
+
+const executablePath =
+  process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH || nixChromium || undefined;
 
 export default defineConfig({
   testDir: './e2e',

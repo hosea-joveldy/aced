@@ -6,3 +6,10 @@
 [BUILDER] T1: Configured Vitest (setup with strict offline fetch blocker) and Playwright (NixOS Chromium executable support).
 [BUILDER] T1: Gotchas: Resolved port 3000 collision; configured Playwright sharding so zero-test baseline passes.
 [BUILDER] T1: Gate passed (tsc, test, build, playwright). T1 features marked done; awaiting QA.
+[QA] T1: Verified scaffolding, tokens, and test tooling. All gates passed.
+[QA] T2: Verified domain models, injectable getToday, and LocalRepository seed/undo operations.
+[QA] T2: Vitest suite (6 tests in 2 files) passed, gate checks succeeded.
+[QA] T3: Verified env safety, storage factory fallback, Supabase seam, and schema.sql.
+[QA] T3: Tests (10 passed across 4 files) and all gates passed.
+[QA] T4: Verified HashRouter, bottom tab navigation, 48px tap targets, and class join/leave flow.
+[QA] T4: All gates passed (14 unit/component tests + 2 Playwright e2e specs at 375px/1280px).
