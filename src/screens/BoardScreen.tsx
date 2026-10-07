@@ -7,6 +7,7 @@ import { MetricsStrip } from '@/components/board/MetricsStrip';
 import { SubjectFilter } from '@/components/board/SubjectFilter';
 import { BoardGroup } from '@/components/board/BoardGroup';
 import { AssignmentModal } from '@/components/board/AssignmentModal';
+import { ClassroomImportButton } from '@/components/classroom/ClassroomImportButton';
 import { CalendarDays, AlertCircle, RotateCcw, Plus } from 'lucide-react';
 
 export function BoardScreen() {
@@ -169,14 +170,17 @@ export function BoardScreen() {
             Crowdsourced by students in {session?.className}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={handleOpenAdd}
-          className="flex min-h-[44px] items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Add Assignment</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <ClassroomImportButton />
+          <button
+            type="button"
+            onClick={handleOpenAdd}
+            className="flex min-h-[44px] items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Assignment</span>
+          </button>
+        </div>
       </div>
 
       {/* Metrics Strip */}

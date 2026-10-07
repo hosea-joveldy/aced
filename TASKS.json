@@ -237,12 +237,12 @@
       "id": "T9",
       "title": "Classroom import flag and no-op provider",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T9.1",
           "title": "ClassroomProvider interface, no-op provider, and feature flag gating",
-          "done": false,
+          "done": true,
           "done_when": [
             "ClassroomProvider interface defines import sync contract with an offline no-op implementation",
             "VITE_FEATURE_CLASSROOM_IMPORT is read from env helper and defaults to false",
