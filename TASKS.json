@@ -208,12 +208,12 @@
       "id": "T8",
       "title": "Edit attribution and one-tap undo",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T8.1",
           "title": "Edit history screen with attribution details",
-          "done": false,
+          "done": true,
           "done_when": [
             "History screen lists chronological edits showing field, before value, after value, editor, and date",
             "Initial seed demonstrates at least 3 pre-existing edits",
@@ -223,7 +223,7 @@
         {
           "id": "T8.2",
           "title": "One-tap revert action with confirmation dialog",
-          "done": false,
+          "done": true,
           "done_when": [
             "Reverting an edit opens a confirmation dialog before applying",
             "Confirming revert restores the before value and marks the edit entry as Reverted with icon and label",
