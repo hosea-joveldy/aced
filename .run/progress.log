@@ -23,3 +23,5 @@
 [QA] T8: All gate checks passed (27 unit/component tests + 6 Playwright e2e specs).
 [QA] T9: Verified ClassroomProvider interface, Noop provider, and DOM gating when feature flag is off.
 [QA] T9: All gate checks passed (29 unit/component tests + 7 Playwright e2e specs).
+[QA] T10: Full-app QA pass completed. Complete 375px mobile journey verified.
+[QA] T10: All gate checks passed (29 unit/component tests + 8 Playwright e2e specs).
