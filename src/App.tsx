@@ -1,10 +1,26 @@
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { RepositoryProvider } from '@/context/RepositoryContext';
+import { SessionProvider } from '@/context/SessionContext';
+import { Layout } from '@/components/layout/Layout';
+import { BoardScreen } from '@/screens/BoardScreen';
+import { SubjectsScreen } from '@/screens/SubjectsScreen';
+import { HistoryScreen } from '@/screens/HistoryScreen';
+
 export default function App() {
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-bold tracking-tight text-primary">Aced</h1>
-      <p className="text-muted-foreground mt-2 text-center text-sm">
-        Crowdsourced deadline board per class
-      </p>
-    </main>
+    <RepositoryProvider>
+      <SessionProvider>
+        <HashRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<BoardScreen />} />
+              <Route path="/subjects" element={<SubjectsScreen />} />
+              <Route path="/history" element={<HistoryScreen />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </HashRouter>
+      </SessionProvider>
+    </RepositoryProvider>
   );
 }

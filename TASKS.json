@@ -61,7 +61,7 @@
       "id": "T3",
       "title": "Supabase repository, storage factory, and SQL migration",
       "type": "build",
-      "status": "ongoing",
+      "status": "finished",
       "features": [
         {
           "id": "T3.1",
@@ -90,12 +90,12 @@
       "id": "T4",
       "title": "App shell, routing, and student identity",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T4.1",
           "title": "HashRouter app shell, repository context, and bottom tab bar",
-          "done": false,
+          "done": true,
           "done_when": [
             "Hash-based router renders app shell with Board, Subjects, and History routes",
             "Bottom tab bar renders on mobile with 44px+ tap targets and switches view",
@@ -106,7 +106,7 @@
         {
           "id": "T4.2",
           "title": "Student identity and class join flow",
-          "done": false,
+          "done": true,
           "done_when": [
             "Student can enter display name and class code to join a class",
             "Identity and active class persist locally",
