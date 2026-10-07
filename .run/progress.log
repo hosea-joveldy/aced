@@ -13,3 +13,5 @@
 [QA] T3: Tests (10 passed across 4 files) and all gates passed.
 [QA] T4: Verified HashRouter, bottom tab navigation, 48px tap targets, and class join/leave flow.
 [QA] T4: All gates passed (14 unit/component tests + 2 Playwright e2e specs at 375px/1280px).
+[QA] T5: Verified subjects directory listing, teachers, Google Classroom codes, add/edit modal forms.
+[QA] T5: All gate checks passed (17 unit/component tests + 3 Playwright e2e specs).
