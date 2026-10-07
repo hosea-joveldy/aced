@@ -120,12 +120,12 @@
       "id": "T5",
       "title": "Subjects management",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T5.1",
           "title": "Subjects list display with teacher and Classroom code",
-          "done": false,
+          "done": true,
           "done_when": [
             "Subjects view lists all class subjects with teacher names and Classroom codes",
             "Loading, error, and empty states conform to DESIGN_SYSTEM.md",
@@ -135,7 +135,7 @@
         {
           "id": "T5.2",
           "title": "Add and edit subject form",
-          "done": false,
+          "done": true,
           "done_when": [
             "Students can add a new subject with name, teacher name, and optional Classroom code",
             "Existing subjects can be edited and saved to repository",
