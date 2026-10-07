@@ -48,7 +48,7 @@
         {
           "id": "T2.2",
           "title": "LocalRepository implementation under aced.db.v1 with bundled seed data",
-          "done": false,
+          "done": true,
           "done_when": [
             "LocalRepository persists data in localStorage under key aced.db.v1",
             "Seed data includes class ACED2026 with exactly 6 subjects, at least 9 assignments (4 no date, 3 overdue, 2 today/tomorrow, 1 done), and at least 3 edit history records",
