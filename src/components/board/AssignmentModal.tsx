@@ -196,7 +196,8 @@ export function AssignmentModal({
             </label>
             <input
               id="assignment-due-date"
-              type="date"
+              type="text"
+              placeholder="YYYY-MM-DD"
               value={dueDate}
               onChange={(e) => {
                 setDueDate(e.target.value);
@@ -204,7 +205,7 @@ export function AssignmentModal({
                   setErrors((prev) => ({ ...prev, dueDate: undefined }));
               }}
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             />
             {errors.dueDate && (
               <p className="mt-1 text-sm font-medium text-destructive">

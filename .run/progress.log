@@ -17,3 +17,5 @@
 [QA] T5: All gate checks passed (17 unit/component tests + 3 Playwright e2e specs).
 [QA] T6: Verified grouped board views, metrics strip, subject filtering, and task completion toggling.
 [QA] T6: All gate checks passed (21 unit/component tests + 4 Playwright e2e specs).
+[QA] T7: Verified add/edit assignment modal, input validation, and change tracking.
+[QA] T7: All gate checks passed (25 unit/component tests + 5 Playwright e2e specs).
