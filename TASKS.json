@@ -77,7 +77,7 @@
         {
           "id": "T3.2",
           "title": "Database schema SQL and setup documentation",
-          "done": false,
+          "done": true,
           "done_when": [
             "supabase/schema.sql provides idempotent tables, RLS policies, and triggers",
             "data/README.md explains schema structure and states SQL has not been run against a live project",
