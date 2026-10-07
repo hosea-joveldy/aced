@@ -21,3 +21,5 @@
 [QA] T7: All gate checks passed (25 unit/component tests + 5 Playwright e2e specs).
 [QA] T8: Verified audit history display, attribution details, confirmation modal, and one-tap undo.
 [QA] T8: All gate checks passed (27 unit/component tests + 6 Playwright e2e specs).
+[QA] T9: Verified ClassroomProvider interface, Noop provider, and DOM gating when feature flag is off.
+[QA] T9: All gate checks passed (29 unit/component tests + 7 Playwright e2e specs).
