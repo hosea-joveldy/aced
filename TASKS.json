@@ -4,7 +4,7 @@
       "id": "T1",
       "title": "Scaffold and baseline tooling",
       "type": "build",
-      "status": "ongoing",
+      "status": "finished",
       "features": [
         {
           "id": "T1.1",
@@ -32,12 +32,12 @@
       "id": "T2",
       "title": "Domain models, storage seam, and local repository with seed",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T2.1",
           "title": "Domain types, injectable getToday helper, and AcedRepository interface",
-          "done": false,
+          "done": true,
           "done_when": [
             "Domain types for Class, Subject, Assignment, and EditHistoryEntry are defined",
             "getToday helper returns YYYY-MM-DD and supports date injection",

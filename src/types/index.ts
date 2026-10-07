@@ -1,0 +1,49 @@
+export interface Class {
+  id: string;
+  code: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface Subject {
+  id: string;
+  classId: string;
+  name: string;
+  teacherName: string;
+  classroomCode?: string | null;
+  createdAt: string;
+}
+
+export interface Assignment {
+  id: string;
+  classId: string;
+  subjectId: string;
+  title: string;
+  dueDate: string | null; // 'YYYY-MM-DD' or null
+  notes?: string | null;
+  completed: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EditHistoryEntry {
+  id: string;
+  classId: string;
+  assignmentId: string;
+  assignmentTitle: string;
+  field: string;
+  beforeValue: string | null;
+  afterValue: string | null;
+  editorName: string;
+  timestamp: string; // ISO string
+  reverted: boolean;
+  revertedBy?: string | null;
+  revertedAt?: string | null;
+}
+
+export interface StudentSession {
+  displayName: string;
+  classCode: string;
+  classId: string;
+  className: string;
+}
