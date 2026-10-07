@@ -32,7 +32,7 @@
       "id": "T2",
       "title": "Domain models, storage seam, and local repository with seed",
       "type": "build",
-      "status": "ongoing",
+      "status": "finished",
       "features": [
         {
           "id": "T2.1",
@@ -61,12 +61,12 @@
       "id": "T3",
       "title": "Supabase repository, storage factory, and SQL migration",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T3.1",
           "title": "Safe env access, repository factory, and SupabaseRepository seam implementation",
-          "done": false,
+          "done": true,
           "done_when": [
             "src/lib/env.ts safely reads env vars without throwing and exposes isSupabaseConfigured",
             "createRepository() instantiates LocalRepository when Supabase credentials are missing",
