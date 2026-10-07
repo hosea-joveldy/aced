@@ -15,3 +15,5 @@
 [QA] T4: All gates passed (14 unit/component tests + 2 Playwright e2e specs at 375px/1280px).
 [QA] T5: Verified subjects directory listing, teachers, Google Classroom codes, add/edit modal forms.
 [QA] T5: All gate checks passed (17 unit/component tests + 3 Playwright e2e specs).
+[QA] T6: Verified grouped board views, metrics strip, subject filtering, and task completion toggling.
+[QA] T6: All gate checks passed (21 unit/component tests + 4 Playwright e2e specs).
