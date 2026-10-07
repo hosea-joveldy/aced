@@ -263,12 +263,12 @@
       "id": "T11",
       "title": "Project documentation",
       "type": "docs",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T11.1",
           "title": "Complete README documentation and demo walkthrough",
-          "done": false,
+          "done": true,
           "done_when": [
             "README.md details problem, solution, architecture, offline local demo (class ACED2026), and test instructions",
             "Documentation matches delivered implementation"
