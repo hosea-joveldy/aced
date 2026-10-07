@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Runtime & session state
+.run/screenshots/
+.run/blocked.txt

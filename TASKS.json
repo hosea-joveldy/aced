@@ -1,0 +1,280 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold and baseline tooling",
+      "type": "build",
+      "status": "ongoing",
+      "features": [
+        {
+          "id": "T1.1",
+          "title": "Project scaffolding, dependencies, environment template, and design tokens",
+          "done": true,
+          "done_when": [
+            "npm run build succeeds",
+            ".gitignore and .env.example are present with required entries",
+            "src/index.css defines design system CSS variables from DESIGN_SYSTEM.md"
+          ]
+        },
+        {
+          "id": "T1.2",
+          "title": "Test tooling setup for Vitest and Playwright",
+          "done": false,
+          "done_when": [
+            "npm test runs vitest run --passWithNoTests and passes",
+            "npx tsc --noEmit passes",
+            "playwright.config.ts configures Chromium with optional PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Domain models, storage seam, and local repository with seed",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T2.1",
+          "title": "Domain types, injectable getToday helper, and AcedRepository interface",
+          "done": false,
+          "done_when": [
+            "Domain types for Class, Subject, Assignment, and EditHistoryEntry are defined",
+            "getToday helper returns YYYY-MM-DD and supports date injection",
+            "AcedRepository async interface defines class, subject, assignment, and history methods",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T2.2",
+          "title": "LocalRepository implementation under aced.db.v1 with bundled seed data",
+          "done": false,
+          "done_when": [
+            "LocalRepository persists data in localStorage under key aced.db.v1",
+            "Seed data includes class ACED2026 with exactly 6 subjects, at least 9 assignments (4 no date, 3 overdue, 2 today/tomorrow, 1 done), and at least 3 edit history records",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "title": "Supabase repository, storage factory, and SQL migration",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T3.1",
+          "title": "Safe env access, repository factory, and SupabaseRepository seam implementation",
+          "done": false,
+          "done_when": [
+            "src/lib/env.ts safely reads env vars without throwing and exposes isSupabaseConfigured",
+            "createRepository() instantiates LocalRepository when Supabase credentials are missing",
+            "SupabaseRepository implements AcedRepository without leaking Supabase client to UI",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T3.2",
+          "title": "Database schema SQL and setup documentation",
+          "done": false,
+          "done_when": [
+            "supabase/schema.sql provides idempotent tables, RLS policies, and triggers",
+            "data/README.md explains schema structure and states SQL has not been run against a live project",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "title": "App shell, routing, and student identity",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T4.1",
+          "title": "HashRouter app shell, repository context, and bottom tab bar",
+          "done": false,
+          "done_when": [
+            "Hash-based router renders app shell with Board, Subjects, and History routes",
+            "Bottom tab bar renders on mobile with 44px+ tap targets and switches view",
+            "Responsive layout renders single-column on 375px and centered layout on 1280px",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T4.2",
+          "title": "Student identity and class join flow",
+          "done": false,
+          "done_when": [
+            "Student can enter display name and class code to join a class",
+            "Identity and active class persist locally",
+            "Student can switch or leave active class",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "title": "Subjects management",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T5.1",
+          "title": "Subjects list display with teacher and Classroom code",
+          "done": false,
+          "done_when": [
+            "Subjects view lists all class subjects with teacher names and Classroom codes",
+            "Loading, error, and empty states conform to DESIGN_SYSTEM.md",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T5.2",
+          "title": "Add and edit subject form",
+          "done": false,
+          "done_when": [
+            "Students can add a new subject with name, teacher name, and optional Classroom code",
+            "Existing subjects can be edited and saved to repository",
+            "Form validates required fields with accessible inline error messages",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T6",
+      "title": "Deadline board and filtering",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T6.1",
+          "title": "Deadline board grouped view and summary metrics strip",
+          "done": false,
+          "done_when": [
+            "Deadline board displays groups: Needs a date, Overdue, Due today, This week, Later, Done",
+            "Summary strip displays counts for overdue, today, and missing due date",
+            "Status items use text labels and icons alongside color",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T6.2",
+          "title": "Subject filtering and task completion toggling",
+          "done": false,
+          "done_when": [
+            "Board can be filtered by subject and reset to show all",
+            "Students can toggle assignment completion state, moving item to/from Done group",
+            "Board displays empty state when a filter has no matching assignments",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T7",
+      "title": "Assignment creation and editing",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T7.1",
+          "title": "Add assignment modal form with validation",
+          "done": false,
+          "done_when": [
+            "Dialog allows creating an assignment with title, subject selection, optional YYYY-MM-DD date, and notes",
+            "Title is required; date validates YYYY-MM-DD format",
+            "Newly created assignment appears immediately in appropriate board group",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T7.2",
+          "title": "Edit assignment details with change recording",
+          "done": false,
+          "done_when": [
+            "Assignment edit modal allows updating title, due date, subject, and notes",
+            "Saving changes logs edit record with editor name, before/after values to history",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T8",
+      "title": "Edit attribution and one-tap undo",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T8.1",
+          "title": "Edit history screen with attribution details",
+          "done": false,
+          "done_when": [
+            "History screen lists chronological edits showing field, before value, after value, editor, and date",
+            "Initial seed demonstrates at least 3 pre-existing edits",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T8.2",
+          "title": "One-tap revert action with confirmation dialog",
+          "done": false,
+          "done_when": [
+            "Reverting an edit opens a confirmation dialog before applying",
+            "Confirming revert restores the before value and marks the edit entry as Reverted with icon and label",
+            "Revert action is attributed to the current student in the history log",
+            "npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T9",
+      "title": "Classroom import flag and no-op provider",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T9.1",
+          "title": "ClassroomProvider interface, no-op provider, and feature flag gating",
+          "done": false,
+          "done_when": [
+            "ClassroomProvider interface defines import sync contract with an offline no-op implementation",
+            "VITE_FEATURE_CLASSROOM_IMPORT is read from env helper and defaults to false",
+            "Classroom import button/UI is completely absent from DOM when the flag is disabled",
+            "npm run build passes and npx tsc --noEmit passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Full-app QA pass",
+      "type": "qa",
+      "status": "todo",
+      "features": []
+    },
+    {
+      "id": "T11",
+      "title": "Project documentation",
+      "type": "docs",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T11.1",
+          "title": "Complete README documentation and demo walkthrough",
+          "done": false,
+          "done_when": [
+            "README.md details problem, solution, architecture, offline local demo (class ACED2026), and test instructions",
+            "Documentation matches delivered implementation"
+          ]
+        }
+      ]
+    }
+  ]
+}
