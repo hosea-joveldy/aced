@@ -32,16 +32,22 @@ export function getSupabaseUrl(): string | undefined {
   return url && url.trim().length > 0 ? url.trim() : undefined;
 }
 
+export function getSupabasePublishableKey(): string | undefined {
+  const publishable = getEnvValue('VITE_SUPABASE_PUBLISHABLE_KEY');
+  if (publishable && publishable.trim().length > 0) return publishable.trim();
+  const anon = getEnvValue('VITE_SUPABASE_ANON_KEY');
+  return anon && anon.trim().length > 0 ? anon.trim() : undefined;
+}
+
 export function getSupabaseAnonKey(): string | undefined {
-  const key = getEnvValue('VITE_SUPABASE_ANON_KEY');
-  return key && key.trim().length > 0 ? key.trim() : undefined;
+  return getSupabasePublishableKey();
 }
 
 /**
- * Returns true if both Supabase URL and Anon Key are present and non-empty.
+ * Returns true if both Supabase URL and Publishable/Anon Key are present and non-empty.
  */
 export function isSupabaseConfigured(): boolean {
-  return Boolean(getSupabaseUrl() && getSupabaseAnonKey());
+  return Boolean(getSupabaseUrl() && getSupabasePublishableKey());
 }
 
 /**
@@ -62,7 +68,10 @@ export const env = {
   get supabaseUrl() {
     return getSupabaseUrl();
   },
+  get supabasePublishableKey() {
+    return getSupabasePublishableKey();
+  },
   get supabaseAnonKey() {
-    return getSupabaseAnonKey();
+    return getSupabasePublishableKey();
   },
 };

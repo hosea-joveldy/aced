@@ -63,6 +63,6 @@ To connect a live Supabase project:
 1. Create a project at [supabase.com](https://supabase.com).
 2. Open the **SQL Editor** in the Supabase Dashboard.
 3. Paste the contents of `supabase/schema.sql` and run the script.
-4. Obtain your Project URL and Anon Public Key from **Project Settings > API**.
-5. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your environment (or `.env` file).
+4. Obtain your Project URL and Publishable API Key (anon key) from **Project Settings > API**.
+5. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in your environment (or `.env` file).
 6. Start the development server (`npm run dev`). The app factory in `src/lib/storage/index.ts` will automatically detect the credentials and switch to `SupabaseRepository`.

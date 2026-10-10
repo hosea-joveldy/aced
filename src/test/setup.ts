@@ -9,6 +9,7 @@ beforeEach(() => {
 // Enforce offline and unconfigured Supabase in unit/component tests
 if (typeof process !== 'undefined' && process.env) {
   delete process.env.VITE_SUPABASE_URL;
+  delete process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   delete process.env.VITE_SUPABASE_ANON_KEY;
 }
 

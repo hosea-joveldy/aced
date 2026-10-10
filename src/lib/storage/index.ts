@@ -1,7 +1,7 @@
 import type { AcedRepository } from './repository';
 import { LocalRepository } from './local';
 import { SupabaseRepository } from './supabase';
-import { isSupabaseConfigured, getSupabaseUrl, getSupabaseAnonKey } from '@/lib/env';
+import { isSupabaseConfigured, getSupabaseUrl, getSupabasePublishableKey } from '@/lib/env';
 
 export * from './repository';
 export * from './local';
@@ -17,7 +17,7 @@ export function createRepository(): AcedRepository {
 
   if (isSupabaseConfigured()) {
     const url = getSupabaseUrl();
-    const key = getSupabaseAnonKey();
+    const key = getSupabasePublishableKey();
     if (url && key) {
       activeRepository = new SupabaseRepository(url, key);
       return activeRepository;
