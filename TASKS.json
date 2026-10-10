@@ -108,8 +108,8 @@
           "title": "Student identity and class join flow",
           "done": true,
           "done_when": [
-            "Student can enter display name and class code to join a class",
-            "Identity and active class persist locally",
+            "Student enters email, display name, and class code to join a class",
+            "Identity and active class persist locally with email and leader status",
             "Student can switch or leave active class",
             "npx tsc --noEmit passes"
           ]
@@ -198,7 +198,7 @@
           "done": true,
           "done_when": [
             "Assignment edit modal allows updating title, due date, subject, and notes",
-            "Saving changes logs edit record with editor name, before/after values to history",
+            "Saving changes logs edit record with editor name, email, before/after values to history",
             "npx tsc --noEmit passes"
           ]
         }
@@ -215,7 +215,7 @@
           "title": "Edit history screen with attribution details",
           "done": true,
           "done_when": [
-            "History screen lists chronological edits showing field, before value, after value, editor, and date",
+            "History screen lists chronological edits showing field, before value, after value, editor name and email, and date",
             "Initial seed demonstrates at least 3 pre-existing edits",
             "npx tsc --noEmit passes"
           ]
@@ -225,9 +225,11 @@
           "title": "One-tap revert action with confirmation dialog",
           "done": true,
           "done_when": [
+            "Only designated Class Leader has permission to revert or rollback changes",
+            "Regular students have view-only access to inspect the audit log",
             "Reverting an edit opens a confirmation dialog before applying",
             "Confirming revert restores the before value and marks the edit entry as Reverted with icon and label",
-            "Revert action is attributed to the current student in the history log",
+            "Revert action is attributed to the Class Leader in the history log",
             "npx tsc --noEmit passes"
           ]
         }

@@ -24,6 +24,7 @@ describe('JoinClassForm Component', () => {
 
   it('renders input fields with accessible labels and buttons', () => {
     renderWithProviders();
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/class code/i)).toBeInTheDocument();
     expect(
@@ -31,10 +32,23 @@ describe('JoinClassForm Component', () => {
     ).toBeInTheDocument();
   });
 
-  it('validates required name field', async () => {
+  it('validates required email field', async () => {
     renderWithProviders();
     const submitBtn = screen.getByRole('button', { name: /enter class/i });
 
+    fireEvent.click(submitBtn);
+
+    expect(
+      await screen.findByText(/please enter your email address/i)
+    ).toBeInTheDocument();
+  });
+
+  it('validates required name field after email is provided', async () => {
+    renderWithProviders();
+    const emailInput = screen.getByLabelText(/email address/i);
+    const submitBtn = screen.getByRole('button', { name: /enter class/i });
+
+    fireEvent.change(emailInput, { target: { value: 'alex@aced.school' } });
     fireEvent.click(submitBtn);
 
     expect(
@@ -53,10 +67,12 @@ describe('JoinClassForm Component', () => {
 
   it('shows error for non-existent class code', async () => {
     renderWithProviders();
+    const emailInput = screen.getByLabelText(/email address/i);
     const nameInput = screen.getByLabelText(/your name/i);
     const codeInput = screen.getByLabelText(/class code/i);
     const submitBtn = screen.getByRole('button', { name: /enter class/i });
 
+    fireEvent.change(emailInput, { target: { value: 'alex@aced.school' } });
     fireEvent.change(nameInput, { target: { value: 'Alex' } });
     fireEvent.change(codeInput, { target: { value: 'NONEXISTENT' } });
     fireEvent.click(submitBtn);

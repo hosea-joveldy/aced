@@ -4,6 +4,7 @@ import { GraduationCap, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 
 export function JoinClassForm() {
   const { joinClass, error } = useSession();
+  const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [classCode, setClassCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,24 +14,41 @@ export function JoinClassForm() {
     e.preventDefault();
     setLocalValidation(null);
 
-    if (!displayName.trim()) {
+    const trimmedEmail = email.trim();
+    const trimmedName = displayName.trim();
+    const trimmedCode = classCode.trim();
+
+    if (!trimmedEmail) {
+      setLocalValidation('Please enter your email address.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setLocalValidation('Please enter a valid email address.');
+      return;
+    }
+
+    if (!trimmedName) {
       setLocalValidation('Please enter your name.');
       return;
     }
-    if (!classCode.trim()) {
+    if (!trimmedCode) {
       setLocalValidation('Please enter a class code.');
       return;
     }
 
     setIsSubmitting(true);
-    await joinClass(displayName, classCode);
+    await joinClass(trimmedEmail, displayName, classCode);
     setIsSubmitting(false);
   };
 
-  const handleUseDemo = () => {
+  const handleUseDemo = (asLeader = false) => {
     setClassCode('ACED2026');
-    if (!displayName) {
-      setDisplayName('Alex');
+    if (asLeader) {
+      setEmail('leader@aced.school');
+      setDisplayName('Alex (Class Leader)');
+    } else {
+      if (!email) setEmail('student@aced.school');
+      if (!displayName) setDisplayName('Alex Rivera');
     }
     setLocalValidation(null);
   };
@@ -65,6 +83,25 @@ export function JoinClassForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
+              htmlFor="student-email"
+              className="block text-sm font-medium text-foreground mb-1"
+            >
+              Email Address
+            </label>
+            <input
+              id="student-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="e.g. alex@school.edu"
+              disabled={isSubmitting}
+              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition"
+            />
+          </div>
+
+          <div>
+            <label
               htmlFor="student-name"
               className="block text-sm font-medium text-foreground mb-1"
             >
@@ -90,14 +127,25 @@ export function JoinClassForm() {
               >
                 Class Code
               </label>
-              <button
-                type="button"
-                onClick={handleUseDemo}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline min-h-[32px] px-1"
-              >
-                <Sparkles className="h-3 w-3" />
-                Fill Demo Code
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleUseDemo(false)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline min-h-[32px] px-1"
+                >
+                  <Sparkles className="h-3 w-3" />
+                  Fill Demo Code
+                </button>
+                <span className="text-xs text-muted-foreground">|</span>
+                <button
+                  type="button"
+                  onClick={() => handleUseDemo(true)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:underline min-h-[32px] px-1"
+                  title="Fill demo as class leader"
+                >
+                  Demo Leader
+                </button>
+              </div>
             </div>
             <input
               id="class-code"
@@ -130,7 +178,7 @@ export function JoinClassForm() {
 
         <div className="mt-6 border-t border-border pt-4 text-center">
           <p className="text-xs text-muted-foreground">
-            No password needed. Edits are attributed to your name and can be undone anytime.
+            Sign in with email and class code. Edits are attributed to your email/name to prevent griefing.
           </p>
         </div>
       </div>

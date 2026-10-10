@@ -8,6 +8,7 @@ test.describe('Classroom Import Feature Flag Gating', () => {
     await page.goto('/');
 
     // Join class
+    await page.getByLabel(/email address/i).fill('flag@aced.school');
     await page.getByLabel(/your name/i).fill('Flag Tester');
     await page.getByLabel(/class code/i).fill('ACED2026');
     await page.getByRole('button', { name: /enter class/i }).click();

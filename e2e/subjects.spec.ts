@@ -8,6 +8,7 @@ test.describe('Subjects Management Flow', () => {
     await page.goto('/');
 
     // Join class
+    await page.getByLabel(/email address/i).fill('sam.subjects@aced.school');
     await page.getByLabel(/your name/i).fill('Sam Subject Tester');
     await page.getByLabel(/class code/i).fill('ACED2026');
     await page.getByRole('button', { name: /enter class/i }).click();

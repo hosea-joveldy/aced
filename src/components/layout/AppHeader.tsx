@@ -28,6 +28,11 @@ export function AppHeader() {
             <div className="hidden items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground sm:flex">
               <User className="h-3.5 w-3.5" />
               <span>{session.displayName}</span>
+              {session.isClassLeader && (
+                <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-[10px] font-semibold text-white">
+                  Class Leader
+                </span>
+              )}
               <span className="text-muted-foreground">({session.classCode})</span>
             </div>
 

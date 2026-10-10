@@ -10,6 +10,7 @@ create table if not exists classes (
   id uuid primary key default gen_random_uuid(),
   code text not null unique,
   name text not null,
+  leader_email text not null default 'leader@aced.school',
   created_at timestamptz not null default now()
 );
 
@@ -46,6 +47,7 @@ create table if not exists edit_history (
   before_value text,
   after_value text,
   editor_name text not null,
+  editor_email text,
   timestamp timestamptz not null default now(),
   reverted boolean not null default false,
   reverted_by text,
@@ -118,6 +120,6 @@ drop policy if exists "Allow public update on edit_history" on edit_history;
 create policy "Allow public update on edit_history" on edit_history for update using (true);
 
 -- Demo Seed Data (Idempotent insertion for ACED2026)
-insert into classes (code, name)
-values ('ACED2026', 'Class of 2026 — Period 3')
+insert into classes (code, name, leader_email)
+values ('ACED2026', 'Class of 2026 — Period 3', 'leader@aced.school')
 on conflict (code) do nothing;

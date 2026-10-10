@@ -33,6 +33,7 @@ export class SupabaseRepository implements AcedRepository {
       id: data.id,
       code: data.code,
       name: data.name,
+      leaderEmail: data.leader_email || 'leader@aced.school',
       createdAt: data.created_at,
     };
   }
@@ -50,6 +51,7 @@ export class SupabaseRepository implements AcedRepository {
       id: data.id,
       code: data.code,
       name: data.name,
+      leaderEmail: data.leader_email || 'leader@aced.school',
       createdAt: data.created_at,
     };
   }
@@ -159,7 +161,8 @@ export class SupabaseRepository implements AcedRepository {
   async createAssignment(
     classId: string,
     input: CreateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     const { data, error } = await this.client
       .from('assignments')
@@ -187,6 +190,7 @@ export class SupabaseRepository implements AcedRepository {
       before_value: null,
       after_value: data.title,
       editor_name: editorName.trim(),
+      editor_email: editorEmail ? editorEmail.trim() : null,
     });
 
     return {
@@ -205,7 +209,8 @@ export class SupabaseRepository implements AcedRepository {
   async updateAssignment(
     id: string,
     input: UpdateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     // Fetch current assignment for history diff
     const { data: current } = await this.client
@@ -259,6 +264,7 @@ export class SupabaseRepository implements AcedRepository {
             before_value: before,
             after_value: after,
             editor_name: editorName.trim(),
+            editor_email: editorEmail ? editorEmail.trim() : null,
           });
         }
       }
@@ -280,7 +286,8 @@ export class SupabaseRepository implements AcedRepository {
   async toggleAssignmentComplete(
     id: string,
     completed: boolean,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     const { data: current } = await this.client
       .from('assignments')
@@ -314,6 +321,7 @@ export class SupabaseRepository implements AcedRepository {
       before_value: String(current.completed),
       after_value: String(completed),
       editor_name: editorName.trim(),
+      editor_email: editorEmail ? editorEmail.trim() : null,
     });
 
     return {
@@ -347,6 +355,7 @@ export class SupabaseRepository implements AcedRepository {
       beforeValue: row.before_value,
       afterValue: row.after_value,
       editorName: row.editor_name,
+      editorEmail: row.editor_email,
       timestamp: row.timestamp,
       reverted: row.reverted,
       revertedBy: row.reverted_by,
@@ -354,7 +363,11 @@ export class SupabaseRepository implements AcedRepository {
     }));
   }
 
-  async revertEdit(historyId: string, editorName: string): Promise<void> {
+  async revertEdit(
+    historyId: string,
+    editorName: string,
+    editorEmail?: string
+  ): Promise<void> {
     const { data: entry } = await this.client
       .from('edit_history')
       .select('*')
@@ -399,13 +412,16 @@ export class SupabaseRepository implements AcedRepository {
     }
 
     const nowIso = new Date().toISOString();
+    const revertedByAttribution = editorEmail
+      ? `${editorName.trim()} (${editorEmail.trim()})`
+      : editorName.trim();
 
     // Mark edit record as reverted
     await this.client
       .from('edit_history')
       .update({
         reverted: true,
-        reverted_by: editorName.trim(),
+        reverted_by: revertedByAttribution,
         reverted_at: nowIso,
       })
       .eq('id', historyId);
@@ -419,6 +435,7 @@ export class SupabaseRepository implements AcedRepository {
       before_value: entry.after_value,
       after_value: entry.before_value,
       editor_name: editorName.trim(),
+      editor_email: editorEmail ? editorEmail.trim() : null,
     });
   }
 }

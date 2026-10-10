@@ -46,20 +46,23 @@ export interface AcedRepository {
   createAssignment(
     classId: string,
     input: CreateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment>;
   updateAssignment(
     id: string,
     input: UpdateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment>;
   toggleAssignmentComplete(
     id: string,
     completed: boolean,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment>;
 
   // Edit History & Undo
   getHistory(classId: string): Promise<EditHistoryEntry[]>;
-  revertEdit(historyId: string, editorName: string): Promise<void>;
+  revertEdit(historyId: string, editorName: string, editorEmail?: string): Promise<void>;
 }

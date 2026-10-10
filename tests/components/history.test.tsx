@@ -43,12 +43,46 @@ describe('HistoryScreen Component', () => {
     expect(screen.getByText(/Taylor S\./i)).toBeInTheDocument();
   });
 
-  it('opens confirmation modal and reverts an edit', async () => {
+  it('shows view-only audit message for regular student and hides revert button', async () => {
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('Edit History & Undo')).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByText(/only the designated class leader can revert edits/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', {
+        name: /revert edit on calculus problem set 4/i,
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it('allows designated class leader to open confirmation modal and revert an edit', async () => {
+    localStorage.setItem(
+      'aced.session.v1',
+      JSON.stringify({
+        email: 'leader@aced.school',
+        displayName: 'Jamie Leader',
+        classCode: 'ACED2026',
+        classId: 'class-aced-2026',
+        className: 'Class of 2026 — Period 3',
+        isClassLeader: true,
+      })
+    );
+
     renderScreen();
 
     await waitFor(() => {
       expect(screen.getByText('Calculus Problem Set 4')).toBeInTheDocument();
     });
+
+    expect(
+      screen.getByText(/class leader privileges/i)
+    ).toBeInTheDocument();
 
     const revertBtn = screen.getByRole('button', {
       name: /revert edit on calculus problem set 4/i,

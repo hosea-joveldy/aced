@@ -3,10 +3,11 @@ import { RotateCcw, User, Calendar, ArrowRight } from 'lucide-react';
 
 interface HistoryCardProps {
   entry: EditHistoryEntry;
+  canRevert: boolean;
   onRevertClick: (entry: EditHistoryEntry) => void;
 }
 
-export function HistoryCard({ entry, onRevertClick }: HistoryCardProps) {
+export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProps) {
   // Format date display
   const formattedDate = entry.timestamp ? entry.timestamp.split('T')[0] : '';
 
@@ -56,15 +57,17 @@ export function HistoryCard({ entry, onRevertClick }: HistoryCardProps) {
                 <span>Reverted</span>
               </span>
             ) : !isRevertLog ? (
-              <button
-                type="button"
-                onClick={() => onRevertClick(entry)}
-                className="flex min-h-[44px] items-center gap-1.5 rounded-md border border-input bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted hover:text-foreground transition shadow-sm"
-                aria-label={`Revert edit on ${entry.assignmentTitle}`}
-              >
-                <RotateCcw className="h-3.5 w-3.5 text-muted-foreground" />
-                <span>Revert</span>
-              </button>
+              canRevert ? (
+                <button
+                  type="button"
+                  onClick={() => onRevertClick(entry)}
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-md border border-input bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted hover:text-foreground transition shadow-sm"
+                  aria-label={`Revert edit on ${entry.assignmentTitle}`}
+                >
+                  <RotateCcw className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span>Revert</span>
+                </button>
+              ) : null
             ) : null}
           </div>
         </div>
@@ -85,7 +88,10 @@ export function HistoryCard({ entry, onRevertClick }: HistoryCardProps) {
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2.5 text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5 font-medium">
           <User className="h-3.5 w-3.5" />
-          <span>Edited by {entry.editorName}</span>
+          <span>
+            Edited by {entry.editorName}
+            {entry.editorEmail ? ` (${entry.editorEmail})` : ''}
+          </span>
         </div>
 
         <div className="flex items-center gap-1.5">

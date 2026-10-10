@@ -125,7 +125,8 @@ export class LocalRepository implements AcedRepository {
   async createAssignment(
     classId: string,
     input: CreateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     const data = this.loadData();
     const today = getToday();
@@ -153,6 +154,7 @@ export class LocalRepository implements AcedRepository {
       beforeValue: null,
       afterValue: newAssignment.title,
       editorName: editorName.trim(),
+      editorEmail: editorEmail ? editorEmail.trim() : null,
       timestamp: new Date().toISOString(),
       reverted: false,
     });
@@ -164,7 +166,8 @@ export class LocalRepository implements AcedRepository {
   async updateAssignment(
     id: string,
     input: UpdateAssignmentInput,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     const data = this.loadData();
     const index = data.assignments.findIndex((a) => a.id === id);
@@ -205,6 +208,7 @@ export class LocalRepository implements AcedRepository {
             beforeValue: before,
             afterValue: after,
             editorName: editorName.trim(),
+            editorEmail: editorEmail ? editorEmail.trim() : null,
             timestamp: nowIso,
             reverted: false,
           });
@@ -229,7 +233,8 @@ export class LocalRepository implements AcedRepository {
   async toggleAssignmentComplete(
     id: string,
     completed: boolean,
-    editorName: string
+    editorName: string,
+    editorEmail?: string
   ): Promise<Assignment> {
     const data = this.loadData();
     const index = data.assignments.findIndex((a) => a.id === id);
@@ -260,6 +265,7 @@ export class LocalRepository implements AcedRepository {
       beforeValue: String(current.completed),
       afterValue: String(completed),
       editorName: editorName.trim(),
+      editorEmail: editorEmail ? editorEmail.trim() : null,
       timestamp: new Date().toISOString(),
       reverted: false,
     });
@@ -273,7 +279,11 @@ export class LocalRepository implements AcedRepository {
     return data.history.filter((h) => h.classId === classId);
   }
 
-  async revertEdit(historyId: string, editorName: string): Promise<void> {
+  async revertEdit(
+    historyId: string,
+    editorName: string,
+    editorEmail?: string
+  ): Promise<void> {
     const data = this.loadData();
     const histIndex = data.history.findIndex((h) => h.id === historyId);
     if (histIndex === -1) {
@@ -302,7 +312,7 @@ export class LocalRepository implements AcedRepository {
       } else if (entry.field === 'completed') {
         asg.completed = entry.beforeValue === 'true';
       } else if (entry.field === 'created') {
-        // If created is reverted, remove or complete the assignment
+        // If created is reverted, remove the assignment
         data.assignments.splice(asgIndex, 1);
       }
 
@@ -313,10 +323,14 @@ export class LocalRepository implements AcedRepository {
 
     // Mark edit record as reverted
     const nowIso = new Date().toISOString();
+    const revertedByAttribution = editorEmail
+      ? `${editorName.trim()} (${editorEmail.trim()})`
+      : editorName.trim();
+
     data.history[histIndex] = {
       ...entry,
       reverted: true,
-      revertedBy: editorName.trim(),
+      revertedBy: revertedByAttribution,
       revertedAt: nowIso,
     };
 
@@ -330,6 +344,7 @@ export class LocalRepository implements AcedRepository {
       beforeValue: entry.afterValue,
       afterValue: entry.beforeValue,
       editorName: editorName.trim(),
+      editorEmail: editorEmail ? editorEmail.trim() : null,
       timestamp: nowIso,
       reverted: false,
     });

@@ -15,7 +15,7 @@ interface SessionContextType {
   session: StudentSession | null;
   isLoading: boolean;
   error: string | null;
-  joinClass: (displayName: string, classCode: string) => Promise<boolean>;
+  joinClass: (email: string, displayName: string, classCode: string) => Promise<boolean>;
   leaveClass: () => void;
   clearError: () => void;
 }
@@ -34,9 +34,17 @@ export const SessionProvider: FC<{ children: ReactNode }> = ({
     try {
       const raw = localStorage.getItem(SESSION_STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as StudentSession;
+        const parsed = JSON.parse(raw) as Partial<StudentSession>;
         if (parsed.classId && parsed.displayName && parsed.classCode) {
-          setSession(parsed);
+          const email = parsed.email || `${parsed.displayName.toLowerCase().replace(/\s+/g, '.')}@aced.school`;
+          setSession({
+            email,
+            displayName: parsed.displayName,
+            classCode: parsed.classCode,
+            classId: parsed.classId,
+            className: parsed.className || 'Class of 2026',
+            isClassLeader: Boolean(parsed.isClassLeader),
+          });
         }
       }
     } catch {
@@ -47,12 +55,25 @@ export const SessionProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const joinClass = async (
+    email: string,
     displayName: string,
     classCode: string
   ): Promise<boolean> => {
     setError(null);
+    const trimmedEmail = email.trim().toLowerCase();
     const trimmedName = displayName.trim();
     const trimmedCode = classCode.trim().toUpperCase();
+
+    if (!trimmedEmail) {
+      setError('Please enter your email address.');
+      return false;
+    }
+
+    // Basic email format check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
 
     if (!trimmedName) {
       setError('Please enter your name.');
@@ -71,11 +92,17 @@ export const SessionProvider: FC<{ children: ReactNode }> = ({
         return false;
       }
 
+      const isLeader =
+        Boolean(cls.leaderEmail) &&
+        cls.leaderEmail.trim().toLowerCase() === trimmedEmail;
+
       const newSession: StudentSession = {
+        email: trimmedEmail,
         displayName: trimmedName,
         classCode: cls.code,
         classId: cls.id,
         className: cls.name,
+        isClassLeader: isLeader,
       };
 
       localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newSession));

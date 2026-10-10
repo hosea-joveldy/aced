@@ -46,7 +46,7 @@ export function HistoryScreen() {
     if (!selectedEntry || !session) return;
     setIsReverting(true);
     try {
-      await repo.revertEdit(selectedEntry.id, session.displayName);
+      await repo.revertEdit(selectedEntry.id, session.displayName, session.email);
       await loadHistory();
       setIsDialogOpen(false);
       setSelectedEntry(null);
@@ -58,6 +58,8 @@ export function HistoryScreen() {
     }
   };
 
+  const isClassLeader = Boolean(session?.isClassLeader);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
@@ -66,8 +68,30 @@ export function HistoryScreen() {
             Edit History & Undo
           </h2>
           <p className="text-sm text-muted-foreground">
-            Audit trail of crowdsourced changes with one-tap revert in {session?.className}
+            Audit trail of crowdsourced changes in {session?.className}
           </p>
+        </div>
+      </div>
+
+      {/* Role notice banner */}
+      <div
+        className={`flex items-start gap-2.5 rounded-lg border p-3.5 text-xs sm:text-sm ${
+          isClassLeader
+            ? 'border-indigo-200 bg-indigo-50/70 text-indigo-900'
+            : 'border-amber-200 bg-amber-50/70 text-amber-900'
+        }`}
+      >
+        <AlertCircle className={`h-4 w-4 shrink-0 mt-0.5 ${isClassLeader ? 'text-indigo-600' : 'text-amber-600'}`} />
+        <div>
+          {isClassLeader ? (
+            <span>
+              <strong>Class Leader Privileges:</strong> You have permission to revert and rollback changes to maintain board integrity.
+            </span>
+          ) : (
+            <span>
+              <strong>View Only:</strong> You can inspect the audit trail and who made changes. Only the designated Class Leader can revert edits.
+            </span>
+          )}
         </div>
       </div>
 
@@ -113,7 +137,7 @@ export function HistoryScreen() {
             No Edits Recorded Yet
           </h3>
           <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-            Any addition, change, or deadline update made by classmates will appear here with one-tap undo.
+            Any addition, change, or deadline update made by classmates will appear here with transparent email attribution.
           </p>
         </div>
       )}
@@ -124,6 +148,7 @@ export function HistoryScreen() {
             <HistoryCard
               key={entry.id}
               entry={entry}
+              canRevert={isClassLeader}
               onRevertClick={handleOpenRevert}
             />
           ))}

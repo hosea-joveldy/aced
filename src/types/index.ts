@@ -2,6 +2,7 @@ export interface Class {
   id: string;
   code: string;
   name: string;
+  leaderEmail: string;
   createdAt: string;
 }
 
@@ -35,6 +36,7 @@ export interface EditHistoryEntry {
   beforeValue: string | null;
   afterValue: string | null;
   editorName: string;
+  editorEmail?: string | null;
   timestamp: string; // ISO string
   reverted: boolean;
   revertedBy?: string | null;
@@ -42,8 +44,10 @@ export interface EditHistoryEntry {
 }
 
 export interface StudentSession {
+  email: string;
   displayName: string;
   classCode: string;
   classId: string;
   className: string;
+  isClassLeader: boolean;
 }

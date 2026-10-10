@@ -13,6 +13,7 @@ test.describe('App Shell and Identity Flow', () => {
     ).toBeVisible();
 
     // Fill demo credentials
+    await page.getByLabel(/email address/i).fill('alex.student@aced.school');
     await page.getByLabel(/your name/i).fill('Alex Student');
     await page.getByLabel(/class code/i).fill('ACED2026');
     await page.getByRole('button', { name: /enter class/i }).click();
@@ -55,6 +56,7 @@ test.describe('App Shell and Identity Flow', () => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/');
 
+    await page.getByLabel(/email address/i).fill('desktop@aced.school');
     await page.getByLabel(/your name/i).fill('Desktop Student');
     await page.getByLabel(/class code/i).fill('ACED2026');
     await page.getByRole('button', { name: /enter class/i }).click();

@@ -76,7 +76,8 @@ export function BoardScreen() {
       const updated = await repo.updateAssignment(
         selectedAssignment.id,
         data,
-        session.displayName
+        session.displayName,
+        session.email
       );
       setAssignments((prev) =>
         prev.map((a) => (a.id === updated.id ? updated : a))
@@ -85,7 +86,8 @@ export function BoardScreen() {
       const created = await repo.createAssignment(
         session.classId,
         data,
-        session.displayName
+        session.displayName,
+        session.email
       );
       setAssignments((prev) => [created, ...prev]);
     }
@@ -98,7 +100,8 @@ export function BoardScreen() {
       const updated = await repo.toggleAssignmentComplete(
         assignment.id,
         nextCompleted,
-        session.displayName
+        session.displayName,
+        session.email
       );
       setAssignments((prev) =>
         prev.map((a) => (a.id === updated.id ? updated : a))

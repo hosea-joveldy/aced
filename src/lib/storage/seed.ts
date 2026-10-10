@@ -25,6 +25,7 @@ export function createInitialSeedData(): LocalDatabaseSchema {
     id: classId,
     code: 'ACED2026',
     name: 'Class of 2026 — Period 3',
+    leaderEmail: 'leader@aced.school',
     createdAt: offsetDate(today, -30),
   };
 
@@ -215,6 +216,7 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       beforeValue: offsetDate(today, -3),
       afterValue: offsetDate(today, -1),
       editorName: 'Alex M.',
+      editorEmail: 'alex@aced.school',
       timestamp: offsetDate(today, -2) + 'T14:30:00Z',
       reverted: false,
     },
@@ -227,6 +229,7 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       beforeValue: 'Problems 1-10 only',
       afterValue: 'Problems 1-15 including odds',
       editorName: 'Jordan K.',
+      editorEmail: 'jordan@aced.school',
       timestamp: offsetDate(today, -2) + 'T16:15:00Z',
       reverted: false,
     },
@@ -239,6 +242,7 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       beforeValue: 'Binary Trees',
       afterValue: 'CS Binary Search Trees Implementation',
       editorName: 'Taylor S.',
+      editorEmail: 'taylor@aced.school',
       timestamp: offsetDate(today, -1) + 'T11:00:00Z',
       reverted: false,
     },
