@@ -20,30 +20,110 @@ export class SupabaseRepository implements AcedRepository {
     this.client = createClient(supabaseUrl, supabaseAnonKey);
   }
 
+  private async resolveValidClassId(classId: string): Promise<string> {
+    const trimmed = classId.trim();
+
+    // 1. Direct lookup by ID
+    const { data: direct } = await this.client
+      .from('classes')
+      .select('id')
+      .eq('id', trimmed)
+      .maybeSingle();
+
+    if (direct?.id) {
+      return direct.id;
+    }
+
+    // 2. Lookup by code in case a class code string was passed
+    const { data: byCode } = await this.client
+      .from('classes')
+      .select('id')
+      .ilike('code', trimmed)
+      .maybeSingle();
+
+    if (byCode?.id) {
+      return byCode.id;
+    }
+
+    // 3. Fallback to demo class ACED2026
+    const { data: demo } = await this.client
+      .from('classes')
+      .select('id')
+      .ilike('code', 'ACED2026')
+      .maybeSingle();
+
+    if (demo?.id) {
+      return demo.id;
+    }
+
+    // 4. Auto-seed demo class if classes table is empty
+    const { data: created, error } = await this.client
+      .from('classes')
+      .insert({
+        code: 'ACED2026',
+        name: 'Class of 2026 — Period 3',
+        leader_email: 'leader@aced.school',
+      })
+      .select('id')
+      .maybeSingle();
+
+    if (!error && created?.id) {
+      return created.id;
+    }
+
+    return trimmed;
+  }
+
   async getClassByCode(code: string): Promise<Class | null> {
+    const trimmed = code.trim();
     const { data, error } = await this.client
       .from('classes')
       .select('*')
-      .ilike('code', code.trim())
-      .single();
+      .ilike('code', trimmed)
+      .maybeSingle();
 
-    if (error || !data) return null;
+    if (!error && data) {
+      return {
+        id: data.id,
+        code: data.code,
+        name: data.name,
+        leaderEmail: data.leader_email || 'leader@aced.school',
+        createdAt: data.created_at,
+      };
+    }
 
-    return {
-      id: data.id,
-      code: data.code,
-      name: data.name,
-      leaderEmail: data.leader_email || 'leader@aced.school',
-      createdAt: data.created_at,
-    };
+    // If code is demo class ACED2026 and not found, auto-seed it
+    if (trimmed.toUpperCase() === 'ACED2026') {
+      const { data: inserted, error: insertErr } = await this.client
+        .from('classes')
+        .insert({
+          code: 'ACED2026',
+          name: 'Class of 2026 — Period 3',
+          leader_email: 'leader@aced.school',
+        })
+        .select()
+        .maybeSingle();
+
+      if (!insertErr && inserted) {
+        return {
+          id: inserted.id,
+          code: inserted.code,
+          name: inserted.name,
+          leaderEmail: inserted.leader_email || 'leader@aced.school',
+          createdAt: inserted.created_at,
+        };
+      }
+    }
+
+    return null;
   }
 
   async getClassById(id: string): Promise<Class | null> {
     const { data, error } = await this.client
       .from('classes')
       .select('*')
-      .eq('id', id)
-      .single();
+      .eq('id', id.trim())
+      .maybeSingle();
 
     if (error || !data) return null;
 
@@ -57,10 +137,11 @@ export class SupabaseRepository implements AcedRepository {
   }
 
   async getSubjects(classId: string): Promise<Subject[]> {
+    const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
       .from('subjects')
       .select('*')
-      .eq('class_id', classId)
+      .eq('class_id', validId)
       .order('name');
 
     if (error || !data) return [];
@@ -79,10 +160,11 @@ export class SupabaseRepository implements AcedRepository {
     classId: string,
     input: CreateSubjectInput
   ): Promise<Subject> {
+    const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
       .from('subjects')
       .insert({
-        class_id: classId,
+        class_id: validId,
         name: input.name.trim(),
         teacher_name: input.teacherName.trim(),
         classroom_code: input.classroomCode?.trim() || null,
@@ -94,7 +176,7 @@ export class SupabaseRepository implements AcedRepository {
       throw new Error(`Failed to create subject: ${error?.message}`);
     }
 
-    return {
+    const created: Subject = {
       id: data.id,
       classId: data.class_id,
       name: data.name,
@@ -102,6 +184,8 @@ export class SupabaseRepository implements AcedRepository {
       classroomCode: data.classroom_code,
       createdAt: data.created_at,
     };
+
+    return created;
   }
 
   async updateSubject(
@@ -126,7 +210,7 @@ export class SupabaseRepository implements AcedRepository {
       throw new Error(`Failed to update subject: ${error?.message}`);
     }
 
-    return {
+    const updated: Subject = {
       id: data.id,
       classId: data.class_id,
       name: data.name,
@@ -134,13 +218,47 @@ export class SupabaseRepository implements AcedRepository {
       classroomCode: data.classroom_code,
       createdAt: data.created_at,
     };
+
+    return updated;
+  }
+
+  async deleteSubject(id: string): Promise<void> {
+    // 1. Find all assignments for this subject so we can remove associated edit history
+    const { data: asgs } = await this.client
+      .from('assignments')
+      .select('id')
+      .eq('subject_id', id);
+
+    if (asgs && asgs.length > 0) {
+      const asgIds = asgs.map((a) => a.id);
+      await this.client
+        .from('edit_history')
+        .delete()
+        .in('assignment_id', asgIds);
+
+      await this.client
+        .from('assignments')
+        .delete()
+        .eq('subject_id', id);
+    }
+
+    // 2. Delete the subject itself
+    const { error } = await this.client
+      .from('subjects')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Failed to delete subject: ${error.message}`);
+    }
   }
 
   async getAssignments(classId: string): Promise<Assignment[]> {
+    const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
       .from('assignments')
       .select('*')
-      .eq('class_id', classId)
+      .eq('class_id', validId)
       .order('created_at', { ascending: false });
 
     if (error || !data) return [];
@@ -164,10 +282,11 @@ export class SupabaseRepository implements AcedRepository {
     editorName: string,
     editorEmail?: string
   ): Promise<Assignment> {
+    const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
       .from('assignments')
       .insert({
-        class_id: classId,
+        class_id: validId,
         subject_id: input.subjectId,
         title: input.title.trim(),
         due_date: input.dueDate || null,
@@ -183,7 +302,7 @@ export class SupabaseRepository implements AcedRepository {
 
     // Insert history record
     await this.client.from('edit_history').insert({
-      class_id: classId,
+      class_id: validId,
       assignment_id: data.id,
       assignment_title: data.title,
       field: 'created',
@@ -338,10 +457,11 @@ export class SupabaseRepository implements AcedRepository {
   }
 
   async getHistory(classId: string): Promise<EditHistoryEntry[]> {
+    const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
       .from('edit_history')
       .select('*')
-      .eq('class_id', classId)
+      .eq('class_id', validId)
       .order('timestamp', { ascending: false });
 
     if (error || !data) return [];

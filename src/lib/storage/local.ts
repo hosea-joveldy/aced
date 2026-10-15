@@ -117,6 +117,13 @@ export class LocalRepository implements AcedRepository {
     return updated;
   }
 
+  async deleteSubject(id: string): Promise<void> {
+    const data = this.loadData();
+    data.subjects = data.subjects.filter((s) => s.id !== id);
+    data.assignments = data.assignments.filter((a) => a.subjectId !== id);
+    this.saveData(data);
+  }
+
   async getAssignments(classId: string): Promise<Assignment[]> {
     const data = this.loadData();
     return data.assignments.filter((a) => a.classId === classId);

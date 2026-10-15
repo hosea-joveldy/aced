@@ -14,12 +14,12 @@ interface SubjectCardProps {
 // Generate consistent theme gradients for Google Classroom-style header banner
 function getSubjectTheme(name: string) {
   const themes = [
-    { bg: 'from-indigo-600 via-indigo-700 to-indigo-900', accent: 'bg-indigo-500/20 text-indigo-100' },
-    { bg: 'from-emerald-600 via-teal-700 to-emerald-900', accent: 'bg-emerald-500/20 text-emerald-100' },
-    { bg: 'from-amber-600 via-orange-700 to-amber-900', accent: 'bg-amber-500/20 text-amber-100' },
-    { bg: 'from-purple-600 via-violet-700 to-purple-900', accent: 'bg-purple-500/20 text-purple-100' },
-    { bg: 'from-rose-600 via-pink-700 to-rose-900', accent: 'bg-rose-500/20 text-rose-100' },
-    { bg: 'from-sky-600 via-blue-700 to-sky-900', accent: 'bg-sky-500/20 text-sky-100' },
+    { bg: 'from-indigo-600 to-indigo-800', accent: 'bg-indigo-500/20 text-indigo-100' },
+    { bg: 'from-emerald-600 to-teal-800', accent: 'bg-emerald-500/20 text-emerald-100' },
+    { bg: 'from-amber-600 to-orange-700', accent: 'bg-amber-500/20 text-amber-100' },
+    { bg: 'from-violet-600 to-purple-800', accent: 'bg-violet-500/20 text-purple-100' },
+    { bg: 'from-rose-600 to-pink-800', accent: 'bg-rose-500/20 text-rose-100' },
+    { bg: 'from-sky-600 to-blue-800', accent: 'bg-sky-500/20 text-sky-100' },
   ];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
@@ -122,7 +122,7 @@ export function SubjectCard({
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="inline-flex min-h-[32px] items-center gap-1 rounded-md border border-input bg-background px-2 py-1 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition cursor-pointer"
+                className="inline-flex min-h-[36px] items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring"
                 title="Copy Classroom Code"
                 aria-label={`Copy code ${subject.classroomCode}`}
               >
@@ -153,7 +153,7 @@ export function SubjectCard({
             <button
               type="button"
               onClick={() => onAssignDeadline(missingDateAssignments[0])}
-              className="inline-flex min-h-[28px] items-center gap-1 rounded bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-900 hover:bg-amber-200 transition cursor-pointer"
+              className="inline-flex min-h-[36px] items-center gap-1 rounded bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-200 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring"
             >
               Add date
             </button>

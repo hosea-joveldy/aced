@@ -40,6 +40,7 @@ export interface AcedRepository {
   getSubjects(classId: string): Promise<Subject[]>;
   createSubject(classId: string, input: CreateSubjectInput): Promise<Subject>;
   updateSubject(id: string, input: UpdateSubjectInput): Promise<Subject>;
+  deleteSubject(id: string): Promise<void>;
 
   // Assignments
   getAssignments(classId: string): Promise<Assignment[]>;

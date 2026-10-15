@@ -36,9 +36,9 @@ describe('HistoryScreen Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Edit History & Undo')).toBeInTheDocument();
+      expect(screen.getByText(/Alex M\./i)).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/Alex M\./i)).toBeInTheDocument();
     expect(screen.getByText(/Jordan K\./i)).toBeInTheDocument();
     expect(screen.getByText(/Taylor S\./i)).toBeInTheDocument();
   });

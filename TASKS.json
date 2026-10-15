@@ -280,18 +280,18 @@
     },
     {
       "id": "T12",
-      "title": "Full UI redesign based on wireframes.html with solar system join screen",
+      "title": "Full UI redesign based on wireframes.html with educational classroom join screen",
       "type": "build",
       "status": "finished",
       "features": [
         {
           "id": "T12.1",
-          "title": "Join class redesign with celestial solar system illustration and high-contrast form",
+          "title": "Join class redesign with fullscreen educational deadline board illustration and high-contrast form",
           "done": true,
           "done_when": [
-            "Join screen displays celestial solar system orbital visualization on desktop",
+            "Join screen displays educational classroom deadline board vector illustration on desktop spanning fullscreen",
             "Join form includes Kahoot!-inspired class code input, email, display name, and demo buttons",
-            "Mobile view renders responsive stack with orbital badge and clean inputs",
+            "Mobile view renders responsive stack with educational badge and clean inputs",
             "All existing join tests pass"
           ]
         },

@@ -36,7 +36,13 @@ export default defineConfig({
   webServer: {
     command: 'npm run build && npx vite preview --host 127.0.0.1 --port 3000 --strictPort',
     url: 'http://127.0.0.1:3000',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    env: {
+      VITE_SUPABASE_URL: '',
+      VITE_SUPABASE_ANON_KEY: '',
+      VITE_SUPABASE_PUBLISHABLE_KEY: '',
+      VITE_FEATURE_CLASSROOM_IMPORT: 'false',
+    },
   },
 });

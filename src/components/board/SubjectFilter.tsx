@@ -19,9 +19,9 @@ export function SubjectFilter({
       <button
         type="button"
         onClick={() => onSelectSubject(null)}
-        className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer ${
+        className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
           selectedSubjectId === null
-            ? 'bg-foreground text-background shadow-sm'
+            ? 'bg-primary text-primary-foreground shadow-sm'
             : 'border border-border bg-card text-foreground hover:bg-muted'
         }`}
       >
@@ -35,9 +35,9 @@ export function SubjectFilter({
             key={sub.id}
             type="button"
             onClick={() => onSelectSubject(sub.id)}
-            className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer ${
+            className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
               isSelected
-                ? 'bg-foreground text-background shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'border border-border bg-card text-foreground hover:bg-muted'
             }`}
           >

@@ -31,8 +31,8 @@ export function StatusBadge({ group, dueDate }: StatusBadgeProps) {
       );
     case 'this-week':
       return (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-          <Clock className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-0.5 text-xs font-medium text-sky-700">
+          <Clock className="h-3.5 w-3.5 shrink-0 text-sky-600" />
           <span>This week{dueDate ? ` (${dueDate})` : ''}</span>
         </span>
       );

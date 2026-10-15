@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aced – Desktop Wireframes</title>
+<style>
+:root{--page:#e9e9e9;--frame:#fff;--blk:#dcdcdc;--blk2:#cfcfcf;--bar:#4a4a4a;--bar2:#a9a9a9;--line:#bdbdbd;--ink:#222;--dark:#222;--onDark:#fff;--scrim:rgba(0,0,0,.35);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#111;--frame:#1c1c1c;--blk:#333;--blk2:#3d3d3d;--bar:#cfcfcf;--bar2:#6d6d6d;--line:#555;--ink:#eee;--dark:#eee;--onDark:#111;--scrim:rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--page:#111;--frame:#1c1c1c;--blk:#333;--blk2:#3d3d3d;--bar:#cfcfcf;--bar2:#6d6d6d;--line:#555;--ink:#eee;--dark:#eee;--onDark:#111;--scrim:rgba(0,0,0,.6)}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 20px 64px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{margin:0 0 28px;color:var(--bar2)}
+.wrap{max-width:1180px;margin:0 auto}
+.label{font-weight:600;margin:40px 0 4px}
+.ref{color:var(--bar2);margin:0 0 10px;font-size:13px}
+.scroll{overflow-x:auto;padding-bottom:6px}
+.frame{width:1100px;height:640px;background:var(--frame);border:2px solid var(--line);border-radius:14px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.chrome{height:34px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 14px;flex:none}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--blk2)}
+.url{margin-left:14px;height:18px;width:260px;border-radius:9px;background:var(--blk)}
+.body{flex:1;display:flex;min-height:0}
+/* primitives */
+.bar{height:7px;border-radius:4px;background:var(--bar);display:block}
+.bar.l{background:var(--bar2)}
+.bar.h{height:11px}
+.blk{background:var(--blk);border-radius:8px}
+.circ{background:var(--blk);border-radius:50%;flex:none}
+.btn{background:var(--dark);color:var(--onDark);border-radius:8px;padding:9px 16px;font-weight:600;font-size:13px;display:inline-block;white-space:nowrap}
+.btn.o{background:none;color:var(--ink);border:1.5px solid var(--bar2)}
+.input{height:40px;border:1.5px solid var(--bar2);border-radius:8px;display:flex;align-items:center;padding:0 12px;color:var(--bar2);font-size:13px}
+.chip{background:var(--blk);border-radius:16px;padding:6px 14px;font-size:12px;white-space:nowrap}
+.chip.on{background:var(--dark);color:var(--onDark)}
+.stack>*+*{margin-top:8px}
+.row{display:flex;align-items:center;gap:12px}
+/* shell */
+.side{width:200px;border-right:1px solid var(--line);padding:18px 14px;flex:none;display:flex;flex-direction:column;gap:6px}
+.logo{font-weight:800;font-size:18px;margin-bottom:14px}
+.nav{padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px}
+.nav.on{background:var(--blk)}
+.nav i{width:16px;height:16px;border-radius:4px;background:var(--bar2);display:block}
+.nav.on i{background:var(--bar)}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:8px}
+.main{flex:1;padding:22px 30px;overflow:hidden;min-width:0}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.top h2{margin:0;font-size:20px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.tile{background:var(--blk);border-radius:10px;padding:12px 14px}
+.tile b{font-size:22px;display:block}
+.sec{font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.card{background:var(--blk);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:14px}
+.card+.card{margin-top:8px}
+.cb{width:18px;height:18px;border:2px solid var(--bar2);border-radius:5px;flex:none;background:var(--frame)}
+.grow{flex:1;display:flex;flex-direction:column;gap:6px}
+.tag{border:1.5px solid var(--bar2);border-radius:6px;padding:2px 8px;font-size:11px;white-space:nowrap}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sc .blk{height:70px;border-radius:10px 10px 0 0}
+.sc{border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+.sc .in{padding:14px;display:flex;flex-direction:column;gap:8px}
+.banner{background:var(--blk);border-radius:8px;padding:9px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px}
+.hrow{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.diff{display:flex;align-items:center;gap:8px;font-size:12px}
+.diff span{background:var(--blk);border-radius:6px;padding:3px 10px}
+.scrim{position:absolute;inset:34px 0 0 0;background:var(--scrim);display:flex;align-items:center;justify-content:center}
+.modal{background:var(--frame);border:2px solid var(--line);border-radius:14px;padding:22px;width:440px;display:flex;flex-direction:column;gap:12px}
+.modal h3{margin:0;font-size:16px}
+.note{font-size:12px;color:var(--bar2)}
+.join{flex:1;display:flex}
+.join .art{flex:1;background:var(--blk);margin:24px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--bar2)}
+.join .form{width:420px;padding:0 50px 0 10px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Aced – desktop wireframes</h1>
+<p class="sub">Low-fidelity, 1100 × 640 frames. Gray blocks are images or content, dark bars are text.</p>
+
+<div class="label">1. Join class</div>
+<p class="ref">Reference: Kahoot! (big code input) + Notion login (minimal fields)</p>
+<div class="scroll"><div class="frame">
+ <div class="chrome"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="url"></i></div>
+ <div class="join">
+  <div class="art">Brand illustration / product preview</div>
+  <div class="form">
+   <div class="logo">Aced</div>
+   <div class="stack"><span class="bar h" style="width:70%"></span><span class="bar l" style="width:90%"></span></div>
+   <div class="input">Email address</div>
+   <div class="input">Display name</div>
+   <div class="input" style="height:52px;font-size:15px">Class code</div>
+   <span class="btn" style="text-align:center;padding:13px">Join class</span>
+  </div>
+ </div>
+</div></div>
+
+<div class="label">2. Board</div>
+<p class="ref">Reference: Todoist Upcoming (sections and rows) + Apple Reminders (top tiles)</p>
+<div class="scroll"><div class="frame" id="board"></div></div>
+
+<div class="label">3. Subjects</div>
+<p class="ref">Reference: Google Classroom class cards + GitHub copy button</p>
+<div class="scroll"><div class="frame" id="subjects"></div></div>
+
+<div class="label">4. History</div>
+<p class="ref">Reference: Linear activity feed + Google Docs version history</p>
+<div class="scroll"><div class="frame" id="history"></div></div>
+
+<div class="label">5. Assignment modal (add / edit)</div>
+<p class="ref">Reference: Todoist quick-add dialog. Subject modal reuses the same layout with fewer fields.</p>
+<div class="scroll"><div class="frame" id="modal"></div></div>
+
+<div class="label">6. Revert confirm (Class Leader only)</div>
+<p class="ref">Reference: GitHub revert + Google Docs "Restore this version"</p>
+<div class="scroll"><div class="frame" id="revert"></div></div>
+</div>
+
+<script>
+const chrome='<div class="chrome"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="url"></i></div>';
+const shell=(active,content,extra='')=>{
+ const n=['Board','Subjects','History'].map(t=>`<div class="nav ${t===active?'on':''}"><i></i>${t}</div>`).join('');
+ return `${chrome}<div class="body"><aside class="side"><div class="logo">Aced</div>${n}<div class="me"><span class="circ" style="width:30px;height:30px"></span><div class="stack" style="flex:1"><span class="bar" style="width:70%"></span><span class="bar l" style="width:45%"></span></div></div></aside><main class="main">${content}</main></div>${extra}`;
+};
+const asg=(tag,status)=>`<div class="card"><i class="cb"></i><div class="grow"><span class="bar" style="width:46%"></span><span class="bar l" style="width:28%"></span></div><span class="tag">${tag}</span><span class="tag">${status}</span><span class="bar l" style="width:30px"></span></div>`;
+const chips=['All subjects','Math','Biology','History','English','Physics'].map((c,i)=>`<span class="chip ${i?'':'on'}">${c}</span>`).join('');
+
+document.getElementById('board').innerHTML=shell('Board',`
+ <div class="top"><h2>Board</h2><div class="row"><div class="input" style="width:220px;height:36px">Search assignments</div><span class="btn">+ Add assignment</span></div></div>
+ <div class="tiles"><div class="tile"><b>2</b>Overdue</div><div class="tile"><b>1</b>Due today</div><div class="tile"><b>3</b>Needs a date</div></div>
+ <div class="row" style="margin-bottom:4px">${chips}</div>
+ <div class="sec">Needs a date <span class="tag">3</span><span class="note">Help your class – add the date</span></div>
+ ${asg('Subject','Add date')}${asg('Subject','Add date')}
+ <div class="sec">Overdue <span class="tag">2</span></div>
+ ${asg('Subject','Oct 10')}
+ <div class="sec">Due today <span class="tag">1</span></div>
+ ${asg('Subject','Today')}
+`);
+
+const sc=()=>`<div class="sc"><div class="blk"></div><div class="in"><span class="bar h" style="width:60%"></span><span class="bar l" style="width:40%"></span><div class="row" style="justify-content:space-between"><span class="tag">Code ▢ Copy</span><span class="bar l" style="width:70px"></span></div><div class="row" style="justify-content:space-between"><span class="note">4 active · 1 missing date</span><span class="btn o" style="padding:4px 10px;font-size:12px">Add date</span></div></div></div>`;
+document.getElementById('subjects').innerHTML=shell('Subjects',`
+ <div class="top"><h2>Subjects</h2><span class="btn">+ Add subject</span></div>
+ <div class="grid3">${sc()+sc()+sc()+sc()+sc()+sc()}</div>
+`);
+
+const hr=(b)=>`<div class="hrow"><span class="circ" style="width:34px;height:34px"></span><div class="grow"><span class="bar" style="width:38%"></span><span class="bar l" style="width:22%"></span></div><div class="diff"><span>Oct 3</span>→<span>Oct 5</span></div>${b?'<span class="btn o" style="padding:6px 14px">Revert</span>':''}</div>`;
+document.getElementById('history').innerHTML=shell('History',`
+ <div class="top"><h2>History</h2><div class="row"><span class="chip on">All edits</span><span class="chip">Due dates</span><span class="chip">Titles</span></div></div>
+ <div class="banner"><span class="circ" style="width:16px;height:16px"></span>Class Leader privileges – you can revert edits <span class="note">(students see: View only)</span></div>
+ ${hr(1)+hr(1)+hr(1)+hr(1)+hr(1)}
+`);
+
+document.getElementById('modal').innerHTML=shell('Board',`
+ <div class="top"><h2>Board</h2><span class="btn">+ Add assignment</span></div>
+ <div class="tiles"><div class="tile"><b>2</b>Overdue</div><div class="tile"><b>1</b>Due today</div><div class="tile"><b>3</b>Needs a date</div></div>
+ ${asg('Subject','Oct 10')}${asg('Subject','Today')}
+`,`<div class="scrim"><div class="modal"><div class="row" style="justify-content:space-between"><h3>Add assignment</h3><span class="note">✕</span></div>
+ <div class="input">Title</div>
+ <div class="row"><div class="input" style="flex:1">Subject ▾</div><div class="input" style="flex:1">Due date (optional)</div></div>
+ <div class="input" style="height:80px;align-items:flex-start;padding-top:12px">Notes</div>
+ <span class="note">Your name is saved with this edit.</span>
+ <div class="row" style="justify-content:flex-end"><span class="btn o">Cancel</span><span class="btn">Save</span></div></div></div>`);
+
+document.getElementById('revert').innerHTML=shell('History',`
+ <div class="top"><h2>History</h2></div>
+ ${hr(1)+hr(1)+hr(1)}
+`,`<div class="scrim"><div class="modal"><h3>Revert this edit?</h3>
+ <span class="bar" style="width:55%"></span>
+ <div class="row"><div class="blk" style="flex:1;padding:12px"><span class="note">Current</span><div style="font-size:18px;margin-top:4px">Oct 5</div></div><span>→</span><div class="blk" style="flex:1;padding:12px"><span class="note">Restore to</span><div style="font-size:18px;margin-top:4px">Oct 3</div></div></div>
+ <div class="row" style="justify-content:flex-end"><span class="btn o">Cancel</span><span class="btn">Revert</span></div></div></div>`);
+</script>
+</body>
+</html>

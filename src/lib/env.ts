@@ -58,12 +58,35 @@ export function classroomImportEnabled(): boolean {
   return val === 'true' || val === '1';
 }
 
+export function getGoogleClientId(): string | undefined {
+  const id = getEnvValue('VITE_GOOGLE_CLIENT_ID');
+  return id && id.trim().length > 0 ? id.trim() : undefined;
+}
+
+export function getGoogleApiKey(): string | undefined {
+  const key = getEnvValue('VITE_GOOGLE_API_KEY');
+  return key && key.trim().length > 0 ? key.trim() : undefined;
+}
+
+export function isGoogleClassroomConfigured(): boolean {
+  return Boolean(getGoogleClientId());
+}
+
 export const env = {
   get isSupabaseConfigured() {
     return isSupabaseConfigured();
   },
   get classroomImportEnabled() {
     return classroomImportEnabled();
+  },
+  get googleClientId() {
+    return getGoogleClientId();
+  },
+  get googleApiKey() {
+    return getGoogleApiKey();
+  },
+  get isGoogleClassroomConfigured() {
+    return isGoogleClassroomConfigured();
   },
   get supabaseUrl() {
     return getSupabaseUrl();

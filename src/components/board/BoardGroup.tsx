@@ -31,7 +31,7 @@ export function BoardGroup({
       case 'today':
         return <Calendar className="h-4 w-4 text-indigo-600" />;
       case 'this-week':
-        return <Clock className="h-4 w-4 text-blue-600" />;
+        return <Clock className="h-4 w-4 text-sky-600" />;
       case 'later':
         return <CalendarDays className="h-4 w-4 text-slate-500" />;
       case 'done':

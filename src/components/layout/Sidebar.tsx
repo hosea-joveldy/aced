@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useSession } from '@/context/SessionContext';
-import { CalendarDays, BookOpen, History, LogOut, ShieldCheck, Orbit } from 'lucide-react';
+import { CalendarDays, BookOpen, History, LogOut, ShieldCheck, GraduationCap } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 interface NavItem {
@@ -39,14 +39,14 @@ export function Sidebar() {
         {/* Brand Header */}
         <div className="flex items-center gap-3 px-2 pt-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20">
-            <Orbit className="h-5 w-5 animate-spin [animation-duration:14s]" />
+            <GraduationCap className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-lg font-extrabold tracking-tight text-foreground">
                 Aced
               </span>
-              <span className="rounded bg-indigo-100 px-1.5 py-0.2 text-[10px] font-bold text-indigo-700">
+              <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">
                 PRO
               </span>
             </div>

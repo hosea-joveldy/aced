@@ -81,9 +81,11 @@ Colour is never used alone to convey state. Every status badge or alert pairs co
   - `pb-24` padding to ensure content is never obscured by the tab bar.
 
 ### 5.2 Join Class Screen (Login)
-- **Split-Screen Layout**:
-  - **Left Artwork Pane**: Celestial "Solar System / Orbital Deadline" illustration with orbiting subject nodes, deadline markers, and gravitational core branding ("Stay in Orbit with Your Deadlines").
-  - **Right Form Pane**: Notion + Kahoot!-inspired minimal form with email, display name, large high-contrast class code input, and instant demo autofill shortcuts.
+- **Fullscreen Responsive Layout**:
+  - **Full Viewport Edge-to-Edge**: The login page spans the entire viewport (`min-h-screen w-full`) without constrained container margins or redundant top headers.
+  - **Left Artwork Pane (Desktop / Tablet lg+)**: Educational vector illustration (`ClassroomIllustration`) depicting a live classroom deadline board: weekly calendar grid, crowdsourced assignment cards ("Needs date" resolved by classmates, "Due today", "Done"), active class rep avatars, and academic achievement badges.
+  - **Right Form Pane**: High-contrast, focused form with email, display name, Kahoot!-inspired large monospace class code input, instant demo autofill buttons (Student & Class Leader), accessible validation feedback, and transparent attribution footnote.
+  - **Mobile (< lg)**: Fluid edge-to-edge layout with top educational badge, full-width inputs, and accessible 44px+ touch targets.
 
 ### 5.3 Board Screen
 - **Header & Search**: Main title with live keyword search input (`Search assignments`) and `+ Add assignment` primary button.

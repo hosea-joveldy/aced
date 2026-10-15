@@ -101,5 +101,69 @@ describe('SubjectsScreen Component', () => {
       expect(screen.getByText('Ms. Thorne')).toBeInTheDocument();
       expect(screen.getByText('myt-301')).toBeInTheDocument();
     });
+
+    // Subject is created cleanly without synthetic "Coursework #1 / #2" placeholder assignments
+    expect(screen.queryByText('Coursework #1: Reading & Reflection')).not.toBeInTheDocument();
+  });
+
+  it('shows all Google Classroom assignments for subjects with a classroom code even when there are no deadlines, and lets students assign a deadline', async () => {
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('AP Calculus BC')).toBeInTheDocument();
+    });
+
+    const calcClassroomSection = screen.getByTestId('classroom-assignments-mat-401');
+    // Shows dated and undated assignments for AP Calculus BC
+    expect(within(calcClassroomSection).getByText('Calculus Problem Set 4')).toBeInTheDocument();
+    expect(within(calcClassroomSection).getByText('Integral Applications Worksheet')).toBeInTheDocument();
+    expect(within(calcClassroomSection).getByText(/no deadline set/i)).toBeInTheDocument();
+
+    // Student assigns a deadline to the undated assignment
+    fireEvent.click(
+      within(calcClassroomSection).getByRole('button', {
+        name: /assign deadline for integral applications worksheet/i,
+      })
+    );
+
+    const dialog = screen.getByRole('dialog');
+    fireEvent.change(within(dialog).getByLabelText(/due date/i), {
+      target: { value: '2026-10-20' },
+    });
+    fireEvent.click(within(dialog).getByRole('button', { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(within(calcClassroomSection).getByText(/Due 2026-10-20/i)).toBeInTheDocument();
+    });
+  });
+
+  it('allows deleting a subject with confirmation', async () => {
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('AP Calculus BC')).toBeInTheDocument();
+    });
+
+    // Click delete button on AP Calculus BC card
+    const deleteButton = screen.getByRole('button', { name: /delete ap calculus bc/i });
+    fireEvent.click(deleteButton);
+
+    // Confirmation dialog appears
+    const confirmDialog = screen.getByRole('dialog', { name: /delete subject\?/i });
+    expect(confirmDialog).toBeInTheDocument();
+    expect(within(confirmDialog).getByText(/are you sure you want to delete/i)).toBeInTheDocument();
+
+    // Confirm delete
+    fireEvent.click(within(confirmDialog).getByRole('button', { name: /^delete subject$/i }));
+
+    // AP Calculus BC is removed from the view
+    await waitFor(() => {
+      expect(screen.queryByText('AP Calculus BC')).not.toBeInTheDocument();
+    });
+
+    // Verify it persists in storage and does not return upon reload/remount
+    const updatedSubjects = await repo.getSubjects('class-aced-2026');
+    expect(updatedSubjects.some((s) => s.name === 'AP Calculus BC')).toBe(false);
   });
 });
+

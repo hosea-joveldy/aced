@@ -20,14 +20,7 @@ export function Layout() {
   }
 
   if (!session) {
-    return (
-      <div className="min-h-screen bg-background">
-        <AppHeader />
-        <main className="container mx-auto px-4 py-2 sm:py-6">
-          <JoinClassForm />
-        </main>
-      </div>
-    );
+    return <JoinClassForm />;
   }
 
   return (

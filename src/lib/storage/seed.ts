@@ -203,6 +203,30 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       createdAt: offsetDate(today, -12),
       updatedAt: offsetDate(today, -4),
     },
+    // Needs date 5 (History - Google Classroom without deadline)
+    {
+      id: 'asg-11',
+      classId,
+      subjectId: 'sub-hist',
+      title: 'Cold War Timeline Research',
+      dueDate: null,
+      notes: 'Posted on Google Classroom with no due date; students to assign deadline',
+      completed: false,
+      createdAt: offsetDate(today, -1),
+      updatedAt: offsetDate(today, -1),
+    },
+    // Needs date 6 (CS - Google Classroom without deadline)
+    {
+      id: 'asg-12',
+      classId,
+      subjectId: 'sub-cs',
+      title: 'Recursion Practice Problems',
+      dueDate: null,
+      notes: 'Posted on Google Classroom with no due date; students to assign deadline',
+      completed: false,
+      createdAt: offsetDate(today, -1),
+      updatedAt: offsetDate(today, -1),
+    },
   ];
 
   // At least 3 pre-existing edits for history and undo demo

@@ -96,9 +96,9 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('all')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
               activeFilter === 'all'
-                ? 'bg-foreground text-background shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'border border-border bg-card text-foreground hover:bg-muted'
             }`}
           >
@@ -107,9 +107,9 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('dueDate')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
               activeFilter === 'dueDate'
-                ? 'bg-foreground text-background shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'border border-border bg-card text-foreground hover:bg-muted'
             }`}
           >
@@ -118,9 +118,9 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('title')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
               activeFilter === 'title'
-                ? 'bg-foreground text-background shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'border border-border bg-card text-foreground hover:bg-muted'
             }`}
           >
@@ -129,9 +129,9 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('status')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
               activeFilter === 'status'
-                ? 'bg-foreground text-background shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'border border-border bg-card text-foreground hover:bg-muted'
             }`}
           >

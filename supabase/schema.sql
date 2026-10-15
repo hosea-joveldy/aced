@@ -98,6 +98,9 @@ create policy "Allow public insert on subjects" on subjects for insert with chec
 drop policy if exists "Allow public update on subjects" on subjects;
 create policy "Allow public update on subjects" on subjects for update using (true);
 
+drop policy if exists "Allow public delete on subjects" on subjects;
+create policy "Allow public delete on subjects" on subjects for delete using (true);
+
 drop policy if exists "Allow public select on assignments" on assignments;
 create policy "Allow public select on assignments" on assignments for select using (true);
 
@@ -120,6 +123,6 @@ drop policy if exists "Allow public update on edit_history" on edit_history;
 create policy "Allow public update on edit_history" on edit_history for update using (true);
 
 -- Demo Seed Data (Idempotent insertion for ACED2026)
-insert into classes (code, name, leader_email)
-values ('ACED2026', 'Class of 2026 — Period 3', 'leader@aced.school')
+insert into classes (id, code, name, leader_email)
+values ('00000000-0000-0000-0000-000000002026', 'ACED2026', 'Class of 2026 — Period 3', 'leader@aced.school')
 on conflict (code) do nothing;
