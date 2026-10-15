@@ -1,5 +1,5 @@
 import { useSession } from '@/context/SessionContext';
-import { LogOut, GraduationCap, User } from 'lucide-react';
+import { LogOut, GraduationCap } from 'lucide-react';
 
 export function AppHeader() {
   const { session, leaveClass } = useSession();
@@ -25,21 +25,11 @@ export function AppHeader() {
 
         {session && (
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground border border-border">
-              <User className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="font-semibold text-foreground">{session.displayName}</span>
-              {session.isClassLeader && (
-                <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-[10px] font-bold text-white">
-                  Class Leader
-                </span>
-              )}
-              <span className="text-muted-foreground hidden sm:inline">({session.classCode})</span>
-            </div>
-
+            {/* Mobile Leave button */}
             <button
               type="button"
               onClick={leaveClass}
-              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-input bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              className="flex md:hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-input bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
               title="Leave class"
               aria-label="Leave class"
             >

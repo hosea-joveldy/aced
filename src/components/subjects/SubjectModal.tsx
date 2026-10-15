@@ -11,6 +11,7 @@ interface SubjectModalProps {
     teacherName: string;
     classroomCode?: string | null;
   }) => Promise<void>;
+  onDelete?: (subject: Subject) => void;
 }
 
 export function SubjectModal({
@@ -18,6 +19,7 @@ export function SubjectModal({
   onClose,
   subject,
   onSave,
+  onDelete,
 }: SubjectModalProps) {
   const isEditing = Boolean(subject);
   const [name, setName] = useState('');
@@ -86,10 +88,12 @@ export function SubjectModal({
       aria-labelledby="subject-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
     >
-      <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-xl animate-in fade-in-0 zoom-in-95">
-        <div className="flex items-center justify-between border-b border-border pb-3">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary" />
+      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
+        <div className="flex items-center justify-between border-b border-border pb-3.5">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-primary">
+              <BookOpen className="h-4 w-4" />
+            </div>
             <h2 id="subject-modal-title" className="text-lg font-bold text-foreground">
               {isEditing ? 'Edit Subject' : 'Add New Subject'}
             </h2>
@@ -97,7 +101,7 @@ export function SubjectModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="flex min-h-[38px] min-w-[38px] items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="h-5 w-5" />
@@ -107,7 +111,7 @@ export function SubjectModal({
         {errors.general && (
           <div
             role="alert"
-            className="mt-4 flex items-center gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+            className="mt-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
           >
             <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
             <span>{errors.general}</span>
@@ -118,7 +122,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="subject-name"
-              className="block text-sm font-medium text-foreground mb-1"
+              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
             >
               Subject Name *
             </label>
@@ -132,7 +136,7 @@ export function SubjectModal({
               }}
               placeholder="e.g. AP Biology"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
             />
             {errors.name && (
               <p className="mt-1 text-sm font-medium text-destructive">
@@ -144,7 +148,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="teacher-name"
-              className="block text-sm font-medium text-foreground mb-1"
+              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
             >
               Teacher Name *
             </label>
@@ -159,7 +163,7 @@ export function SubjectModal({
               }}
               placeholder="e.g. Dr. Sanchez"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
             />
             {errors.teacherName && (
               <p className="mt-1 text-sm font-medium text-destructive">
@@ -171,7 +175,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="classroom-code"
-              className="block text-sm font-medium text-foreground mb-1"
+              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
             >
               Google Classroom Code (optional)
             </label>
@@ -182,23 +186,36 @@ export function SubjectModal({
               onChange={(e) => setClassroomCode(e.target.value)}
               placeholder="e.g. bio-402"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-md border border-input bg-background px-3 py-2 text-base font-mono text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base font-mono text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
             />
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+            {isEditing && subject && onDelete && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onDelete(subject);
+                }}
+                disabled={isSubmitting}
+                className="mr-auto min-h-[44px] rounded-lg border border-destructive/30 bg-destructive/10 px-3.5 py-2 text-sm font-semibold text-destructive hover:bg-destructive/20 transition cursor-pointer"
+              >
+                Delete Subject
+              </button>
+            )}
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[44px] rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
+              className="min-h-[44px] rounded-lg border border-input bg-background px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="min-h-[44px] rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="min-h-[44px] rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-md cursor-pointer"
             >
               {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Add Subject'}
             </button>

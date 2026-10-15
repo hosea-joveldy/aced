@@ -321,7 +321,7 @@
         {
           "id": "T12.4",
           "title": "Subjects screen and History screen redesign with Google Classroom cards and Linear activity feed",
-          "done": false,
+          "done": true,
           "done_when": [
             "Subjects screen renders Google Classroom cards with colored header banners, classroom codes, copy button, and assignment metrics",
             "History screen renders filter chips, role banner, circular avatars, and before-after diff cards",
