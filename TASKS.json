@@ -330,6 +330,59 @@
           ]
         }
       ]
+    },
+    {
+      "id": "T13",
+      "title": "Minimalist UI overhaul based on login-reference design system",
+      "type": "build",
+      "status": "ongoing",
+      "features": [
+        {
+          "id": "T13.1",
+          "title": "Minimalist login screen redesign matching login-reference.png with editorial headline and floating dark card",
+          "done": true,
+          "done_when": [
+            "Join screen displays full-bleed dark neutral background (#09090b) with editorial headline '*Ace* with Aced.' and subtitle on the left",
+            "Floating dark minimalist card on right with email, name, class code inputs, and high-contrast submit button",
+            "Quick demo code shortcuts and transparent attribution notes are preserved",
+            "All join component tests and Playwright e2e join tests pass cleanly"
+          ]
+        },
+        {
+          "id": "T13.2",
+          "title": "Minimalist app shell, persistent sidebar, and navigation",
+          "done": false,
+          "done_when": [
+            "App shell renders deep zinc (#09090b) background with sleek minimal borders and clean typography",
+            "Sidebar renders clean Aced logo mark, monochrome navigation links, and subtle user profile card",
+            "Mobile bottom tab bar renders minimal dark bar with 48px touch targets",
+            "All app shell e2e and unit tests pass cleanly"
+          ]
+        },
+        {
+          "id": "T13.3",
+          "title": "Minimalist deadline board, metrics strip, filter pills, and assignment cards",
+          "done": false,
+          "done_when": [
+            "Board header renders clean search input, '+ Add assignment' high-contrast button, and period banner",
+            "Metrics strip renders 3 minimalist counter cards with semantic indicator dots (Red Overdue, Blue Today, Amber Needs date)",
+            "Subject filter renders sleek horizontal pill chips with high-contrast active state",
+            "Assignment cards use dark zinc cards with clear status pills and checkboxes",
+            "All board e2e and unit tests pass cleanly"
+          ]
+        },
+        {
+          "id": "T13.4",
+          "title": "Minimalist subjects cards, history timeline, and dialog modals",
+          "done": false,
+          "done_when": [
+            "Subjects screen renders clean minimalist course cards without rainbow gradients, featuring monospace classroom code pills",
+            "History screen renders clean activity feed with diff badges and Class Leader revert actions",
+            "AssignmentModal, SubjectModal, and RevertConfirmDialog render dark minimal dialogs",
+            "All gate checks (tsc, vitest, build, playwright e2e) pass exit code 0"
+          ]
+        }
+      ]
     }
   ]
 }

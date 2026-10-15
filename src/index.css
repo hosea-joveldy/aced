@@ -4,44 +4,45 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
-    --primary: 221 83% 53%;          /* Collegiate Blue 600 */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 214 95% 93%;
-    --accent-foreground: 221 83% 45%;
-    --destructive: 0 84% 60%;
+    --background: 240 10% 3.9%;          /* Zinc 950 #09090b */
+    --foreground: 0 0% 98%;               /* Zinc 50 #fafafa */
+    --card: 240 10% 5.9%;                 /* Zinc 900 #121215 */
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 5.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;                  /* Clean White */
+    --primary-foreground: 240 5.9% 10%;   /* Dark text on white */
+    --secondary: 240 3.7% 15.9%;          /* Zinc 800 #27272a */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;              /* Zinc 800 */
+    --muted-foreground: 240 5% 64.9%;     /* Zinc 400 #a1a1aa */
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;             /* Red #ef4444 */
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 221 83% 53%;
+    --border: 240 3.7% 15.9%;             /* Zinc 800 #27272a */
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;               /* Zinc 300 #d4d4d8 */
     --radius: 0.5rem;
 
     /* Domain Semantic State Tokens */
-    --state-overdue: 0 84% 60%;          /* Crimson / Red */
-    --state-overdue-bg: 0 100% 97%;
+    --state-overdue: 0 72% 51%;          /* Crimson / Red */
+    --state-overdue-bg: 0 72% 51%;
     --state-needs-date: 38 92% 50%;      /* Amber / Orange */
-    --state-needs-date-bg: 48 100% 96%;
-    --state-today: 221 83% 53%;          /* Collegiate Blue */
-    --state-today-bg: 214 95% 93%;
+    --state-needs-date-bg: 38 92% 50%;
+    --state-today: 217 91% 60%;          /* Blue */
+    --state-today-bg: 217 91% 60%;
     --state-done: 142 71% 45%;           /* Emerald */
-    --state-done-bg: 142 76% 96%;
+    --state-done-bg: 142 71% 45%;
     --state-undone: 215 16% 47%;         /* Slate */
-    --state-undone-bg: 210 40% 96%;
+    --state-undone-bg: 215 16% 47%;
   }
 
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-zinc-800 selection:text-white;
+    color-scheme: dark;
   }
 }

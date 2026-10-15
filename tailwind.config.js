@@ -60,6 +60,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        serif: ['"Instrument Serif"', "ui-serif", "Georgia", "Cambria", '"Times New Roman"', "Times", "serif"],
       },
     },
   },
