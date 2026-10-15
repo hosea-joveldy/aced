@@ -174,35 +174,35 @@ export function BoardScreen() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header Row matching wireframe Frame 2 */}
+      {/* Top Header Row */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
             Assignments & Deadlines
           </h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Crowdsourced by students in {session?.className}
           </p>
         </div>
 
         {/* Action Controls: Search & Add Button */}
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Wireframe search input */}
-          <div className="relative flex-1 sm:w-60 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          {/* Minimalist search input */}
+          <div className="relative flex-1 sm:w-64 min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search assignments..."
-              className="w-full h-10 rounded-lg border border-input bg-card pl-9 pr-8 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition shadow-sm"
+              className="w-full h-10 rounded-lg border border-zinc-800 bg-zinc-900/60 pl-9 pr-8 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
               aria-label="Search assignments"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5 rounded"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 p-0.5 rounded cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="h-3.5 w-3.5" />
@@ -215,7 +215,7 @@ export function BoardScreen() {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition cursor-pointer"
+            className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
           >
             <Plus className="h-4 w-4" />
             <span>Add Assignment</span>
@@ -223,14 +223,14 @@ export function BoardScreen() {
         </div>
       </div>
 
-      {/* Apple Reminders-style Summary Metrics Strip */}
+      {/* Summary Metrics Strip */}
       <MetricsStrip
         overdueCount={metrics.overdue}
         todayCount={metrics.dueToday}
         needsDateCount={metrics.needsDate}
       />
 
-      {/* Wireframe Subject Filter Chips Bar */}
+      {/* Subject Filter Chips Bar */}
       {subjects.length > 0 && (
         <SubjectFilter
           subjects={subjects}
@@ -246,7 +246,7 @@ export function BoardScreen() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-28 rounded-xl border border-border bg-muted/40 animate-pulse p-4"
+              className="h-24 rounded-xl border border-zinc-800/80 bg-zinc-900/30 animate-pulse p-4"
             />
           ))}
         </div>
@@ -256,19 +256,19 @@ export function BoardScreen() {
       {!isLoading && error && (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 p-6 text-center"
+          className="flex flex-col items-center justify-center rounded-xl border border-red-900/50 bg-red-950/40 p-6 text-center"
         >
-          <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
-          <h3 className="text-base font-bold text-red-900">
+          <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
+          <h3 className="text-sm font-semibold text-red-200">
             Failed to Load Assignments
           </h3>
-          <p className="text-sm text-red-700 mt-1 max-w-sm">{error}</p>
+          <p className="text-xs text-red-300 mt-1 max-w-sm">{error}</p>
           <button
             type="button"
             onClick={loadData}
-            className="mt-4 flex min-h-[44px] items-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 shadow-sm"
+            className="mt-4 flex min-h-[40px] items-center gap-2 rounded-lg border border-red-800 bg-zinc-900 px-4 py-2 text-xs font-medium text-red-300 hover:bg-zinc-800 transition shadow-sm cursor-pointer"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5" />
             <span>Retry</span>
           </button>
         </div>
@@ -276,20 +276,20 @@ export function BoardScreen() {
 
       {/* Empty State when Search Query matches nothing */}
       {!isLoading && !error && filteredAssignments.length === 0 && searchQuery && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground mb-3">
-            <Search className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+            <Search className="h-5 w-5" />
           </div>
-          <h3 className="text-base font-bold text-foreground">
+          <h3 className="text-sm font-semibold text-zinc-200">
             No assignments match &ldquo;{searchQuery}&rdquo;
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
+          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
             Try checking for typos or searching a different term.
           </p>
           <button
             type="button"
             onClick={() => setSearchQuery('')}
-            className="flex min-h-[44px] items-center gap-2 rounded-lg border border-input bg-background px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted shadow-sm cursor-pointer"
+            className="flex min-h-[36px] items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition cursor-pointer"
           >
             <span>Clear Search</span>
           </button>
@@ -298,20 +298,20 @@ export function BoardScreen() {
 
       {/* Empty State when Subject Filter matches nothing */}
       {!isLoading && !error && filteredAssignments.length === 0 && !searchQuery && selectedSubject && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground mb-3">
-            <CalendarDays className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+            <CalendarDays className="h-5 w-5" />
           </div>
-          <h3 className="text-base font-bold text-foreground">
+          <h3 className="text-sm font-semibold text-zinc-200">
             No assignments for {selectedSubject.name}
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
+          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
             No deadlines currently posted for this subject.
           </p>
           <button
             type="button"
             onClick={() => setSelectedSubjectId(null)}
-            className="flex min-h-[44px] items-center gap-2 rounded-lg border border-input bg-background px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted shadow-sm cursor-pointer"
+            className="flex min-h-[36px] items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition cursor-pointer"
           >
             <span>Show All Subjects</span>
           </button>
@@ -320,20 +320,20 @@ export function BoardScreen() {
 
       {/* Empty State when zero total assignments */}
       {!isLoading && !error && assignments.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground mb-3">
-            <CalendarDays className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+            <CalendarDays className="h-5 w-5" />
           </div>
-          <h3 className="text-base font-bold text-foreground">
+          <h3 className="text-sm font-semibold text-zinc-200">
             No Deadlines Posted Yet
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
+          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
             Be the first in your class to add an upcoming assignment or homework!
           </p>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
+            className="flex min-h-[40px] items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Assignment</span>

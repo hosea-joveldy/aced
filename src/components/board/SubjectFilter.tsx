@@ -19,10 +19,10 @@ export function SubjectFilter({
       <button
         type="button"
         onClick={() => onSelectSubject(null)}
-        className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`min-h-[36px] shrink-0 rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
           selectedSubjectId === null
-            ? 'bg-primary text-primary-foreground shadow-sm'
-            : 'border border-border bg-card text-foreground hover:bg-muted'
+            ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+            : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
         }`}
       >
         All Subjects
@@ -35,10 +35,10 @@ export function SubjectFilter({
             key={sub.id}
             type="button"
             onClick={() => onSelectSubject(sub.id)}
-            className={`min-h-[38px] shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+            className={`min-h-[36px] shrink-0 rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
               isSelected
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'border border-border bg-card text-foreground hover:bg-muted'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
             }`}
           >
             {sub.name}

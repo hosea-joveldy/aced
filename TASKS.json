@@ -362,7 +362,7 @@
         {
           "id": "T13.3",
           "title": "Minimalist deadline board, metrics strip, filter pills, and assignment cards",
-          "done": false,
+          "done": true,
           "done_when": [
             "Board header renders clean search input, '+ Add assignment' high-contrast button, and period banner",
             "Metrics strip renders 3 minimalist counter cards with semantic indicator dots (Red Overdue, Blue Today, Amber Needs date)",

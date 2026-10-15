@@ -13,52 +13,55 @@ export function MetricsStrip({
 }: MetricsStripProps) {
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4" aria-label="Deadline summary metrics">
-      {/* Overdue Tile - Apple Reminders Style */}
-      <div className="flex flex-col justify-between rounded-xl border border-red-200/80 bg-red-50/60 p-3.5 sm:p-4 shadow-sm hover:border-red-300 transition">
+      {/* Overdue Tile */}
+      <div className="flex flex-col justify-between rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3.5 sm:p-4 hover:border-zinc-700 transition">
         <div className="flex items-center justify-between">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-700">
-            <AlertCircle className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-red-950/50 border border-red-900/50 text-red-400">
+            <AlertCircle className="h-3.5 w-3.5" />
           </div>
-          <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-red-900">
+          <span className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
             {overdueCount}
           </span>
         </div>
-        <div className="mt-2">
-          <span className="text-xs font-bold text-red-800 tracking-wide uppercase">
+        <div className="mt-2.5 flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+          <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
             Overdue
           </span>
         </div>
       </div>
 
       {/* Due Today Tile */}
-      <div className="flex flex-col justify-between rounded-xl border border-blue-200/80 bg-blue-50/60 p-3.5 sm:p-4 shadow-sm hover:border-blue-300 transition">
+      <div className="flex flex-col justify-between rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3.5 sm:p-4 hover:border-zinc-700 transition">
         <div className="flex items-center justify-between">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
-            <Calendar className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-950/50 border border-blue-900/50 text-blue-400">
+            <Calendar className="h-3.5 w-3.5" />
           </div>
-          <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-900">
+          <span className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
             {todayCount}
           </span>
         </div>
-        <div className="mt-2">
-          <span className="text-xs font-bold text-blue-800 tracking-wide uppercase">
+        <div className="mt-2.5 flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+          <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
             Due Today
           </span>
         </div>
       </div>
 
       {/* Needs Date Tile */}
-      <div className="flex flex-col justify-between rounded-xl border border-amber-200/80 bg-amber-50/60 p-3.5 sm:p-4 shadow-sm hover:border-amber-300 transition">
+      <div className="flex flex-col justify-between rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3.5 sm:p-4 hover:border-zinc-700 transition">
         <div className="flex items-center justify-between">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-800">
-            <HelpCircle className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-amber-950/50 border border-amber-900/50 text-amber-400">
+            <HelpCircle className="h-3.5 w-3.5" />
           </div>
-          <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-amber-950">
+          <span className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
             {needsDateCount}
           </span>
         </div>
-        <div className="mt-2">
-          <span className="text-xs font-bold text-amber-800 tracking-wide uppercase">
+        <div className="mt-2.5 flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
             Needs Date
           </span>
         </div>
