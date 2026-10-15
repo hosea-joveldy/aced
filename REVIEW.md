@@ -43,9 +43,19 @@
 - **Suggested Fix**: When Google Classroom integration is activated in a future phase, create a `GoogleClassroomProvider` implementing the same `ClassroomProvider` interface.
 - **Severity**: Non-blocking (feature flag defaults to OFF and UI is completely absent from DOM when disabled).
 
+### R4 (Info) — Wireframes UI Redesign Implemented (Task T12)
+- **Scope**: Full UI redesign according to `wireframes.html` across all screens:
+  - Join class page: Kahoot! + Notion-inspired split-screen with celestial Solar System illustration (`SolarSystemIllustration.tsx`), high-contrast class code input, and instant demo shortcuts.
+  - App Shell: Persistent left sidebar navigation (`Sidebar.tsx`) on desktop with user "Me" profile card; responsive bottom tab bar on mobile with 44px+ touch targets.
+  - Board Screen: Apple Reminders-style 3-tile metric strip (Overdue, Due today, Needs a date), live keyword search input, horizontal subject filter chips, and grouped deadline sections with helper annotations.
+  - Subjects Screen: Google Classroom-style cards with 70px colored subject banners, one-click classroom code copy button, and active/missing date counters in a responsive 3-column desktop grid.
+  - History Screen: Linear-style chronological audit feed with circular editor avatars, action descriptions, and `[before] → [after]` diff pills.
+- **Verification**: All 10 Vitest test suites (36 tests) and all 8 Playwright e2e test suites pass with exit code 0 on both 375px mobile and 1280px desktop viewports.
+- **Severity**: Complete & Verified.
+
 ---
 
 ## 3. Reviewer Verdict
 
-**Verdict: APPROVED — MVP COMPLETE & PRODUCTION READY.**  
-All 11 tasks in `TASKS.json` are verified and finished. Zero regressions observed. All gate checks (`tsc --noEmit`, `npm test`, `npm run build`, `npx playwright test`) pass cleanly with exit code 0. No blocking fix tasks required.
+**Verdict: APPROVED — MVP COMPLETE & REDESIGNED UI PRODUCTION READY.**  
+All 12 tasks in `TASKS.json` are verified and finished. Zero regressions observed. All gate checks (`tsc --noEmit`, `npm test`, `npm run build`, `npx playwright test`) pass cleanly with exit code 0.

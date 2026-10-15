@@ -30,3 +30,6 @@
 [REVIEWER] Authored REVIEW.md with findings R1-R3 (all non-blocking).
 [REVIEWER] All 11 tasks in TASKS.json finished; gates passing exit code 0. MVP complete.
 [PLANNER] T12: Planned full UI redesign implementing wireframes.html with celestial solar system login.
+[BUILDER] T12: Implemented wireframes redesign across Join (solar system), Shell (sidebar), Board, Subjects, and History.
+[QA] T12: Verified wireframe UI redesign across 375px mobile and 1280px desktop.
+[QA] T12: All 4 gate checks passed exit code 0 (tsc, vitest, build, playwright e2e). T12 marked finished.
