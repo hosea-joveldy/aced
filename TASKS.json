@@ -309,7 +309,7 @@
         {
           "id": "T12.3",
           "title": "Board screen redesign with Apple Reminders metric tiles, search, filter chips, and card layout",
-          "done": false,
+          "done": true,
           "done_when": [
             "Board screen includes live search input and + Add assignment button in top row",
             "Summary metrics render as 3 clean tiles (Overdue, Due today, Needs a date)",

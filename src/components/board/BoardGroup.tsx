@@ -41,17 +41,26 @@ export function BoardGroup({
 
   return (
     <section className="space-y-3" aria-labelledby={`group-title-${groupId}`}>
-      <div className="flex items-center gap-2 border-b border-border pb-2">
-        {getHeaderIcon()}
-        <h3
-          id={`group-title-${groupId}`}
-          className="text-base font-bold text-foreground"
-        >
-          {title}
-        </h3>
-        <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">
-          {assignments.length}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2.5">
+        <div className="flex items-center gap-2">
+          {getHeaderIcon()}
+          <h3
+            id={`group-title-${groupId}`}
+            className="text-base font-bold text-foreground"
+          >
+            {title}
+          </h3>
+          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-bold text-secondary-foreground">
+            {assignments.length}
+          </span>
+        </div>
+
+        {/* Wireframe Frame 2 annotation note for Needs a date */}
+        {groupId === 'needs-date' && (
+          <span className="text-xs font-medium text-amber-800 bg-amber-50 border border-amber-200/80 rounded-full px-2.5 py-0.5">
+            Help your class – add the date
+          </span>
+        )}
       </div>
 
       <div className="space-y-2.5">
