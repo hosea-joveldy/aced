@@ -33,3 +33,8 @@
 [BUILDER] T12: Implemented wireframes redesign across Join (solar system), Shell (sidebar), Board, Subjects, and History.
 [QA] T12: Verified wireframe UI redesign across 375px mobile and 1280px desktop.
 [QA] T12: All 4 gate checks passed exit code 0 (tsc, vitest, build, playwright e2e). T12 marked finished.
+[PLANNER] T13: Planned minimalist dark redesign matching login-reference.png with editorial typography.
+[BUILDER] T13: Implemented minimalist dark login, shell, board, subjects, history, and modals without purple hues.
+[QA] T13: Verified all 36 unit/component tests and 8 Playwright e2e specs pass cleanly with exit code 0.
+[BUILDER] T13: All 4 features done, T13 marked finished.
+
