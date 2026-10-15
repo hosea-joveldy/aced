@@ -335,7 +335,7 @@
       "id": "T13",
       "title": "Minimalist UI overhaul based on login-reference design system",
       "type": "build",
-      "status": "ongoing",
+      "status": "finished",
       "features": [
         {
           "id": "T13.1",
@@ -374,7 +374,7 @@
         {
           "id": "T13.4",
           "title": "Minimalist subjects cards, history timeline, and dialog modals",
-          "done": false,
+          "done": true,
           "done_when": [
             "Subjects screen renders clean minimalist course cards without rainbow gradients, featuring monospace classroom code pills",
             "History screen renders clean activity feed with diff badges and Class Leader revert actions",

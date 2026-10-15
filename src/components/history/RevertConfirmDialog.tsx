@@ -25,22 +25,22 @@ export function RevertConfirmDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="revert-dialog-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
-        <div className="flex items-center justify-between border-b border-border pb-3.5">
-          <div className="flex items-center gap-2.5 text-destructive">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-700">
+      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3.5">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-950/60 border border-red-900/40 text-red-400">
               <AlertTriangle className="h-4 w-4" />
             </div>
-            <h2 id="revert-dialog-title" className="text-lg font-bold text-foreground">
+            <h2 id="revert-dialog-title" className="text-base font-semibold text-zinc-100">
               Confirm Revert
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex min-h-[38px] min-w-[38px] items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+            className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 cursor-pointer"
             aria-label="Close dialog"
             disabled={isSubmitting}
           >
@@ -49,49 +49,48 @@ export function RevertConfirmDialog({
         </div>
 
         <div className="mt-4 space-y-4">
-          <p className="text-sm text-foreground leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
             Are you sure you want to revert this edit on{' '}
-            <strong className="text-foreground font-bold">{entry.assignmentTitle}</strong>?
+            <strong className="text-zinc-100 font-semibold">{entry.assignmentTitle}</strong>?
           </p>
 
-          {/* Wireframe Frame 6 side-by-side comparison cards */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <div className="w-full sm:flex-1 rounded-xl border border-red-200 bg-red-50/70 p-3.5">
-              <span className="text-xs font-semibold uppercase tracking-wider text-red-700">
+            <div className="w-full sm:flex-1 rounded-xl border border-red-900/50 bg-red-950/30 p-3.5">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-red-400">
                 Current (To Remove)
               </span>
-              <div className="mt-1 text-base font-mono font-bold text-red-900 line-through truncate">
+              <div className="mt-1 text-sm font-mono font-medium text-red-200 line-through truncate">
                 {entry.afterValue ?? '(none)'}
               </div>
             </div>
 
-            <ArrowRight className="h-5 w-5 text-muted-foreground shrink-0 hidden sm:block" />
+            <ArrowRight className="h-4 w-4 text-zinc-600 shrink-0 hidden sm:block" />
 
-            <div className="w-full sm:flex-1 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5">
-              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <div className="w-full sm:flex-1 rounded-xl border border-emerald-900/50 bg-emerald-950/30 p-3.5">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400">
                 Restore To (Previous)
               </span>
-              <div className="mt-1 text-base font-mono font-bold text-emerald-900 truncate">
+              <div className="mt-1 text-sm font-mono font-medium text-emerald-200 truncate">
                 {entry.beforeValue ?? '(none)'}
               </div>
             </div>
           </div>
 
-          <div className="rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground">
+          <div className="rounded-lg bg-zinc-950/60 border border-zinc-800/80 p-3 text-xs text-zinc-400">
             <span>Target Field: </span>
-            <strong className="font-semibold text-foreground uppercase">{entry.field}</strong>
-            <p className="mt-1">
-              This rollback will be transparently attributed to <strong>{editorName}</strong> in the class audit log.
+            <strong className="font-semibold text-zinc-200 uppercase">{entry.field}</strong>
+            <p className="mt-1 text-zinc-500">
+              This rollback will be transparently attributed to <strong className="text-zinc-300">{editorName}</strong> in the class audit log.
             </p>
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-end gap-3 border-t border-border pt-4">
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-zinc-800 pt-4">
           <button
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="min-h-[44px] rounded-lg border border-input bg-background px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted cursor-pointer"
+            className="min-h-[40px] rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
           >
             Cancel
           </button>
@@ -99,9 +98,9 @@ export function RevertConfirmDialog({
             type="button"
             onClick={onConfirm}
             disabled={isSubmitting}
-            className="flex min-h-[44px] items-center gap-2 rounded-lg bg-destructive px-4 py-2 text-sm font-semibold text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50 shadow-md cursor-pointer"
+            className="flex min-h-[40px] items-center gap-2 rounded-lg bg-red-950/80 border border-red-800/80 px-4 py-2 text-xs font-semibold text-red-200 hover:bg-red-900 disabled:opacity-50 transition shadow-sm cursor-pointer"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5" />
             <span>{isSubmitting ? 'Reverting...' : 'Yes, Revert Edit'}</span>
           </button>
         </div>

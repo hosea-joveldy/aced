@@ -41,59 +41,59 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
 
   return (
     <div
-      className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm transition ${
+      className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border p-4 transition ${
         entry.reverted
-          ? 'border-border/60 bg-muted/15 opacity-75'
-          : 'border-border hover:border-foreground/20 hover:shadow-md'
+          ? 'border-zinc-800/50 bg-zinc-950/40 opacity-70'
+          : 'border-zinc-800/80 bg-zinc-900/40 hover:bg-zinc-900/70 hover:border-zinc-700'
       }`}
     >
       <div className="flex items-start gap-3.5 min-w-0 flex-1">
-        {/* Wireframe Frame 4 circular avatar (.circ 34px) */}
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-xs text-blue-700 border border-blue-200 shadow-sm mt-0.5">
+        {/* Avatar */}
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800 font-medium text-xs text-zinc-300 border border-zinc-700/60 shadow-sm mt-0.5">
           {initials}
         </div>
 
         <div className="min-w-0 flex-1 space-y-1.5">
           {/* Assignment title and field */}
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="text-sm font-bold text-foreground truncate max-w-sm">
+            <h4 className="text-sm font-medium text-zinc-100 truncate max-w-sm">
               {entry.assignmentTitle}
             </h4>
-            <span className="inline-block rounded-md bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground border border-border/80">
+            <span className="inline-block rounded-md bg-zinc-950 px-2 py-0.5 text-[11px] font-medium text-zinc-400 border border-zinc-800">
               {formatField(entry.field)}
             </span>
           </div>
 
           {/* Attribution narrative */}
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-400">
+            <span className="font-medium text-zinc-300">
               {entry.editorName}
             </span>
             {entry.editorEmail && (
-              <span className="text-muted-foreground">({entry.editorEmail})</span>
+              <span className="text-zinc-500">({entry.editorEmail})</span>
             )}
             <span>•</span>
             <span className="inline-flex items-center gap-1">
-              <Clock className="h-3 w-3 text-muted-foreground" />
+              <Clock className="h-3 w-3 text-zinc-500" />
               {formattedDate}
             </span>
             {entry.reverted && entry.revertedBy && (
               <>
                 <span>•</span>
-                <span className="text-blue-600 font-medium">
+                <span className="text-blue-400 font-medium">
                   Undone by {entry.revertedBy}
                 </span>
               </>
             )}
           </div>
 
-          {/* Wireframe Frame 4 Diff Pills (.diff) */}
+          {/* Diff comparison pills */}
           <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
-            <span className="rounded-md border border-border/80 bg-muted/40 px-2.5 py-1 text-muted-foreground">
+            <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1 text-zinc-400">
               {entry.beforeValue ? entry.beforeValue : '(empty)'}
             </span>
-            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-            <span className="rounded-md border border-blue-200 bg-blue-50/80 px-2.5 py-1 font-bold text-blue-900">
+            <ArrowRight className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+            <span className="rounded-md border border-zinc-700 bg-zinc-800 px-2.5 py-1 font-semibold text-zinc-100">
               {entry.afterValue ? entry.afterValue : '(empty)'}
             </span>
           </div>
@@ -101,9 +101,9 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
       </div>
 
       {/* Action / Reverted Badge */}
-      <div className="flex items-center justify-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+      <div className="flex items-center justify-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-800">
         {entry.reverted ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-400">
             <RotateCcw className="h-3.5 w-3.5" />
             <span>Reverted</span>
           </span>
@@ -111,7 +111,7 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
           <button
             type="button"
             onClick={() => onRevertClick(entry)}
-            className="flex min-h-[38px] items-center gap-1.5 rounded-lg border border-input bg-background px-3.5 py-1.5 text-xs font-semibold text-foreground hover:bg-destructive/10 hover:border-destructive/30 hover:text-destructive transition shadow-sm cursor-pointer"
+            className="flex min-h-[36px] items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-1.5 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 hover:border-zinc-600 transition shadow-sm cursor-pointer"
             aria-label={`Revert edit on ${entry.assignmentTitle}`}
           >
             <RotateCcw className="h-3.5 w-3.5" />

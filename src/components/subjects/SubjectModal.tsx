@@ -86,22 +86,22 @@ export function SubjectModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="subject-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
     >
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
-        <div className="flex items-center justify-between border-b border-border pb-3.5">
+      <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-primary">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300">
               <BookOpen className="h-4 w-4" />
             </div>
-            <h2 id="subject-modal-title" className="text-lg font-bold text-foreground">
+            <h2 id="subject-modal-title" className="text-base font-semibold text-zinc-100">
               {isEditing ? 'Edit Subject' : 'Add New Subject'}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex min-h-[38px] min-w-[38px] items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+            className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="h-5 w-5" />
@@ -111,9 +111,9 @@ export function SubjectModal({
         {errors.general && (
           <div
             role="alert"
-            className="mt-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+            className="mt-4 flex items-center gap-2 rounded-lg border border-red-900/50 bg-red-950/40 p-3 text-xs text-red-300"
           >
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
             <span>{errors.general}</span>
           </div>
         )}
@@ -122,7 +122,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="subject-name"
-              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
+              className="block text-xs font-medium text-zinc-300 mb-1.5"
             >
               Subject Name *
             </label>
@@ -136,10 +136,10 @@ export function SubjectModal({
               }}
               placeholder="e.g. AP Biology"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
+              className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
             />
             {errors.name && (
-              <p className="mt-1 text-sm font-medium text-destructive">
+              <p className="mt-1 text-xs font-medium text-red-400">
                 {errors.name}
               </p>
             )}
@@ -148,7 +148,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="teacher-name"
-              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
+              className="block text-xs font-medium text-zinc-300 mb-1.5"
             >
               Teacher Name *
             </label>
@@ -163,10 +163,10 @@ export function SubjectModal({
               }}
               placeholder="e.g. Dr. Sanchez"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
+              className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
             />
             {errors.teacherName && (
-              <p className="mt-1 text-sm font-medium text-destructive">
+              <p className="mt-1 text-xs font-medium text-red-400">
                 {errors.teacherName}
               </p>
             )}
@@ -175,7 +175,7 @@ export function SubjectModal({
           <div>
             <label
               htmlFor="classroom-code"
-              className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5"
+              className="block text-xs font-medium text-zinc-300 mb-1.5"
             >
               Google Classroom Code (optional)
             </label>
@@ -186,11 +186,11 @@ export function SubjectModal({
               onChange={(e) => setClassroomCode(e.target.value)}
               placeholder="e.g. bio-402"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-lg border border-input bg-background px-3.5 py-2.5 text-base font-mono text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
+              className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm font-mono text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
             {isEditing && subject && onDelete && (
               <button
                 type="button"
@@ -199,7 +199,7 @@ export function SubjectModal({
                   onDelete(subject);
                 }}
                 disabled={isSubmitting}
-                className="mr-auto min-h-[44px] rounded-lg border border-destructive/30 bg-destructive/10 px-3.5 py-2 text-sm font-semibold text-destructive hover:bg-destructive/20 transition cursor-pointer"
+                className="mr-auto min-h-[40px] rounded-lg border border-red-900/40 bg-red-950/40 px-3.5 py-2 text-xs font-medium text-red-300 hover:bg-red-900/60 transition cursor-pointer"
               >
                 Delete Subject
               </button>
@@ -208,14 +208,14 @@ export function SubjectModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[44px] rounded-lg border border-input bg-background px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted cursor-pointer"
+              className="min-h-[40px] rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="min-h-[44px] rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-md cursor-pointer"
+              className="min-h-[40px] rounded-lg bg-zinc-100 px-5 py-2 text-xs font-semibold text-zinc-950 hover:bg-zinc-200 disabled:opacity-50 transition shadow-sm cursor-pointer"
             >
               {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Add Subject'}
             </button>

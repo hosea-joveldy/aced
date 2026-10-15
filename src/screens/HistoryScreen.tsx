@@ -80,26 +80,26 @@ export function HistoryScreen() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header Row matching wireframe Frame 4 */}
+      {/* Top Header Row */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
             Edit History & Undo
           </h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Audit trail of crowdsourced changes in {session?.className}
           </p>
         </div>
 
-        {/* Wireframe Frame 4 Filter Chips: All edits, Due dates, Titles, Status */}
+        {/* Filter Chips: All edits, Due dates, Titles, Status */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1" aria-label="History filters">
           <button
             type="button"
             onClick={() => setActiveFilter('all')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+            className={`min-h-[34px] rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
               activeFilter === 'all'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'border border-border bg-card text-foreground hover:bg-muted'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
             }`}
           >
             All edits
@@ -107,10 +107,10 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('dueDate')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+            className={`min-h-[34px] rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
               activeFilter === 'dueDate'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'border border-border bg-card text-foreground hover:bg-muted'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
             }`}
           >
             Due dates
@@ -118,10 +118,10 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('title')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+            className={`min-h-[34px] rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
               activeFilter === 'title'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'border border-border bg-card text-foreground hover:bg-muted'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
             }`}
           >
             Titles
@@ -129,10 +129,10 @@ export function HistoryScreen() {
           <button
             type="button"
             onClick={() => setActiveFilter('status')}
-            className={`min-h-[36px] rounded-full px-3.5 py-1 text-xs font-semibold transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring ${
+            className={`min-h-[34px] rounded-full px-3.5 py-1 text-xs transition cursor-pointer ${
               activeFilter === 'status'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'border border-border bg-card text-foreground hover:bg-muted'
+                ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-sm'
+                : 'border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
             }`}
           >
             Status
@@ -140,28 +140,28 @@ export function HistoryScreen() {
         </div>
       </div>
 
-      {/* Role Notice Banner matching wireframe Frame 4 */}
+      {/* Role Notice Banner */}
       <div
-        className={`flex items-start gap-3 rounded-xl border p-4 text-xs sm:text-sm shadow-sm ${
+        className={`flex items-start gap-3 rounded-xl border p-4 text-xs sm:text-sm ${
           isClassLeader
-            ? 'border-blue-200 bg-blue-50/80 text-blue-950'
-            : 'border-amber-200 bg-amber-50/80 text-amber-950'
+            ? 'border-blue-900/40 bg-blue-950/20 text-blue-200'
+            : 'border-zinc-800 bg-zinc-900/40 text-zinc-400'
         }`}
       >
         {isClassLeader ? (
-          <ShieldCheck className="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
+          <ShieldCheck className="h-5 w-5 shrink-0 text-blue-400 mt-0.5" />
         ) : (
-          <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
+          <AlertCircle className="h-5 w-5 shrink-0 text-zinc-500 mt-0.5" />
         )}
         <div className="leading-relaxed">
           {isClassLeader ? (
             <span>
-              <strong>Class Leader privileges:</strong> You can revert edits to maintain board accuracy and integrity.
-              <span className="text-blue-800/80 text-xs ml-1">(students see: View only)</span>
+              <strong className="text-zinc-200">Class Leader privileges:</strong> You can revert edits to maintain board accuracy and integrity.
+              <span className="text-zinc-400 text-xs ml-1">(students see: View only)</span>
             </span>
           ) : (
             <span>
-              <strong>View Only:</strong> You can inspect the audit trail and see who made changes. Only the designated Class Leader can revert edits.
+              <strong className="text-zinc-300">View Only:</strong> You can inspect the audit trail and see who made changes. Only the designated Class Leader can revert edits.
             </span>
           )}
         </div>
@@ -173,7 +173,7 @@ export function HistoryScreen() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-28 rounded-xl border border-border bg-muted/40 animate-pulse p-4"
+              className="h-24 rounded-xl border border-zinc-800/80 bg-zinc-900/30 animate-pulse p-4"
             />
           ))}
         </div>
@@ -182,33 +182,33 @@ export function HistoryScreen() {
       {!isLoading && error && (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 p-6 text-center"
+          className="flex flex-col items-center justify-center rounded-xl border border-red-900/50 bg-red-950/40 p-6 text-center"
         >
-          <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
-          <h3 className="text-base font-bold text-red-900">
+          <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
+          <h3 className="text-sm font-semibold text-red-200">
             Failed to Load History
           </h3>
-          <p className="text-sm text-red-700 mt-1 max-w-sm">{error}</p>
+          <p className="text-xs text-red-300 mt-1 max-w-sm">{error}</p>
           <button
             type="button"
             onClick={loadHistory}
-            className="mt-4 flex min-h-[44px] items-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 shadow-sm"
+            className="mt-4 flex min-h-[40px] items-center gap-2 rounded-lg border border-red-800 bg-zinc-900 px-4 py-2 text-xs font-medium text-red-300 hover:bg-zinc-800 transition shadow-sm cursor-pointer"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5" />
             <span>Retry</span>
           </button>
         </div>
       )}
 
       {!isLoading && !error && filteredHistory.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground mb-3">
-            <History className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+            <History className="h-5 w-5" />
           </div>
-          <h3 className="text-base font-bold text-foreground">
+          <h3 className="text-sm font-semibold text-zinc-200">
             No Edits Match Filter
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
+          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
             {activeFilter !== 'all'
               ? 'Try switching to "All edits" to view all history records.'
               : 'Any addition, change, or deadline update made by classmates will appear here with transparent email attribution.'}
@@ -217,7 +217,7 @@ export function HistoryScreen() {
             <button
               type="button"
               onClick={() => setActiveFilter('all')}
-              className="min-h-[40px] rounded-lg border border-input bg-background px-4 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-sm cursor-pointer"
+              className="min-h-[36px] rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition cursor-pointer"
             >
               Show All Edits
             </button>

@@ -11,24 +11,6 @@ interface SubjectCardProps {
   onSyncClassroom?: (subject: Subject) => Promise<void>;
 }
 
-// Generate consistent theme gradients for Google Classroom-style header banner
-function getSubjectTheme(name: string) {
-  const themes = [
-    { bg: 'from-blue-600 to-blue-800', accent: 'bg-blue-500/20 text-blue-100' },
-    { bg: 'from-emerald-600 to-teal-800', accent: 'bg-emerald-500/20 text-emerald-100' },
-    { bg: 'from-amber-600 to-orange-700', accent: 'bg-amber-500/20 text-amber-100' },
-    { bg: 'from-slate-700 to-slate-900', accent: 'bg-slate-500/20 text-slate-100' },
-    { bg: 'from-rose-600 to-pink-800', accent: 'bg-rose-500/20 text-rose-100' },
-    { bg: 'from-sky-600 to-blue-800', accent: 'bg-sky-500/20 text-sky-100' },
-  ];
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash) % themes.length;
-  return themes[index];
-}
-
 export function SubjectCard({
   subject,
   assignments = [],
@@ -39,8 +21,6 @@ export function SubjectCard({
 }: SubjectCardProps) {
   const [isSyncing, setIsSyncing] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
-
-  const theme = getSubjectTheme(subject.name);
 
   const activeAssignments = assignments.filter((a) => !a.completed);
   const missingDateAssignments = assignments.filter((a) => !a.completed && !a.dueDate);
@@ -65,38 +45,38 @@ export function SubjectCard({
   });
 
   return (
-    <div className="flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:border-foreground/20 hover:shadow-md transition">
-      {/* Google Classroom-style 70px header banner matching wireframe Frame 3 */}
-      <div className={`relative h-20 bg-gradient-to-r ${theme.bg} p-4 flex items-center justify-between text-white shadow-inner`}>
+    <div className="flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-900/40 hover:bg-zinc-900/60 hover:border-zinc-700 transition shadow-sm">
+      {/* Minimalist course header bar */}
+      <div className="border-b border-zinc-800/80 bg-zinc-900/80 p-4 flex items-center justify-between text-zinc-100">
         <div className="min-w-0 pr-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-white/80">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
             Course Subject
           </span>
-          <h3 className="truncate text-lg font-bold text-white drop-shadow-sm">
+          <h3 className="truncate text-base font-semibold text-zinc-100">
             {subject.name}
           </h3>
         </div>
 
-        {/* Action icons on banner */}
-        <div className="flex items-center gap-1.5 shrink-0 bg-black/20 backdrop-blur-sm rounded-lg p-1">
+        {/* Action icons */}
+        <div className="flex items-center gap-1 shrink-0 bg-zinc-950/60 border border-zinc-800/80 rounded-lg p-0.5">
           <button
             type="button"
             onClick={() => onEdit(subject)}
-            className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-md p-1.5 text-xs text-white/90 hover:bg-white/20 transition cursor-pointer"
+            className="flex min-h-[32px] min-w-[32px] items-center justify-center rounded-md p-1.5 text-xs text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 transition cursor-pointer"
             title={`Edit ${subject.name}`}
             aria-label={`Edit ${subject.name}`}
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-3.5 w-3.5" />
           </button>
           {onDelete && (
             <button
               type="button"
               onClick={() => onDelete(subject)}
-              className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-md p-1.5 text-xs text-white/90 hover:bg-red-500/40 hover:text-red-100 transition cursor-pointer"
+              className="flex min-h-[32px] min-w-[32px] items-center justify-center rounded-md p-1.5 text-xs text-zinc-400 hover:text-red-400 hover:bg-zinc-800/80 transition cursor-pointer"
               title={`Delete ${subject.name}`}
               aria-label={`Delete ${subject.name}`}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" />
             </button>
           )}
         </div>
@@ -105,55 +85,55 @@ export function SubjectCard({
       {/* Card Body */}
       <div className="p-4 flex-1 flex flex-col justify-between space-y-4">
         {/* Teacher name */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <User className="h-4 w-4 shrink-0 text-muted-foreground" />
-          <span className="font-medium text-foreground">{subject.teacherName}</span>
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400">
+          <User className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
+          <span className="font-medium text-zinc-200">{subject.teacherName}</span>
         </div>
 
         {/* Classroom Code & Copy Button Row */}
-        <div className="flex items-center justify-between gap-2 border-t border-border pt-3">
-          <span className="text-xs font-medium text-muted-foreground">Classroom Code</span>
+        <div className="flex items-center justify-between gap-2 border-t border-zinc-800/80 pt-3">
+          <span className="text-xs text-zinc-400">Classroom Code</span>
           {subject.classroomCode ? (
             <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1 text-xs font-mono font-semibold text-secondary-foreground border border-border">
-                <KeyRound className="h-3 w-3 text-muted-foreground" />
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-950 px-2 py-0.5 text-xs font-mono font-semibold text-zinc-300 border border-zinc-800">
+                <KeyRound className="h-3 w-3 text-zinc-500" />
                 <span>{subject.classroomCode}</span>
               </span>
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="inline-flex min-h-[36px] items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex min-h-[30px] items-center gap-1 rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5 text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 transition cursor-pointer"
                 title="Copy Classroom Code"
                 aria-label={`Copy code ${subject.classroomCode}`}
               >
                 {copiedCode ? (
                   <>
-                    <Check className="h-3 w-3 text-emerald-600" />
-                    <span className="text-emerald-700">Copied</span>
+                    <Check className="h-3 w-3 text-emerald-400" />
+                    <span className="text-emerald-400 text-[11px]">Copied</span>
                   </>
                 ) : (
                   <>
                     <Copy className="h-3 w-3" />
-                    <span>Copy</span>
+                    <span className="text-[11px]">Copy</span>
                   </>
                 )}
               </button>
             </div>
           ) : (
-            <span className="text-xs italic text-muted-foreground">None</span>
+            <span className="text-xs italic text-zinc-500">None</span>
           )}
         </div>
 
-        {/* Stats Row matching wireframe Frame 3: "4 active · 1 missing date" */}
-        <div className="flex items-center justify-between gap-2 rounded-lg bg-muted/40 px-3 py-2 text-xs border border-border/60">
-          <span className="font-semibold text-foreground">
+        {/* Stats Row: "4 active · 1 missing date" */}
+        <div className="flex items-center justify-between gap-2 rounded-lg bg-zinc-950/60 px-3 py-2 text-xs border border-zinc-800/80">
+          <span className="text-zinc-300">
             {activeAssignments.length} active · {missingDateAssignments.length} missing date
           </span>
           {missingDateAssignments.length > 0 && onAssignDeadline && (
             <button
               type="button"
               onClick={() => onAssignDeadline(missingDateAssignments[0])}
-              className="inline-flex min-h-[36px] items-center gap-1 rounded bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-200 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex min-h-[28px] items-center gap-1 rounded bg-amber-950/60 border border-amber-900/50 px-2 py-0.5 text-xs font-medium text-amber-300 hover:bg-amber-900/70 transition cursor-pointer"
             >
               Add date
             </button>
@@ -163,10 +143,10 @@ export function SubjectCard({
         {/* Classroom assignments list if code is present */}
         {subject.classroomCode && (
           <div
-            className="space-y-2 rounded-lg bg-muted/30 p-2.5 border border-border/60"
+            className="space-y-2 rounded-lg bg-zinc-950/40 p-2.5 border border-zinc-800/60"
             data-testid={`classroom-assignments-${subject.classroomCode}`}
           >
-            <div className="flex items-center justify-between text-xs font-semibold text-foreground">
+            <div className="flex items-center justify-between text-xs text-zinc-300 font-medium">
               <div className="flex items-center gap-1.5">
                 <span>Classroom Assignments ({sortedClassroomAssignments.length})</span>
                 {onSyncClassroom && (
@@ -182,7 +162,7 @@ export function SubjectCard({
                       }
                     }}
                     title={`Sync assignments from Google Classroom code ${subject.classroomCode}`}
-                    className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline ml-1 min-h-[28px] px-1 cursor-pointer"
+                    className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-zinc-200 ml-1 min-h-[24px] px-1 cursor-pointer"
                   >
                     <RefreshCw className={`h-3 w-3 ${isSyncing ? 'animate-spin' : ''}`} />
                     <span>{isSyncing ? 'Syncing...' : 'Sync'}</span>
@@ -192,7 +172,7 @@ export function SubjectCard({
             </div>
 
             {sortedClassroomAssignments.length === 0 ? (
-              <p className="text-xs italic text-muted-foreground py-1">
+              <p className="text-xs italic text-zinc-500 py-1">
                 No assignments posted in Classroom yet.
               </p>
             ) : (
@@ -200,32 +180,32 @@ export function SubjectCard({
                 {sortedClassroomAssignments.slice(0, 3).map((asg) => (
                   <li
                     key={asg.id}
-                    className="flex items-center justify-between gap-2 rounded border border-border bg-background px-2.5 py-1.5 text-xs"
+                    className="flex items-center justify-between gap-2 rounded border border-zinc-800/80 bg-zinc-900/60 px-2.5 py-1.5 text-xs"
                   >
                     <div className="min-w-0 flex-1">
                       <p
-                        className={`font-medium truncate ${
+                        className={`truncate font-medium ${
                           asg.completed
-                            ? 'line-through text-muted-foreground'
-                            : 'text-foreground'
+                            ? 'line-through text-zinc-500'
+                            : 'text-zinc-200'
                         }`}
                       >
                         {asg.title}
                       </p>
                       <div className="mt-0.5 flex items-center gap-1.5">
                         {asg.completed ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                          <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
                             <CheckCircle2 className="h-3 w-3" />
                             Done {asg.dueDate ? `(${asg.dueDate})` : ''}
                           </span>
                         ) : asg.dueDate ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                            <Calendar className="h-3 w-3" />
+                          <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400">
+                            <Calendar className="h-3 w-3 text-zinc-500" />
                             Due {asg.dueDate}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded bg-amber-100 px-1.5 py-0.5 text-[11px] font-semibold text-amber-900">
-                            <HelpCircle className="h-3 w-3 text-amber-700" />
+                          <span className="inline-flex items-center gap-1 rounded bg-amber-950/40 border border-amber-900/50 px-1.5 py-0.2 text-[10px] font-medium text-amber-400">
+                            <HelpCircle className="h-3 w-3 text-amber-400" />
                             No deadline set
                           </span>
                         )}
@@ -237,10 +217,10 @@ export function SubjectCard({
                         type="button"
                         onClick={() => onAssignDeadline(asg)}
                         aria-label={`Assign deadline for ${asg.title}`}
-                        className={`shrink-0 inline-flex min-h-[32px] items-center gap-1 rounded px-2 py-1 text-xs font-semibold transition cursor-pointer ${
+                        className={`shrink-0 inline-flex min-h-[28px] items-center gap-1 rounded px-2 py-0.5 text-xs font-medium transition cursor-pointer ${
                           !asg.dueDate
-                            ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm'
-                            : 'border border-input bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                            ? 'bg-zinc-100 text-zinc-950 hover:bg-zinc-200'
+                            : 'border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                         }`}
                       >
                         <CalendarPlus className="h-3 w-3" />

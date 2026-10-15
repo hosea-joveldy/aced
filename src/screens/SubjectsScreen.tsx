@@ -183,20 +183,20 @@ export function SubjectsScreen() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header Row matching wireframe Frame 3 */}
+      {/* Top Header Row */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
             Class Subjects
           </h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             {subjects.length} course{subjects.length === 1 ? '' : 's'} registered in {session?.className}
           </p>
         </div>
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition cursor-pointer"
+          className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
         >
           <Plus className="h-4 w-4" />
           <span>Add Subject</span>
@@ -213,7 +213,7 @@ export function SubjectsScreen() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-48 rounded-xl border border-border bg-muted/40 animate-pulse"
+              className="h-48 rounded-xl border border-zinc-800/80 bg-zinc-900/30 animate-pulse"
             />
           ))}
         </div>
@@ -222,39 +222,39 @@ export function SubjectsScreen() {
       {!isLoading && error && (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 p-6 text-center"
+          className="flex flex-col items-center justify-center rounded-xl border border-red-900/50 bg-red-950/40 p-6 text-center"
         >
-          <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
-          <h3 className="text-base font-bold text-red-900">
+          <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
+          <h3 className="text-sm font-semibold text-red-200">
             Failed to Load Subjects
           </h3>
-          <p className="text-sm text-red-700 mt-1 max-w-sm">{error}</p>
+          <p className="text-xs text-red-300 mt-1 max-w-sm">{error}</p>
           <button
             type="button"
             onClick={loadSubjects}
-            className="mt-4 flex min-h-[44px] items-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 shadow-sm"
+            className="mt-4 flex min-h-[40px] items-center gap-2 rounded-lg border border-red-800 bg-zinc-900 px-4 py-2 text-xs font-medium text-red-300 hover:bg-zinc-800 transition shadow-sm cursor-pointer"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5" />
             <span>Retry</span>
           </button>
         </div>
       )}
 
       {!isLoading && !error && subjects.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground mb-3">
-            <BookOpen className="h-6 w-6" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+            <BookOpen className="h-5 w-5" />
           </div>
-          <h3 className="text-base font-bold text-foreground">
+          <h3 className="text-sm font-semibold text-zinc-200">
             No Subjects Added Yet
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 max-w-sm mb-4">
+          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
             Add your subjects with teacher names and Google Classroom codes so classmates can post assignments.
           </p>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
+            className="flex min-h-[40px] items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition shadow-sm cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Subject</span>
@@ -262,7 +262,7 @@ export function SubjectsScreen() {
         </div>
       )}
 
-      {/* 3-column desktop grid matching wireframe Frame 3 (grid3) */}
+      {/* 3-column desktop grid */}
       {!isLoading && !error && subjects.length > 0 && (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {subjects.map((subject) => (
@@ -300,21 +300,21 @@ export function SubjectsScreen() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="delete-subject-title"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
         >
-          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-xl">
-            <h3 id="delete-subject-title" className="text-lg font-bold text-foreground">
+          <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+            <h3 id="delete-subject-title" className="text-base font-semibold text-zinc-100">
               Delete Subject?
             </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Are you sure you want to delete <span className="font-semibold text-foreground">{subjectToDelete.name}</span>? All assignments linked to this subject will also be deleted.
+            <p className="mt-2 text-xs sm:text-sm text-zinc-400">
+              Are you sure you want to delete <span className="font-semibold text-zinc-200">{subjectToDelete.name}</span>? All assignments linked to this subject will also be deleted.
             </p>
             <div className="mt-6 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setSubjectToDelete(null)}
                 disabled={isDeleting}
-                className="min-h-[44px] rounded-lg border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted cursor-pointer"
+                className="min-h-[40px] rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
               >
                 Cancel
               </button>
@@ -322,7 +322,7 @@ export function SubjectsScreen() {
                 type="button"
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
-                className="min-h-[44px] rounded-lg bg-destructive px-4 py-2 text-sm font-semibold text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50 cursor-pointer shadow-sm"
+                className="min-h-[40px] rounded-lg bg-red-950/80 border border-red-800/80 px-4 py-2 text-xs font-semibold text-red-200 hover:bg-red-900 disabled:opacity-50 cursor-pointer shadow-sm"
               >
                 {isDeleting ? 'Deleting...' : 'Delete Subject'}
               </button>
