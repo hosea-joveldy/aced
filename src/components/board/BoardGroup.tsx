@@ -29,9 +29,9 @@ export function BoardGroup({
       case 'needs-date':
         return <HelpCircle className="h-4 w-4 text-amber-600" />;
       case 'today':
-        return <Calendar className="h-4 w-4 text-indigo-600" />;
+        return <Calendar className="h-4 w-4 text-blue-600" />;
       case 'this-week':
-        return <Clock className="h-4 w-4 text-sky-600" />;
+        return <Clock className="h-4 w-4 text-teal-600" />;
       case 'later':
         return <CalendarDays className="h-4 w-4 text-slate-500" />;
       case 'done':

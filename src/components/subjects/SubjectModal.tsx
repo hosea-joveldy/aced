@@ -91,7 +91,7 @@ export function SubjectModal({
       <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border pb-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-primary">
               <BookOpen className="h-4 w-4" />
             </div>
             <h2 id="subject-modal-title" className="text-lg font-bold text-foreground">

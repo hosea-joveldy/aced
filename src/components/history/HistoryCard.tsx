@@ -49,7 +49,7 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
     >
       <div className="flex items-start gap-3.5 min-w-0 flex-1">
         {/* Wireframe Frame 4 circular avatar (.circ 34px) */}
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-bold text-xs text-indigo-700 border border-indigo-200 shadow-sm mt-0.5">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-xs text-blue-700 border border-blue-200 shadow-sm mt-0.5">
           {initials}
         </div>
 
@@ -80,7 +80,7 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
             {entry.reverted && entry.revertedBy && (
               <>
                 <span>•</span>
-                <span className="text-indigo-600 font-medium">
+                <span className="text-blue-600 font-medium">
                   Undone by {entry.revertedBy}
                 </span>
               </>
@@ -93,7 +93,7 @@ export function HistoryCard({ entry, canRevert, onRevertClick }: HistoryCardProp
               {entry.beforeValue ? entry.beforeValue : '(empty)'}
             </span>
             <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-            <span className="rounded-md border border-indigo-200 bg-indigo-50/80 px-2.5 py-1 font-bold text-indigo-900">
+            <span className="rounded-md border border-blue-200 bg-blue-50/80 px-2.5 py-1 font-bold text-blue-900">
               {entry.afterValue ? entry.afterValue : '(empty)'}
             </span>
           </div>

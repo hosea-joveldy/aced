@@ -67,7 +67,7 @@ export function JoinClassForm() {
       <div className="flex flex-1 flex-col justify-center px-6 py-8 sm:px-12 lg:px-12 xl:px-16 min-h-screen">
         <div className="w-full max-w-lg mx-auto">
           {/* Mobile Educational Accent Banner */}
-          <div className="mb-6 flex items-center gap-2.5 rounded-xl bg-indigo-50 px-3.5 py-2.5 text-xs font-semibold text-indigo-700 lg:hidden border border-indigo-100 shadow-sm">
+          <div className="mb-6 flex items-center gap-2.5 rounded-xl bg-blue-50 px-3.5 py-2.5 text-xs font-semibold text-blue-700 lg:hidden border border-blue-100 shadow-sm">
             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GraduationCap className="h-4 w-4" />
             </div>
@@ -159,11 +159,11 @@ export function JoinClassForm() {
             </div>
 
             {/* High-Contrast Class Code Input with Instant Demo Buttons */}
-            <div className="rounded-xl border-2 border-indigo-200 bg-indigo-50/50 p-3.5 sm:p-4 transition focus-within:border-primary focus-within:bg-indigo-50/80">
+            <div className="rounded-xl border-2 border-blue-200 bg-blue-50/50 p-3.5 sm:p-4 transition focus-within:border-primary focus-within:bg-blue-50/80">
               <div className="flex items-center justify-between mb-2">
                 <label
                   htmlFor="class-code"
-                  className="block text-xs font-bold uppercase tracking-wider text-indigo-900"
+                  className="block text-xs font-bold uppercase tracking-wider text-blue-900"
                 >
                   Class code
                 </label>
@@ -180,7 +180,7 @@ export function JoinClassForm() {
                   <button
                     type="button"
                     onClick={() => handleUseDemo(true)}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-700 hover:underline min-h-[32px] px-1.5 rounded focus-visible:ring-2 focus-visible:ring-ring"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-blue-700 hover:underline min-h-[32px] px-1.5 rounded focus-visible:ring-2 focus-visible:ring-ring"
                     title="Fill demo as class leader"
                   >
                     Demo Leader
@@ -200,7 +200,7 @@ export function JoinClassForm() {
                 onChange={(e) => setClassCode(e.target.value.toUpperCase())}
                 placeholder="e.g. ACED2026"
                 disabled={isSubmitting}
-                className="w-full min-h-[48px] rounded-lg border border-indigo-200 bg-background px-4 py-2.5 text-lg font-mono font-bold tracking-widest uppercase text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring transition text-center sm:text-left shadow-inner"
+                className="w-full min-h-[48px] rounded-lg border border-blue-200 bg-background px-4 py-2.5 text-lg font-mono font-bold tracking-widest uppercase text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring transition text-center sm:text-left shadow-inner"
               />
               <p className="mt-1.5 text-xs text-muted-foreground">
                 Ask your teacher or class representative for your 8-character class code.

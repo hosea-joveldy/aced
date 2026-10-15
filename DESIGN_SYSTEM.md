@@ -3,7 +3,7 @@
 ## 1. Stack & System Foundations
 - **UI Framework**: shadcn/ui (`new-york` style, `neutral` base).
 - **Typography**: Inter (`font-sans`), system font fallback. Base body size: 16px for form inputs and body readability.
-- **Primary Theme Color**: Indigo (`hsl(243, 75%, 59%)`).
+- **Primary Theme Color**: Collegiate Blue (`hsl(221, 83%, 53%)` / `#2563eb`).
 - **Base Border Radius**: `0.5rem` (`8px`).
 - **Target Form Factor**: Mobile-first (minimum width: 375px), fluid single-column mobile layout, transitioning to a desktop shell (>= 768px / 1024px) featuring a persistent sidebar and multi-column grids.
 
@@ -18,19 +18,19 @@ All tokens defined as HSL channel values in `:root`:
   --card-foreground: 0 0% 9%;
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 9%;
-  --primary: 243 75% 59%;          /* Indigo 600 */
+  --primary: 221 83% 53%;          /* Collegiate Blue 600 */
   --primary-foreground: 0 0% 100%;
   --secondary: 0 0% 96%;
   --secondary-foreground: 0 0% 9%;
   --muted: 0 0% 96%;
   --muted-foreground: 0 0% 45%;
-  --accent: 243 100% 97%;
-  --accent-foreground: 243 75% 59%;
+  --accent: 214 95% 93%;
+  --accent-foreground: 221 83% 45%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   --border: 0 0% 90%;
   --input: 0 0% 90%;
-  --ring: 243 75% 59%;
+  --ring: 221 83% 53%;
   --radius: 0.5rem;
 
   /* Domain Semantic State Tokens */
@@ -38,8 +38,8 @@ All tokens defined as HSL channel values in `:root`:
   --state-overdue-bg: 0 100% 97%;
   --state-needs-date: 38 92% 50%;      /* Amber / Orange */
   --state-needs-date-bg: 48 100% 96%;
-  --state-today: 243 75% 59%;           /* Indigo */
-  --state-today-bg: 243 100% 97%;
+  --state-today: 221 83% 53%;          /* Collegiate Blue */
+  --state-today-bg: 214 95% 93%;
   --state-done: 142 71% 45%;           /* Emerald */
   --state-done-bg: 142 76% 96%;
   --state-undone: 215 16% 47%;         /* Slate */
@@ -51,7 +51,8 @@ All tokens defined as HSL channel values in `:root`:
 Colour is never used alone to convey state. Every status badge or alert pairs color with both an icon and a text label:
 - **Overdue**: Crimson border/text (`text-red-700 bg-red-50 border-red-200`) + AlertCircle icon + text label `"Overdue"`.
 - **Needs Due Date**: Amber border/text (`text-amber-800 bg-amber-50 border-amber-200`) + HelpCircle / Clock icon + text label `"Needs date"`.
-- **Due Today**: Indigo border/text (`text-indigo-700 bg-indigo-50 border-indigo-200`) + Calendar icon + text label `"Due today"`.
+- **Due Today**: Collegiate Blue border/text (`text-blue-700 bg-blue-50 border-blue-200`) + Calendar icon + text label `"Due today"`.
+- **This Week**: Teal border/text (`text-teal-700 bg-teal-50 border-teal-200`) + Clock icon + text label `"This week"`.
 - **Completed**: Emerald border/text (`text-emerald-700 bg-emerald-50 border-emerald-200`) + CheckCircle icon + text label `"Done"`.
 - **Reverted / Undone**: Slate border/text (`text-slate-600 bg-slate-100 border-slate-300`) + RotateCcw icon + text label `"Reverted"`.
 
@@ -71,7 +72,7 @@ Colour is never used alone to convey state. Every status badge or alert pairs co
 ### 5.1 Responsive App Shell
 - **Desktop (>= 768px / 1024px)**:
   - Persistent left sidebar (`width: 220px-240px`) containing:
-    - Bold "Aced" logo with orbital accent icon.
+    - Bold "Aced" logo with academic GraduationCap icon.
     - Navigation menu: **Board**, **Subjects**, **History** with active pill indicator.
     - User "Me" footer card: Circular avatar with user initials, user display name, class code, Class Leader badge, and leave button.
   - Main scrollable content pane with clean top header, search/actions bar, and responsive grid layout.

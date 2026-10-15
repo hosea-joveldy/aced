@@ -104,7 +104,7 @@ export function AssignmentModal({
       <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl animate-in fade-in-0 zoom-in-95 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between border-b border-border pb-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-primary">
               <FileEdit className="h-4 w-4" />
             </div>
             <h2 id="assignment-modal-title" className="text-lg font-bold text-foreground">
@@ -240,7 +240,7 @@ export function AssignmentModal({
 
           {/* Wireframe Frame 5 note */}
           <div className="flex items-center gap-1.5 rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-            <Info className="h-3.5 w-3.5 shrink-0 text-indigo-600" />
+            <Info className="h-3.5 w-3.5 shrink-0 text-blue-600" />
             <span>Your name is saved with this edit for class audit transparency.</span>
           </div>
 

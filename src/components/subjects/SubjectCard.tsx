@@ -14,10 +14,10 @@ interface SubjectCardProps {
 // Generate consistent theme gradients for Google Classroom-style header banner
 function getSubjectTheme(name: string) {
   const themes = [
-    { bg: 'from-indigo-600 to-indigo-800', accent: 'bg-indigo-500/20 text-indigo-100' },
+    { bg: 'from-blue-600 to-blue-800', accent: 'bg-blue-500/20 text-blue-100' },
     { bg: 'from-emerald-600 to-teal-800', accent: 'bg-emerald-500/20 text-emerald-100' },
     { bg: 'from-amber-600 to-orange-700', accent: 'bg-amber-500/20 text-amber-100' },
-    { bg: 'from-violet-600 to-purple-800', accent: 'bg-violet-500/20 text-purple-100' },
+    { bg: 'from-slate-700 to-slate-900', accent: 'bg-slate-500/20 text-slate-100' },
     { bg: 'from-rose-600 to-pink-800', accent: 'bg-rose-500/20 text-rose-100' },
     { bg: 'from-sky-600 to-blue-800', accent: 'bg-sky-500/20 text-sky-100' },
   ];

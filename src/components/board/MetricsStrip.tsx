@@ -31,17 +31,17 @@ export function MetricsStrip({
       </div>
 
       {/* Due Today Tile */}
-      <div className="flex flex-col justify-between rounded-xl border border-indigo-200/80 bg-indigo-50/60 p-3.5 sm:p-4 shadow-sm hover:border-indigo-300 transition">
+      <div className="flex flex-col justify-between rounded-xl border border-blue-200/80 bg-blue-50/60 p-3.5 sm:p-4 shadow-sm hover:border-blue-300 transition">
         <div className="flex items-center justify-between">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
             <Calendar className="h-4 w-4" />
           </div>
-          <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-indigo-900">
+          <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-900">
             {todayCount}
           </span>
         </div>
         <div className="mt-2">
-          <span className="text-xs font-bold text-indigo-800 tracking-wide uppercase">
+          <span className="text-xs font-bold text-blue-800 tracking-wide uppercase">
             Due Today
           </span>
         </div>

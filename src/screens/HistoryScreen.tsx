@@ -144,12 +144,12 @@ export function HistoryScreen() {
       <div
         className={`flex items-start gap-3 rounded-xl border p-4 text-xs sm:text-sm shadow-sm ${
           isClassLeader
-            ? 'border-indigo-200 bg-indigo-50/80 text-indigo-950'
+            ? 'border-blue-200 bg-blue-50/80 text-blue-950'
             : 'border-amber-200 bg-amber-50/80 text-amber-950'
         }`}
       >
         {isClassLeader ? (
-          <ShieldCheck className="h-5 w-5 shrink-0 text-indigo-600 mt-0.5" />
+          <ShieldCheck className="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
         ) : (
           <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
         )}
@@ -157,7 +157,7 @@ export function HistoryScreen() {
           {isClassLeader ? (
             <span>
               <strong>Class Leader privileges:</strong> You can revert edits to maintain board accuracy and integrity.
-              <span className="text-indigo-800/80 text-xs ml-1">(students see: View only)</span>
+              <span className="text-blue-800/80 text-xs ml-1">(students see: View only)</span>
             </span>
           ) : (
             <span>

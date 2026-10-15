@@ -46,7 +46,7 @@ export function Sidebar() {
               <span className="text-lg font-extrabold tracking-tight text-foreground">
                 Aced
               </span>
-              <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">
+              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold text-blue-700">
                 PRO
               </span>
             </div>
@@ -95,7 +95,7 @@ export function Sidebar() {
       {/* User "Me" Card matching wireframe Frame 2 */}
       <div className="rounded-xl border border-border bg-background/80 p-3 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-bold text-sm text-indigo-700 border border-indigo-200">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-sm text-blue-700 border border-blue-200">
             {initials}
           </div>
           <div className="min-w-0 flex-1">
@@ -106,7 +106,7 @@ export function Sidebar() {
             </div>
             <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
               {session.isClassLeader ? (
-                <span className="inline-flex items-center gap-0.5 text-indigo-600 font-semibold">
+                <span className="inline-flex items-center gap-0.5 text-blue-600 font-semibold">
                   <ShieldCheck className="h-3 w-3" />
                   Leader
                 </span>
