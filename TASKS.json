@@ -298,7 +298,7 @@
         {
           "id": "T12.2",
           "title": "App shell redesign with persistent desktop sidebar navigation and responsive mobile bottom bar",
-          "done": false,
+          "done": true,
           "done_when": [
             "Desktop shell renders persistent left sidebar with Aced logo, navigation links, and user 'Me' card",
             "Mobile shell preserves sticky header and bottom tab bar",

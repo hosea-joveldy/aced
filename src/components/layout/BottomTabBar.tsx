@@ -18,9 +18,9 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Main Navigation"
-      className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t border-border z-40 shadow-lg supports-[backdrop-filter]:bg-background/80"
+      className="md:hidden fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t border-border z-40 shadow-lg supports-[backdrop-filter]:bg-background/80"
     >
-      <div className="mx-auto flex h-16 max-w-3xl items-center justify-around px-2">
+      <div className="mx-auto flex h-16 max-w-md items-center justify-around px-2">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
