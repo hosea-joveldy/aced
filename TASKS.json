@@ -277,6 +277,59 @@
           ]
         }
       ]
+    },
+    {
+      "id": "T12",
+      "title": "Full UI redesign based on wireframes.html with solar system join screen",
+      "type": "build",
+      "status": "ongoing",
+      "features": [
+        {
+          "id": "T12.1",
+          "title": "Join class redesign with celestial solar system illustration and high-contrast form",
+          "done": true,
+          "done_when": [
+            "Join screen displays celestial solar system orbital visualization on desktop",
+            "Join form includes Kahoot!-inspired class code input, email, display name, and demo buttons",
+            "Mobile view renders responsive stack with orbital badge and clean inputs",
+            "All existing join tests pass"
+          ]
+        },
+        {
+          "id": "T12.2",
+          "title": "App shell redesign with persistent desktop sidebar navigation and responsive mobile bottom bar",
+          "done": false,
+          "done_when": [
+            "Desktop shell renders persistent left sidebar with Aced logo, navigation links, and user 'Me' card",
+            "Mobile shell preserves sticky header and bottom tab bar",
+            "Layout transitions smoothly between mobile 375px and desktop 1280px",
+            "All navigation e2e and unit tests pass"
+          ]
+        },
+        {
+          "id": "T12.3",
+          "title": "Board screen redesign with Apple Reminders metric tiles, search, filter chips, and card layout",
+          "done": false,
+          "done_when": [
+            "Board screen includes live search input and + Add assignment button in top row",
+            "Summary metrics render as 3 clean tiles (Overdue, Due today, Needs a date)",
+            "Subject filter renders as horizontal chips with active selection",
+            "Assignment cards match wireframes with checkboxes, tags, and status badges",
+            "All board e2e and unit tests pass"
+          ]
+        },
+        {
+          "id": "T12.4",
+          "title": "Subjects screen and History screen redesign with Google Classroom cards and Linear activity feed",
+          "done": false,
+          "done_when": [
+            "Subjects screen renders Google Classroom cards with colored header banners, classroom codes, copy button, and assignment metrics",
+            "History screen renders filter chips, role banner, circular avatars, and before-after diff cards",
+            "Assignment modal and Revert confirm modal match wireframes layout",
+            "All gate checks (tsc, unit tests, build, playwright) pass exit code 0"
+          ]
+        }
+      ]
     }
   ]
 }
