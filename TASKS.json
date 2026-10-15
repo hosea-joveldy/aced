@@ -351,7 +351,7 @@
         {
           "id": "T13.2",
           "title": "Minimalist app shell, persistent sidebar, and navigation",
-          "done": false,
+          "done": true,
           "done_when": [
             "App shell renders deep zinc (#09090b) background with sleek minimal borders and clean typography",
             "Sidebar renders clean Aced logo mark, monochrome navigation links, and subtle user profile card",

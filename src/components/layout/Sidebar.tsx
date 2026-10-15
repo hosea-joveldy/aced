@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useSession } from '@/context/SessionContext';
-import { CalendarDays, BookOpen, History, LogOut, ShieldCheck, GraduationCap } from 'lucide-react';
+import { CalendarDays, BookOpen, History, LogOut, ShieldCheck } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 interface NavItem {
@@ -33,24 +33,27 @@ export function Sidebar() {
   return (
     <aside
       aria-label="Main Navigation"
-      className="hidden md:flex h-screen w-64 flex-col justify-between border-r border-border bg-card/90 p-4 shrink-0 sticky top-0"
+      className="hidden md:flex h-screen w-60 flex-col justify-between border-r border-zinc-800/80 bg-[#09090b] p-4 shrink-0 sticky top-0"
     >
       <div className="space-y-6">
         {/* Brand Header */}
-        <div className="flex items-center gap-3 px-2 pt-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20">
-            <GraduationCap className="h-5 w-5" />
+        <div className="flex items-center gap-3 px-2 pt-1">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-950 font-bold text-sm shadow-sm">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-lg font-extrabold tracking-tight text-foreground">
+              <span className="text-sm font-semibold tracking-tight text-zinc-100">
                 Aced
               </span>
-              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold text-blue-700">
-                PRO
-              </span>
             </div>
-            <p className="text-xs text-muted-foreground truncate max-w-[150px]">
+            <p className="text-xs text-zinc-400 truncate max-w-[140px]">
               {session.className}
             </p>
           </div>
@@ -66,10 +69,10 @@ export function Sidebar() {
                 to={item.to}
                 end={item.to === '/'}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-semibold transition-all ${
+                  `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                     isActive
-                      ? 'bg-secondary text-foreground shadow-sm font-bold'
-                      : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
+                      ? 'bg-zinc-800/80 text-zinc-100 font-medium'
+                      : 'text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200'
                   }`
                 }
               >
@@ -77,13 +80,10 @@ export function Sidebar() {
                   <>
                     <Icon
                       className={`h-4 w-4 ${
-                        isActive ? 'text-primary' : 'text-muted-foreground'
+                        isActive ? 'text-zinc-100' : 'text-zinc-400'
                       }`}
                     />
                     <span className="flex-1">{item.label}</span>
-                    {isActive && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    )}
                   </>
                 )}
               </NavLink>
@@ -92,29 +92,27 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* User "Me" Card matching wireframe Frame 2 */}
-      <div className="rounded-xl border border-border bg-background/80 p-3 shadow-sm">
+      {/* User "Me" Card */}
+      <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 font-bold text-sm text-blue-700 border border-blue-200">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800 font-medium text-xs text-zinc-200 border border-zinc-700/60">
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1">
-              <p className="truncate text-xs font-bold text-foreground">
-                {session.displayName}
-              </p>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+            <p className="truncate text-xs font-medium text-zinc-200">
+              {session.displayName}
+            </p>
+            <div className="flex items-center gap-1 text-[11px] text-zinc-400">
               {session.isClassLeader ? (
-                <span className="inline-flex items-center gap-0.5 text-blue-600 font-semibold">
-                  <ShieldCheck className="h-3 w-3" />
+                <span className="inline-flex items-center gap-0.5 text-zinc-300 font-medium">
+                  <ShieldCheck className="h-3 w-3 text-emerald-400" />
                   Leader
                 </span>
               ) : (
                 <span>Student</span>
               )}
               <span>·</span>
-              <span className="font-mono">{session.classCode}</span>
+              <span className="font-mono text-[10px]">{session.classCode}</span>
             </div>
           </div>
         </div>
@@ -122,7 +120,7 @@ export function Sidebar() {
         <button
           type="button"
           onClick={leaveClass}
-          className="mt-3 flex w-full min-h-[36px] items-center justify-center gap-1.5 rounded-md border border-input bg-card px-2 py-1.5 text-xs font-medium text-muted-foreground hover:bg-destructive/10 hover:border-destructive/30 hover:text-destructive transition"
+          className="mt-3 flex w-full min-h-[32px] items-center justify-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200 hover:border-zinc-700 transition cursor-pointer"
           aria-label="Leave class"
         >
           <LogOut className="h-3.5 w-3.5" />

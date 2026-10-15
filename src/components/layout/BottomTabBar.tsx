@@ -18,7 +18,7 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Main Navigation"
-      className="md:hidden fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t border-border z-40 shadow-lg supports-[backdrop-filter]:bg-background/80"
+      className="md:hidden fixed bottom-0 inset-x-0 bg-[#09090b]/95 backdrop-blur-md border-t border-zinc-800/80 z-40 shadow-xl"
     >
       <div className="mx-auto flex h-16 max-w-md items-center justify-around px-2">
         {TABS.map((tab) => {
@@ -31,8 +31,8 @@ export function BottomTabBar() {
               className={({ isActive }) =>
                 `flex flex-1 min-h-[48px] min-w-[48px] flex-col items-center justify-center rounded-lg px-2 py-1 text-xs font-medium transition-colors ${
                   isActive
-                    ? 'text-primary font-semibold'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    ? 'text-zinc-100 font-semibold'
+                    : 'text-zinc-500 hover:text-zinc-300'
                 }`
               }
             >
