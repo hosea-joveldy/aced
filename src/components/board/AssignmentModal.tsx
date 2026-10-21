@@ -99,22 +99,22 @@ export function AssignmentModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="assignment-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-zinc-800 pb-3.5">
+      <div className="w-full max-w-lg rounded-3xl border border-[#E2E1DA] bg-[#FAF9F5] p-6 sm:p-8 shadow-2xl animate-in fade-in-0 zoom-in-95 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between border-b border-[#E8E7E0] pb-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EFEFE9] text-[#141413]">
               <FileEdit className="h-4 w-4" />
             </div>
-            <h2 id="assignment-modal-title" className="text-base font-semibold text-zinc-100">
+            <h2 id="assignment-modal-title" className="text-lg font-serif font-semibold text-[#141413]">
               {isEditing ? 'Edit Assignment' : 'Add New Assignment'}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 cursor-pointer"
+            className="flex min-h-[36px] min-w-[36px] items-center justify-center rounded-full p-1.5 text-[#73726C] hover:bg-[#EAE9E2] hover:text-[#141413] transition cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="h-5 w-5" />
@@ -124,18 +124,18 @@ export function AssignmentModal({
         {errors.general && (
           <div
             role="alert"
-            className="mt-4 flex items-center gap-2 rounded-lg border border-red-900/50 bg-red-950/40 p-3 text-xs text-red-300"
+            className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-red-50 p-3 text-xs text-red-900"
           >
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
             <span>{errors.general}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <div>
             <label
               htmlFor="assignment-title"
-              className="block text-xs font-medium text-zinc-300 mb-1.5"
+              className="block text-xs font-semibold uppercase tracking-wider text-[#73726C] mb-1.5"
             >
               Assignment Title *
             </label>
@@ -149,10 +149,10 @@ export function AssignmentModal({
               }}
               placeholder="e.g. Chapter 4 Calculus Problem Set"
               disabled={isSubmitting}
-              className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
+              className="w-full min-h-[44px] rounded-xl border border-[#DCDAD2] bg-white px-3.5 py-2.5 text-base sm:text-sm text-[#141413] placeholder:text-[#9A9890] focus:outline-none focus:border-[#141413] focus:ring-1 focus:ring-[#141413] transition"
             />
             {errors.title && (
-              <p className="mt-1 text-xs font-medium text-red-400">
+              <p className="mt-1 text-xs font-medium text-red-600">
                 {errors.title}
               </p>
             )}
@@ -162,7 +162,7 @@ export function AssignmentModal({
             <div>
               <label
                 htmlFor="assignment-subject"
-                className="block text-xs font-medium text-zinc-300 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-[#73726C] mb-1.5"
               >
                 Subject *
               </label>
@@ -175,16 +175,16 @@ export function AssignmentModal({
                     setErrors((prev) => ({ ...prev, subjectId: undefined }));
                 }}
                 disabled={isSubmitting || subjects.length === 0}
-                className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner cursor-pointer"
+                className="w-full min-h-[44px] rounded-xl border border-[#DCDAD2] bg-white px-3 py-2 text-base sm:text-sm text-[#141413] focus:outline-none focus:border-[#141413] focus:ring-1 focus:ring-[#141413] transition cursor-pointer"
               >
                 {subjects.map((sub) => (
-                  <option key={sub.id} value={sub.id} className="bg-zinc-950 text-zinc-100">
+                  <option key={sub.id} value={sub.id}>
                     {sub.name} ({sub.teacherName})
                   </option>
                 ))}
               </select>
               {errors.subjectId && (
-                <p className="mt-1 text-xs font-medium text-red-400">
+                <p className="mt-1 text-xs font-medium text-red-600">
                   {errors.subjectId}
                 </p>
               )}
@@ -193,7 +193,7 @@ export function AssignmentModal({
             <div>
               <label
                 htmlFor="assignment-due-date"
-                className="block text-xs font-medium text-zinc-300 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-[#73726C] mb-1.5"
               >
                 Due Date (optional, YYYY-MM-DD)
               </label>
@@ -208,10 +208,10 @@ export function AssignmentModal({
                     setErrors((prev) => ({ ...prev, dueDate: undefined }));
                 }}
                 disabled={isSubmitting}
-                className="w-full min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner font-mono"
+                className="w-full min-h-[44px] rounded-xl border border-[#DCDAD2] bg-white px-3.5 py-2.5 text-base sm:text-sm text-[#141413] placeholder:text-[#9A9890] focus:outline-none focus:border-[#141413] focus:ring-1 focus:ring-[#141413] transition font-mono"
               />
               {errors.dueDate && (
-                <p className="mt-1 text-xs font-medium text-red-400">
+                <p className="mt-1 text-xs font-medium text-red-600">
                   {errors.dueDate}
                 </p>
               )}
@@ -221,7 +221,7 @@ export function AssignmentModal({
           <div>
             <label
               htmlFor="assignment-notes"
-              className="block text-xs font-medium text-zinc-300 mb-1.5"
+              className="block text-xs font-semibold uppercase tracking-wider text-[#73726C] mb-1.5"
             >
               Notes & Instructions (optional)
             </label>
@@ -232,28 +232,28 @@ export function AssignmentModal({
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Problems 1-15, show all work"
               disabled={isSubmitting}
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner resize-none"
+              className="w-full rounded-xl border border-[#DCDAD2] bg-white px-3.5 py-2.5 text-base sm:text-sm text-[#141413] placeholder:text-[#9A9890] focus:outline-none focus:border-[#141413] focus:ring-1 focus:ring-[#141413] transition resize-none"
             />
           </div>
 
-          <div className="flex items-center gap-1.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80 px-3 py-2 text-xs text-zinc-400">
-            <Info className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
-            <span>Your name is saved with this edit for class audit transparency.</span>
+          <div className="flex items-center gap-1.5 rounded-2xl bg-[#F2F1EB] border border-[#E2E1DA] px-3.5 py-2 text-xs text-[#52524E]">
+            <Info className="h-4 w-4 shrink-0 text-[#73726C]" />
+            <span>Your name will be recorded in the audit history for class transparency.</span>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E8E7E0]">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[40px] rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
+              className="min-h-[40px] rounded-full border border-[#DCDAD2] bg-white px-5 py-2 text-xs font-medium text-[#4A4A46] hover:bg-[#EFEFEA] transition cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="min-h-[40px] rounded-lg bg-zinc-100 px-5 py-2 text-xs font-semibold text-zinc-950 hover:bg-zinc-200 disabled:opacity-50 transition shadow-sm cursor-pointer"
+              className="min-h-[40px] rounded-full bg-[#141413] px-6 py-2 text-xs font-semibold text-white hover:bg-black disabled:opacity-50 transition shadow-sm cursor-pointer"
             >
               {isSubmitting
                 ? 'Saving...'

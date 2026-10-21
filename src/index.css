@@ -4,45 +4,48 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;          /* Zinc 950 #09090b */
-    --foreground: 0 0% 98%;               /* Zinc 50 #fafafa */
-    --card: 240 10% 5.9%;                 /* Zinc 900 #121215 */
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 5.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;                  /* Clean White */
-    --primary-foreground: 240 5.9% 10%;   /* Dark text on white */
-    --secondary: 240 3.7% 15.9%;          /* Zinc 800 #27272a */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;              /* Zinc 800 */
-    --muted-foreground: 240 5% 64.9%;     /* Zinc 400 #a1a1aa */
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    /* Warm Stone Palette (from Landing Page references) */
+    --background: 45 25% 97%;             /* #FAF9F5 Warm Cream / Bone */
+    --foreground: 40 4% 8%;               /* #141413 Deep Charcoal Ink */
+    --card: 45 20% 95%;                   /* #F3F2EC Stone Card Surface */
+    --card-foreground: 40 4% 8%;
+    --popover: 45 20% 98%;
+    --popover-foreground: 40 4% 8%;
+
+    /* High-Contrast Primary & Pill Actions */
+    --primary: 40 4% 8%;                  /* Deep Near-Black #141413 */
+    --primary-foreground: 45 25% 97%;     /* Warm Cream #FAF9F5 */
+    --secondary: 45 15% 90%;              /* #E9E8E1 Soft Stone */
+    --secondary-foreground: 40 4% 8%;
+    --muted: 45 15% 92%;                  /* #ECEBE4 */
+    --muted-foreground: 40 3% 45%;        /* #73726C Muted Slate */
+    --accent: 45 15% 90%;
+    --accent-foreground: 40 4% 8%;
     --destructive: 0 72% 51%;             /* Red #ef4444 */
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;             /* Zinc 800 #27272a */
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;               /* Zinc 300 #d4d4d8 */
-    --radius: 0.5rem;
+    --border: 45 10% 88%;                 /* #E2E1DA Subtle Stone Border */
+    --input: 45 10% 88%;
+    --ring: 40 4% 20%;
+    --radius: 0.75rem;
 
     /* Domain Semantic State Tokens */
-    --state-overdue: 0 72% 51%;          /* Crimson / Red */
-    --state-overdue-bg: 0 72% 51%;
-    --state-needs-date: 38 92% 50%;      /* Amber / Orange */
-    --state-needs-date-bg: 38 92% 50%;
-    --state-today: 217 91% 60%;          /* Blue */
-    --state-today-bg: 217 91% 60%;
-    --state-done: 142 71% 45%;           /* Emerald */
-    --state-done-bg: 142 71% 45%;
-    --state-undone: 215 16% 47%;         /* Slate */
-    --state-undone-bg: 215 16% 47%;
+    --state-overdue: 350 78% 46%;          /* Crimson Rose #DE1B3A */
+    --state-overdue-bg: 350 100% 95%;
+    --state-needs-date: 36 90% 46%;        /* Warm Amber #E27909 */
+    --state-needs-date-bg: 45 100% 94%;
+    --state-today: 142 58% 34%;            /* Forest Emerald #23854E */
+    --state-today-bg: 142 70% 94%;
+    --state-done: 40 3% 55%;               /* Muted Stone Gray #8D8B84 */
+    --state-done-bg: 45 15% 94%;
+    --state-undone: 215 16% 47%;           /* Slate */
+    --state-undone-bg: 215 25% 94%;
   }
 
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-zinc-800 selection:text-white;
-    color-scheme: dark;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-[#141413] selection:text-[#FAF9F5];
+    color-scheme: light;
   }
 }

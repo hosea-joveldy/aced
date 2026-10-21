@@ -43,19 +43,21 @@
 - **Suggested Fix**: When Google Classroom integration is activated in a future phase, create a `GoogleClassroomProvider` implementing the same `ClassroomProvider` interface.
 - **Severity**: Non-blocking (feature flag defaults to OFF and UI is completely absent from DOM when disabled).
 
-### R4 (Info) — Wireframes UI Redesign Implemented (Task T12)
-- **Scope**: Full UI redesign according to `wireframes.html` across all screens:
-  - Join class page: Kahoot! + Notion-inspired split-screen with celestial Solar System illustration (`SolarSystemIllustration.tsx`), high-contrast class code input, and instant demo shortcuts.
-  - App Shell: Persistent left sidebar navigation (`Sidebar.tsx`) on desktop with user "Me" profile card; responsive bottom tab bar on mobile with 44px+ touch targets.
-  - Board Screen: Apple Reminders-style 3-tile metric strip (Overdue, Due today, Needs a date), live keyword search input, horizontal subject filter chips, and grouped deadline sections with helper annotations.
-  - Subjects Screen: Google Classroom-style cards with 70px colored subject banners, one-click classroom code copy button, and active/missing date counters in a responsive 3-column desktop grid.
-  - History Screen: Linear-style chronological audit feed with circular editor avatars, action descriptions, and `[before] → [after]` diff pills.
-- **Verification**: All 10 Vitest test suites (36 tests) and all 8 Playwright e2e test suites pass with exit code 0 on both 375px mobile and 1280px desktop viewports.
-- **Severity**: Complete & Verified.
+### R4 (Info) — Editorial Warm Stone UI Redesign & Comprehensive Overhaul (Task T14)
+- **Scope**: Complete overhaul following user specifications:
+  - **Classroom Code Removal**: Removed all references to `classroomCode` across domain types, repository interfaces, local seed data, forms, cards, import modal, and `supabase/schema.sql`. Verified Google Classroom API root cause: `courses.list` does not expose `enrollmentCode` to student accounts, making local classroom codes ineffective for matching.
+  - **Database Reset**: Safely purged all existing data across `edit_history`, `assignments`, `subjects`, and `classes` in Supabase using service-role cleanup without modifying `.env`.
+  - **Class Creation & Leadership Transfer**: Added capability for any user to create a new class, automatically become Class Leader with unique class code, and transfer leadership to classmates via History screen modal.
+  - **Auth Redesign**: Restyled join/create view using the dual-pane layout from `login-reference.png`. Removed legacy texts `"Class of 2026 Live sync"`, `"Aced Crowdsourced Board"`, and `"Zero-config offline mode"`.
+  - **Interactive Landing Page**: Built root landing page with custom high-DPI HTML5 canvas hero featuring smooth mouse avoidance physics and spring orbit return (`InteractiveHeroCanvas.tsx`), bento feature showcase cards, deep moss contrast value card, 3-step setup roadmap, interactive FAQ accordion, and dual CTA buttons.
+  - **Warm Stone Design System**: Overhauled `DESIGN_SYSTEM.md` and entire UI token architecture (`#FAF9F5` background, `#141413` ink, `#162417` moss, Playfair Display / Instrument Serif typography, rounded-3xl cards, and pill buttons with dot indicators).
+- **Verification**: All 10 Vitest test suites (37 unit/component tests) and 9 Playwright e2e test suites pass with exit code 0 on both mobile (375px) and desktop (1280px) viewports.
+- **Severity**: Complete, Verified & Approved.
 
 ---
 
 ## 3. Reviewer Verdict
 
-**Verdict: APPROVED — MVP COMPLETE & REDESIGNED UI PRODUCTION READY.**  
+**Verdict: APPROVED — ALL OVERHAUL REQUIREMENTS VERIFIED & PRODUCTION READY.**  
+The application fully meets all functional and design requirements without breaking any architectural seams, environment safety constraints, or test suites.
 All 12 tasks in `TASKS.json` are verified and finished. Zero regressions observed. All gate checks (`tsc --noEmit`, `npm test`, `npm run build`, `npx playwright test`) pass cleanly with exit code 0.

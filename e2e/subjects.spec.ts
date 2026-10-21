@@ -5,7 +5,7 @@ test.describe('Subjects Management Flow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/#/join');
 
     // Join class
     await page.getByLabel(/email address/i).fill('sam.subjects@aced.school');
@@ -20,7 +20,6 @@ test.describe('Subjects Management Flow', () => {
     // Verify existing seed subjects are listed
     await expect(page.getByText('AP Calculus BC')).toBeVisible();
     await expect(page.getByText('Mr. Harrison')).toBeVisible();
-    await expect(page.getByText('mat-401')).toBeVisible();
 
     // Add a new subject
     await page.getByRole('button', { name: /add subject/i }).click();
@@ -30,13 +29,11 @@ test.describe('Subjects Management Flow', () => {
 
     await page.getByLabel(/subject name \*/i).fill('Music Theory');
     await page.getByLabel(/teacher name \*/i).fill('Mr. Chopin');
-    await page.getByLabel(/google classroom code/i).fill('mus-101');
     await page.getByRole('dialog').getByRole('button', { name: /add subject/i }).click();
 
     // Verify newly added subject appears
     await expect(page.getByText('Music Theory')).toBeVisible();
     await expect(page.getByText('Mr. Chopin')).toBeVisible();
-    await expect(page.getByText('mus-101')).toBeVisible();
 
     // Edit the subject
     await page.getByRole('button', { name: /edit music theory/i }).click();

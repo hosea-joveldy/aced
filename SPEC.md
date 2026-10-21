@@ -1,46 +1,55 @@
 # SPEC.md — Aced Specification
 
 ## 1. Vision & Problem
-High school and college students frequently miss deadlines because teachers announce homework and projects haphazardly across verbal announcements, group chats, or Google Classroom posts without due dates. Aced is a lightweight, mobile-first crowdsourced deadline board for a class. Any student in the class can join with a class code, see their class subjects and Classroom codes, and contribute or refine assignment deadlines.
+High school and college students frequently miss deadlines because teachers announce homework and projects haphazardly across verbal announcements, group chats, or Google Classroom posts without due dates. Aced is a crowdsourced deadline board per class. Any student in the class can create or join a class with a code, manage subjects, and contribute or refine assignment deadlines.
 
 ## 2. Target Users & Environment
-- **Target Users**: Students accessing the board primarily via mobile browsers (375px+ viewport). Class representatives assist by keeping subject info and dates accurate.
-- **Identity Model**: Students authenticate with email + display name + class code. Supports local simulated/mock email auth offline (no .env needed) and Supabase Auth when configured. Each class has a designated Class Leader (representative).
+- **Target Users**: Students accessing the board primarily via mobile and desktop browsers. Class representatives (Class Leaders) help maintain information accuracy with rollback controls.
+- **Identity & Class Creation Model**:
+  - Any student can create their own class (specifying Class Name, their Name, Email). The creator automatically becomes the designated **Class Leader**.
+  - Class Leaders can transfer/reassign leadership to any classmate once they join.
+  - Students join an existing class by entering the class code provided by their Class Leader, plus their name and email.
+  - Supports local simulated/mock email auth offline (no .env needed) and Supabase backend when configured.
 
 ## 3. Core Features (Scope)
-1. **Class Join & Session Management**:
-   - Join existing class by class code (`ACED2026` in demo seed), student email, and display name.
-   - Designates Class Leader based on matching class leader email (`leader@aced.school` in demo class).
-   - Switch or leave class; persistent local session.
-2. **Class Subjects Directory**:
-   - List subjects with assigned teacher name and Google Classroom code.
-   - Add and update subject details.
-3. **Crowdsourced Deadline Board**:
+1. **Interactive Editorial Landing Page**:
+   - Full landing page at the root route for unauthenticated visitors.
+   - Interactive mouse-reactive hero canvas (orbital dots fluidly evading cursor).
+   - High-contrast editorial typography, value bento cards, dark moss showcase banner, 3-step workflow, FAQ accordion, and dual CTAs ("Create a Class" and "Join with Code").
+2. **Class Creation & Class Join**:
+   - Create class with automatic unique class code generation and creator designated as Class Leader.
+   - Join class by entering code, student email, and name.
+   - Leadership reassignment feature allowing the current Class Leader to transfer the leader role to another student.
+   - Persistent local session and leave class capability.
+3. **Class Subjects Directory (Classroom Code Removed)**:
+   - List subjects with assigned teacher names.
+   - Add, edit, and delete subjects without requiring a classroom code (verified that Google Classroom API does not query coursework by classroom code).
+4. **Crowdsourced Deadline Board**:
    - Grouped views: *Needs a date*, *Overdue*, *Due today*, *This week*, *Later*, and *Done*.
-   - Quick summary metrics strip (e.g. counts for overdue, today, missing date).
+   - Minimalist bento summary metrics strip (overdue, today, missing date).
    - Filter by subject and completion state.
-4. **Assignment Management**:
+5. **Assignment Management**:
    - Add new assignment with title, subject, optional due date (`YYYY-MM-DD`), and notes.
-   - Edit assignment details inline or via modal. Mark assignments complete/incomplete.
-   - All edits track and attribute both student display name and student email to prevent and identify griefing.
-5. **Edit History & Class Leader Rollback**:
+   - Edit assignment details with change recording.
+   - Toggle completion status.
+   - All edits track and attribute student display name and email.
+6. **Edit History & Class Leader Rollback**:
    - Audit trail capturing field modified, previous value, updated value, editor display name, editor email, and timestamp.
-   - Role-based rollback permission: Only the designated Class Leader can execute rollbacks/reverts. Regular students have view-only access to inspect the audit trail.
-6. **Classroom Import Add-on (Feature Flagged)**:
+   - Role-based rollback: only the designated Class Leader can revert edits.
+7. **Classroom Import Add-on (Feature Flagged)**:
    - Behind `VITE_FEATURE_CLASSROOM_IMPORT` (default OFF).
-   - Decoupled `ClassroomProvider` interface with an offline no-op provider.
-   - UI cleanly omitted from the DOM when disabled.
+   - Coursework import by selecting enrolled Google Classroom course or using Quick Paste titles; classroom code auto-matching removed.
 
 ## 4. Architectural & Technical Decisions
-- **Frontend Stack**: Vite, React 19, TypeScript (strict), Tailwind CSS, shadcn/ui (new-york style, neutral base, indigo primary, 0.5rem radius, Inter font), React Router (HashRouter for static hosting).
+- **Frontend Stack**: Vite, React 19, TypeScript (strict), Tailwind CSS, React Router (HashRouter).
+- **Design System**: Warm stone aesthetic (`#FAF9F5`), high-contrast ink (`#141413`), dark moss contrast card (`#162417`), editorial serif headlines (`Playfair Display` / serif), Inter body, pill buttons with indicator dots.
 - **Storage Seam (`AcedRepository`)**: UI relies entirely on async repository abstraction:
-   - `LocalRepository`: LocalStorage (`aced.db.v1`) seeded with class `ACED2026`, 6 subjects, 9 assignments (4 no date, 3 overdue, 2 today/tomorrow, 1 done), and 3 history logs with email attribution.
-   - `SupabaseRepository`: Supabase Postgres/RLS backend when configured via environment.
-   - Safe env reader (`src/lib/env.ts`) providing defaults without runtime exceptions.
-- **Deterministic Dates**: Stored strictly as `'YYYY-MM-DD'`. "Today" determined via an injectable `getToday()` helper.
-- **Database & Migration Contract**: Single re-runnable `supabase/schema.sql` with idempotent table definitions including `classes.leader_email` and `edit_history.editor_email`, and RLS policies. Documented in `data/README.md`.
+  - `LocalRepository`: LocalStorage (`aced.db.v1`) with seed class `ACED2026`, subjects, assignments, and edit history.
+  - `SupabaseRepository`: Supabase Postgres/RLS backend.
+  - Safe env reader (`src/lib/env.ts`).
+- **Deterministic Dates**: Stored strictly as `'YYYY-MM-DD'`. "Today" determined via `getToday()`.
 
 ## 5. Out of Scope
-- Google OAuth logins or live external Google Classroom API calls.
+- Google OAuth requirement for the core app (remains zero-config offline capable).
 - Hiding assignments automatically after their deadline passes.
-- File uploads, binary attachments, push notifications, and background reminder jobs.
+- File uploads, binary attachments, push notifications.

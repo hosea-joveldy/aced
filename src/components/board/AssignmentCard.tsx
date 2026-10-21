@@ -20,10 +20,10 @@ export function AssignmentCard({
 
   return (
     <div
-      className={`group flex items-start gap-3.5 rounded-xl border p-3.5 sm:p-4 transition ${
+      className={`group flex items-start gap-3.5 rounded-3xl border p-4 sm:p-5 transition shadow-sm ${
         assignment.completed
-          ? 'border-zinc-800/50 bg-zinc-950/40 opacity-70'
-          : 'border-zinc-800/80 bg-zinc-900/40 hover:bg-zinc-900/70 hover:border-zinc-700'
+          ? 'border-[#E8E7E0] bg-[#F7F6F1] opacity-65'
+          : 'border-[#E2E1DA] bg-white hover:border-[#D5D4CC] hover:shadow-md'
       }`}
     >
       {/* 44px+ touch target checkbox */}
@@ -35,13 +35,13 @@ export function AssignmentCard({
           assignment.completed ? 'incomplete' : 'complete'
         }`}
         onClick={() => onToggleComplete(assignment)}
-        className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center -ml-2 -mt-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-zinc-400 cursor-pointer"
+        className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center -ml-2 -mt-2 rounded-full focus:outline-none focus:ring-2 focus:ring-[#141413] cursor-pointer"
       >
         <span
           className={`flex h-5 w-5 items-center justify-center rounded-md border transition ${
             assignment.completed
-              ? 'border-emerald-500 bg-emerald-500 text-zinc-950'
-              : 'border-zinc-700 bg-zinc-950 hover:border-zinc-400'
+              ? 'border-emerald-600 bg-emerald-600 text-white'
+              : 'border-[#D5D4CC] bg-[#FAF9F5] hover:border-[#141413]'
           }`}
         >
           {assignment.completed && <Check className="h-3.5 w-3.5 stroke-[3]" />}
@@ -50,9 +50,9 @@ export function AssignmentCard({
 
       {/* Main Content */}
       <div className="flex-1 min-w-0 pt-0.5">
-        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
           {subject && (
-            <span className="inline-block rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5 text-xs font-medium text-zinc-400">
+            <span className="inline-block rounded-full border border-[#D5D4CC] bg-[#F2F1EB] px-3 py-0.5 text-xs font-semibold text-[#52524E]">
               {subject.name}
             </span>
           )}
@@ -60,17 +60,17 @@ export function AssignmentCard({
         </div>
 
         <h4
-          className={`text-sm sm:text-base font-medium leading-snug break-words ${
+          className={`text-sm sm:text-base font-semibold leading-snug break-words ${
             assignment.completed
-              ? 'text-zinc-500 line-through'
-              : 'text-zinc-100'
+              ? 'text-[#73726C] line-through'
+              : 'text-[#141413]'
           }`}
         >
           {assignment.title}
         </h4>
 
         {assignment.notes && (
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400 line-clamp-2 break-words">
+          <p className="mt-1 text-xs sm:text-sm text-[#52524E] line-clamp-2 break-words">
             {assignment.notes}
           </p>
         )}
@@ -81,7 +81,7 @@ export function AssignmentCard({
         <button
           type="button"
           onClick={() => onEdit(assignment)}
-          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950/80 p-2 text-xs font-medium text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200 hover:border-zinc-700 transition -mr-2 -mt-2 cursor-pointer shadow-sm"
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full border border-[#D5D4CC] bg-white p-2 text-xs font-medium text-[#52524E] hover:bg-[#F2F1EB] hover:text-[#141413] transition -mr-2 -mt-2 cursor-pointer shadow-sm"
           title={`Edit ${assignment.title}`}
           aria-label={`Edit ${assignment.title}`}
         >

@@ -18,7 +18,8 @@ describe('LocalRepository', () => {
 
     const subjects = await repo.getSubjects(cls!.id);
     expect(subjects).toHaveLength(6);
-    expect(subjects.some((s) => s.classroomCode)).toBe(true);
+    expect(subjects[0].name).toBe('AP Calculus BC');
+    expect(subjects[0].teacherName).toBe('Mr. Harrison');
 
     const assignments = await repo.getAssignments(cls!.id);
     expect(assignments.length).toBeGreaterThanOrEqual(9);
@@ -103,5 +104,19 @@ describe('LocalRepository', () => {
     const revertedRecord = historyAfter.find((h) => h.id === targetEdit!.id);
     expect(revertedRecord?.reverted).toBe(true);
     expect(revertedRecord?.revertedBy).toBe('Undoer Student');
+  });
+
+  it('supports creating a new class and updating class leader', async () => {
+    const newClass = await repo.createClass('Class of 2027', 'founder@school.edu');
+    expect(newClass.id).toBeDefined();
+    expect(newClass.name).toBe('Class of 2027');
+    expect(newClass.leaderEmail).toBe('founder@school.edu');
+    expect(newClass.code).toMatch(/^ACED-[A-Z0-9]{4}$/);
+
+    const retrieved = await repo.getClassByCode(newClass.code);
+    expect(retrieved?.id).toBe(newClass.id);
+
+    const updated = await repo.updateClassLeader(newClass.id, 'newleader@school.edu');
+    expect(updated.leaderEmail).toBe('newleader@school.edu');
   });
 });

@@ -20,7 +20,6 @@ create table if not exists subjects (
   class_id uuid not null references classes(id) on delete cascade,
   name text not null,
   teacher_name text not null,
-  classroom_code text,
   created_at timestamptz not null default now()
 );
 

@@ -32,7 +32,7 @@ describe('SubjectsScreen Component', () => {
       </RepositoryProvider>
     );
 
-  it('renders all 6 initial seed subjects with teachers and classroom codes', async () => {
+  it('renders all 6 initial seed subjects with teachers', async () => {
     renderScreen();
 
     await waitFor(() => {
@@ -40,7 +40,6 @@ describe('SubjectsScreen Component', () => {
     });
 
     expect(screen.getByText('Mr. Harrison')).toBeInTheDocument();
-    expect(screen.getByText('mat-401')).toBeInTheDocument();
     expect(screen.getByText('AP Chemistry')).toBeInTheDocument();
     expect(screen.getByText('Dr. Chen')).toBeInTheDocument();
   });
@@ -87,9 +86,6 @@ describe('SubjectsScreen Component', () => {
     fireEvent.change(within(dialog).getByLabelText(/teacher name \*/i), {
       target: { value: 'Ms. Thorne' },
     });
-    fireEvent.change(within(dialog).getByLabelText(/google classroom code/i), {
-      target: { value: 'myt-301' },
-    });
 
     // Click submit in dialog
     fireEvent.click(
@@ -99,21 +95,20 @@ describe('SubjectsScreen Component', () => {
     await waitFor(() => {
       expect(screen.getByText('World Mythology')).toBeInTheDocument();
       expect(screen.getByText('Ms. Thorne')).toBeInTheDocument();
-      expect(screen.getByText('myt-301')).toBeInTheDocument();
     });
 
     // Subject is created cleanly without synthetic "Coursework #1 / #2" placeholder assignments
     expect(screen.queryByText('Coursework #1: Reading & Reflection')).not.toBeInTheDocument();
   });
 
-  it('shows all Google Classroom assignments for subjects with a classroom code even when there are no deadlines, and lets students assign a deadline', async () => {
+  it('shows all assignments for subjects even when there are no deadlines, and lets students assign a deadline', async () => {
     renderScreen();
 
     await waitFor(() => {
       expect(screen.getByText('AP Calculus BC')).toBeInTheDocument();
     });
 
-    const calcClassroomSection = screen.getByTestId('classroom-assignments-mat-401');
+    const calcClassroomSection = screen.getByTestId('classroom-assignments-sub-calc');
     // Shows dated and undated assignments for AP Calculus BC
     expect(within(calcClassroomSection).getByText('Calculus Problem Set 4')).toBeInTheDocument();
     expect(within(calcClassroomSection).getByText('Integral Applications Worksheet')).toBeInTheDocument();

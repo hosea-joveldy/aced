@@ -11,7 +11,6 @@ export interface Subject {
   classId: string;
   name: string;
   teacherName: string;
-  classroomCode?: string | null;
   createdAt: string;
 }
 

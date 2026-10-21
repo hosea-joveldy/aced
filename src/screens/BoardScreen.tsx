@@ -177,32 +177,31 @@ export function BoardScreen() {
       {/* Top Header Row */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
+          <h2 className="text-2xl sm:text-3xl font-serif font-semibold tracking-tight text-[#141413]">
             Assignments & Deadlines
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#73726C] mt-1">
             Crowdsourced by students in {session?.className}
           </p>
         </div>
 
         {/* Action Controls: Search & Add Button */}
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Minimalist search input */}
           <div className="relative flex-1 sm:w-64 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#73726C] pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search assignments..."
-              className="w-full h-10 rounded-lg border border-zinc-800 bg-zinc-900/60 pl-9 pr-8 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition shadow-inner"
+              className="w-full h-10 rounded-full border border-[#D5D4CC] bg-white pl-9 pr-8 text-sm text-[#141413] placeholder:text-[#9A9890] focus:outline-none focus:border-[#141413] focus:ring-1 focus:ring-[#141413] transition shadow-sm"
               aria-label="Search assignments"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 p-0.5 rounded cursor-pointer"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#73726C] hover:text-[#141413] p-0.5 rounded cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="h-3.5 w-3.5" />
@@ -215,7 +214,7 @@ export function BoardScreen() {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
+            className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-full bg-[#141413] px-5 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-black transition cursor-pointer shadow-sm"
           >
             <Plus className="h-4 w-4" />
             <span>Add Assignment</span>
@@ -246,7 +245,7 @@ export function BoardScreen() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-24 rounded-xl border border-zinc-800/80 bg-zinc-900/30 animate-pulse p-4"
+              className="h-24 rounded-3xl border border-[#E2E1DA] bg-white/60 animate-pulse p-4"
             />
           ))}
         </div>
@@ -256,17 +255,17 @@ export function BoardScreen() {
       {!isLoading && error && (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center rounded-xl border border-red-900/50 bg-red-950/40 p-6 text-center"
+          className="flex flex-col items-center justify-center rounded-3xl border border-red-200 bg-red-50 p-6 text-center"
         >
-          <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
-          <h3 className="text-sm font-semibold text-red-200">
+          <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
+          <h3 className="text-sm font-semibold text-red-900">
             Failed to Load Assignments
           </h3>
-          <p className="text-xs text-red-300 mt-1 max-w-sm">{error}</p>
+          <p className="text-xs text-red-800 mt-1 max-w-sm">{error}</p>
           <button
             type="button"
             onClick={loadData}
-            className="mt-4 flex min-h-[40px] items-center gap-2 rounded-lg border border-red-800 bg-zinc-900 px-4 py-2 text-xs font-medium text-red-300 hover:bg-zinc-800 transition shadow-sm cursor-pointer"
+            className="mt-4 flex min-h-[36px] items-center gap-2 rounded-full border border-red-300 bg-white px-4 py-1.5 text-xs font-semibold text-red-800 hover:bg-red-100 transition shadow-sm cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span>Retry</span>
@@ -276,20 +275,20 @@ export function BoardScreen() {
 
       {/* Empty State when Search Query matches nothing */}
       {!isLoading && !error && filteredAssignments.length === 0 && searchQuery && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#D5D4CC] bg-white p-8 text-center shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EFEFE9] text-[#141413] mb-3">
             <Search className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-200">
+          <h3 className="text-base font-serif font-semibold text-[#141413]">
             No assignments match &ldquo;{searchQuery}&rdquo;
           </h3>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
+          <p className="text-xs text-[#73726C] mt-1 max-w-sm mb-4">
             Try checking for typos or searching a different term.
           </p>
           <button
             type="button"
             onClick={() => setSearchQuery('')}
-            className="flex min-h-[36px] items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition cursor-pointer"
+            className="flex min-h-[36px] items-center gap-2 rounded-full border border-[#D5D4CC] bg-white px-4 py-1.5 text-xs font-medium text-[#52524E] hover:bg-[#F2F1EB] hover:text-[#141413] transition cursor-pointer"
           >
             <span>Clear Search</span>
           </button>
@@ -298,20 +297,20 @@ export function BoardScreen() {
 
       {/* Empty State when Subject Filter matches nothing */}
       {!isLoading && !error && filteredAssignments.length === 0 && !searchQuery && selectedSubject && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#D5D4CC] bg-white p-8 text-center shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EFEFE9] text-[#141413] mb-3">
             <CalendarDays className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-200">
+          <h3 className="text-base font-serif font-semibold text-[#141413]">
             No assignments for {selectedSubject.name}
           </h3>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
+          <p className="text-xs text-[#73726C] mt-1 max-w-sm mb-4">
             No deadlines currently posted for this subject.
           </p>
           <button
             type="button"
             onClick={() => setSelectedSubjectId(null)}
-            className="flex min-h-[36px] items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition cursor-pointer"
+            className="flex min-h-[36px] items-center gap-2 rounded-full border border-[#D5D4CC] bg-white px-4 py-1.5 text-xs font-medium text-[#52524E] hover:bg-[#F2F1EB] hover:text-[#141413] transition cursor-pointer"
           >
             <span>Show All Subjects</span>
           </button>
@@ -320,20 +319,20 @@ export function BoardScreen() {
 
       {/* Empty State when zero total assignments */}
       {!isLoading && !error && assignments.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
-            <CalendarDays className="h-5 w-5" />
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#D5D4CC] bg-white p-10 text-center shadow-sm">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EFEFE9] text-[#141413] mb-3">
+            <CalendarDays className="h-6 w-6" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-200">
+          <h3 className="text-lg font-serif font-semibold text-[#141413]">
             No Deadlines Posted Yet
           </h3>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
+          <p className="text-xs sm:text-sm text-[#73726C] mt-1 max-w-sm mb-5">
             Be the first in your class to add an upcoming assignment or homework!
           </p>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[40px] items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
+            className="flex min-h-[44px] items-center gap-2 rounded-full bg-[#141413] px-6 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-black transition cursor-pointer shadow-md"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Assignment</span>
@@ -343,7 +342,7 @@ export function BoardScreen() {
 
       {/* Grouped Board View */}
       {!isLoading && !error && filteredAssignments.length > 0 && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           <BoardGroup
             groupId="needs-date"
             title="Needs a date"

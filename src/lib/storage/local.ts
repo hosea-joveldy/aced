@@ -66,6 +66,57 @@ export class LocalRepository implements AcedRepository {
     return data.classes.find((c) => c.id === id) || null;
   }
 
+  async createClass(
+    name: string,
+    leaderEmail: string,
+    customCode?: string
+  ): Promise<Class> {
+    const data = this.loadData();
+    const trimmedName = name.trim();
+    const trimmedEmail = leaderEmail.trim().toLowerCase();
+
+    // Generate clean alphanumeric code e.g. "ACED-7K2M" or use custom
+    let code = (customCode?.trim().toUpperCase()) || '';
+    if (!code) {
+      const randPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+      code = `ACED-${randPart}`;
+    }
+
+    // Ensure unique code
+    let uniqueCode = code;
+    let counter = 1;
+    while (data.classes.some((c) => c.code.toUpperCase() === uniqueCode.toUpperCase())) {
+      uniqueCode = `${code}-${counter++}`;
+    }
+
+    const newClass: Class = {
+      id: `class-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      code: uniqueCode,
+      name: trimmedName,
+      leaderEmail: trimmedEmail,
+      createdAt: getToday(),
+    };
+
+    data.classes.push(newClass);
+    this.saveData(data);
+    return newClass;
+  }
+
+  async updateClassLeader(
+    classId: string,
+    newLeaderEmail: string
+  ): Promise<Class> {
+    const data = this.loadData();
+    const cls = data.classes.find((c) => c.id === classId);
+    if (!cls) {
+      throw new Error(`Class with ID "${classId}" not found`);
+    }
+
+    cls.leaderEmail = newLeaderEmail.trim().toLowerCase();
+    this.saveData(data);
+    return cls;
+  }
+
   async getSubjects(classId: string): Promise<Subject[]> {
     const data = this.loadData();
     return data.subjects.filter((s) => s.classId === classId);
@@ -81,7 +132,6 @@ export class LocalRepository implements AcedRepository {
       classId,
       name: input.name.trim(),
       teacherName: input.teacherName.trim(),
-      classroomCode: input.classroomCode?.trim() || null,
       createdAt: getToday(),
     };
     data.subjects.push(newSubject);
@@ -107,10 +157,6 @@ export class LocalRepository implements AcedRepository {
         input.teacherName !== undefined
           ? input.teacherName.trim()
           : current.teacherName,
-      classroomCode:
-        input.classroomCode !== undefined
-          ? input.classroomCode?.trim() || null
-          : current.classroomCode,
     };
     data.subjects[index] = updated;
     this.saveData(data);

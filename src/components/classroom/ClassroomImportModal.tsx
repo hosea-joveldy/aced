@@ -63,7 +63,7 @@ export function ClassroomImportModal({
   }, [subjects, targetSubjectId]);
 
   const loadCourseAssignments = useCallback(
-    async (courseId: string, courseList: ClassroomCourse[]) => {
+    async (courseId: string) => {
       setSelectedCourseId(courseId);
       setIsLoading(true);
       setError(null);
@@ -72,29 +72,13 @@ export function ClassroomImportModal({
         const cwList = await provider.importAssignments(courseId);
         setCoursework(cwList);
         setSelectedAssignmentIndices(new Set(cwList.map((_, i) => i)));
-
-        // Try to auto-match target subject strictly by classroom code or course ID
-        const selectedCourse = courseList.find((c) => c.id === courseId);
-        if (selectedCourse && subjects.length > 0) {
-          const match = subjects.find(
-            (s) =>
-              s.classroomCode &&
-              ((selectedCourse.enrollmentCode &&
-                s.classroomCode.trim().toLowerCase() === selectedCourse.enrollmentCode.trim().toLowerCase()) ||
-               (selectedCourse.id &&
-                s.classroomCode.trim().toLowerCase() === selectedCourse.id.trim().toLowerCase()))
-          );
-          if (match) {
-            setTargetSubjectId(match.id);
-          }
-        }
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Failed to fetch course assignments');
       } finally {
         setIsLoading(false);
       }
     },
-    [subjects]
+    []
   );
 
   const handleConnectGoogle = useCallback(async (force = false) => {
@@ -107,24 +91,7 @@ export function ClassroomImportModal({
       setCourses(courseList);
 
       if (courseList.length > 0) {
-        // Try to match the first available course with a subject by code or ID
-        let initialCourseId = courseList[0].id;
-        for (const c of courseList) {
-          const matched = subjects.find(
-            (s) =>
-              s.classroomCode &&
-              ((c.enrollmentCode &&
-                s.classroomCode.trim().toLowerCase() === c.enrollmentCode.trim().toLowerCase()) ||
-               (c.id &&
-                s.classroomCode.trim().toLowerCase() === c.id.trim().toLowerCase()))
-          );
-          if (matched) {
-            initialCourseId = c.id;
-            setTargetSubjectId(matched.id);
-            break;
-          }
-        }
-        await loadCourseAssignments(initialCourseId, courseList);
+        await loadCourseAssignments(courseList[0].id);
       }
     } catch (err: unknown) {
       const provider = new GoogleClassroomProvider();
@@ -134,62 +101,7 @@ export function ClassroomImportModal({
     } finally {
       setIsLoading(false);
     }
-  }, [loadCourseAssignments, subjects]);
-
-  const handleAutoMatchAll = async () => {
-    if (!session) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const provider = new GoogleClassroomProvider();
-      const existingAssignments = await repo.getAssignments(session.classId);
-      let totalImported = 0;
-      const matchedNames: string[] = [];
-
-      for (const subject of subjects) {
-        if (!subject.classroomCode) continue;
-        try {
-          const res = await provider.syncCourseworkForSubject(subject, async (item) => {
-            // Check if assignment with identical title already exists
-            const alreadyExists = existingAssignments.some(
-              (a) => a.subjectId === subject.id && a.title.trim().toLowerCase() === item.title.trim().toLowerCase()
-            );
-            if (!alreadyExists) {
-              await repo.createAssignment(
-                session.classId,
-                {
-                  title: item.title,
-                  subjectId: subject.id,
-                  dueDate: item.dueDate,
-                  notes: item.notes || `Imported from Google Classroom (${item.courseName})`,
-                },
-                session.displayName,
-                session.email
-              );
-              totalImported++;
-            }
-          });
-          matchedNames.push(`${subject.name} (${res.courseName}): ${res.count} items`);
-        } catch {
-          // Skip courses without matches
-        }
-      }
-
-      if (totalImported > 0 || matchedNames.length > 0) {
-        setSuccessMessage(`Auto-matched and imported ${totalImported} assignment(s) across matched subjects!`);
-        if (onImportComplete) onImportComplete();
-        setTimeout(() => {
-          onClose();
-        }, 1800);
-      } else {
-        setError('No courses matched your subjects’ Google Classroom codes.');
-      }
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Auto-match import failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [loadCourseAssignments]);
 
   // If already authorized in this browser session, auto-load courses on open
   useEffect(() => {
@@ -204,7 +116,7 @@ export function ClassroomImportModal({
   if (!isOpen) return null;
 
   const handleCourseChange = async (courseId: string) => {
-    await loadCourseAssignments(courseId, courses);
+    await loadCourseAssignments(courseId);
   };
 
   const handleSignOutGoogle = () => {
@@ -402,7 +314,7 @@ export function ClassroomImportModal({
             ) : (
               subjects.map((sub) => (
                 <option key={sub.id} value={sub.id}>
-                  {sub.name} ({sub.teacherName}){sub.classroomCode ? ` — [${sub.classroomCode}]` : ''}
+                  {sub.name} ({sub.teacherName})
                 </option>
               ))
             )}
@@ -452,28 +364,6 @@ export function ClassroomImportModal({
               </div>
             ) : (
               <div className="space-y-4">
-                {/* 1-Click Auto Match & Sync banner */}
-                <div className="rounded-md border border-primary/30 bg-primary/5 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="text-xs">
-                    <p className="font-semibold text-foreground flex items-center gap-1.5">
-                      <Sparkles className="h-3.5 w-3.5 text-primary" />
-                      <span>Auto-Match by Classroom Code</span>
-                    </p>
-                    <p className="text-muted-foreground mt-0.5">
-                      Automatically maps courses with matching codes and imports coursework into your subjects.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleAutoMatchAll}
-                    disabled={isLoading}
-                    className="shrink-0 inline-flex min-h-[36px] items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-sm"
-                  >
-                    <DownloadCloud className="h-3.5 w-3.5" />
-                    <span>Auto-Import All</span>
-                  </button>
-                </div>
-
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0 pr-2">
                     <label htmlFor="select-google-course" className="block text-sm font-medium text-foreground mb-1">

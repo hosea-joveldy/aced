@@ -136,6 +136,72 @@ export class SupabaseRepository implements AcedRepository {
     };
   }
 
+  async createClass(
+    name: string,
+    leaderEmail: string,
+    customCode?: string
+  ): Promise<Class> {
+    const trimmedName = name.trim();
+    const trimmedEmail = leaderEmail.trim().toLowerCase();
+
+    let code = customCode?.trim().toUpperCase() || '';
+    if (!code) {
+      const randPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+      code = `ACED-${randPart}`;
+    }
+
+    const { data, error } = await this.client
+      .from('classes')
+      .insert({
+        code,
+        name: trimmedName,
+        leader_email: trimmedEmail,
+      })
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Failed to create class: ${error?.message}`);
+    }
+
+    return {
+      id: data.id,
+      code: data.code,
+      name: data.name,
+      leaderEmail: data.leader_email,
+      createdAt: data.created_at,
+    };
+  }
+
+  async updateClassLeader(
+    classId: string,
+    newLeaderEmail: string
+  ): Promise<Class> {
+    const validId = await this.resolveValidClassId(classId);
+    const trimmedEmail = newLeaderEmail.trim().toLowerCase();
+
+    const { data, error } = await this.client
+      .from('classes')
+      .update({
+        leader_email: trimmedEmail,
+      })
+      .eq('id', validId)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Failed to transfer leadership: ${error?.message}`);
+    }
+
+    return {
+      id: data.id,
+      code: data.code,
+      name: data.name,
+      leaderEmail: data.leader_email,
+      createdAt: data.created_at,
+    };
+  }
+
   async getSubjects(classId: string): Promise<Subject[]> {
     const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
@@ -151,7 +217,6 @@ export class SupabaseRepository implements AcedRepository {
       classId: row.class_id,
       name: row.name,
       teacherName: row.teacher_name,
-      classroomCode: row.classroom_code,
       createdAt: row.created_at,
     }));
   }
@@ -167,7 +232,6 @@ export class SupabaseRepository implements AcedRepository {
         class_id: validId,
         name: input.name.trim(),
         teacher_name: input.teacherName.trim(),
-        classroom_code: input.classroomCode?.trim() || null,
       })
       .select()
       .single();
@@ -181,7 +245,6 @@ export class SupabaseRepository implements AcedRepository {
       classId: data.class_id,
       name: data.name,
       teacherName: data.teacher_name,
-      classroomCode: data.classroom_code,
       createdAt: data.created_at,
     };
 
@@ -196,8 +259,6 @@ export class SupabaseRepository implements AcedRepository {
     if (input.name !== undefined) updates.name = input.name.trim();
     if (input.teacherName !== undefined)
       updates.teacher_name = input.teacherName.trim();
-    if (input.classroomCode !== undefined)
-      updates.classroom_code = input.classroomCode?.trim() || null;
 
     const { data, error } = await this.client
       .from('subjects')
@@ -215,7 +276,6 @@ export class SupabaseRepository implements AcedRepository {
       classId: data.class_id,
       name: data.name,
       teacherName: data.teacher_name,
-      classroomCode: data.classroom_code,
       createdAt: data.created_at,
     };
 

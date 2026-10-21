@@ -22,19 +22,19 @@ export interface UpdateAssignmentInput {
 export interface CreateSubjectInput {
   name: string;
   teacherName: string;
-  classroomCode?: string | null;
 }
 
 export interface UpdateSubjectInput {
   name?: string;
   teacherName?: string;
-  classroomCode?: string | null;
 }
 
 export interface AcedRepository {
-  // Class lookup
+  // Class management
   getClassByCode(code: string): Promise<Class | null>;
   getClassById(id: string): Promise<Class | null>;
+  createClass(name: string, leaderEmail: string, customCode?: string): Promise<Class>;
+  updateClassLeader(classId: string, newLeaderEmail: string): Promise<Class>;
 
   // Subjects
   getSubjects(classId: string): Promise<Subject[]>;

@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Assignment, Subject } from '@/types';
 import { useRepository } from '@/context/RepositoryContext';
 import { useSession } from '@/context/SessionContext';
-import { classroomImportEnabled } from '@/lib/env';
-import { GoogleClassroomProvider } from '@/lib/classroom';
 import { SubjectCard } from '@/components/subjects/SubjectCard';
 import { SubjectModal } from '@/components/subjects/SubjectModal';
 import { AssignmentModal } from '@/components/board/AssignmentModal';
@@ -24,17 +22,17 @@ export function SubjectsScreen() {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
 
-  const loadSubjects = useCallback(async () => {
+  const loadData = useCallback(async () => {
     if (!session) return;
     setIsLoading(true);
     setError(null);
     try {
-      const [subData, asgData] = await Promise.all([
+      const [subList, asgList] = await Promise.all([
         repo.getSubjects(session.classId),
         repo.getAssignments(session.classId),
       ]);
-      setSubjects(subData);
-      setAssignments(asgData);
+      setSubjects(subList);
+      setAssignments(asgList);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to load subjects';
       setError(msg);
@@ -44,8 +42,8 @@ export function SubjectsScreen() {
   }, [repo, session]);
 
   useEffect(() => {
-    loadSubjects();
-  }, [loadSubjects]);
+    loadData();
+  }, [loadData]);
 
   const handleOpenAdd = () => {
     setSelectedSubject(null);
@@ -62,41 +60,9 @@ export function SubjectsScreen() {
     setIsAssignmentModalOpen(true);
   };
 
-  const handleSyncClassroom = async (subject: Subject) => {
-    if (!session) return;
-    try {
-      const provider = new GoogleClassroomProvider();
-      await provider.requestAccessToken();
-      const existing = await repo.getAssignments(session.classId);
-      await provider.syncCourseworkForSubject(subject, async (item) => {
-        const alreadyExists = existing.some(
-          (a) => a.subjectId === subject.id && a.title.trim().toLowerCase() === item.title.trim().toLowerCase()
-        );
-        if (!alreadyExists) {
-          await repo.createAssignment(
-            session.classId,
-            {
-              title: item.title,
-              subjectId: subject.id,
-              dueDate: item.dueDate,
-              notes: item.notes || `Imported from Google Classroom (${item.courseName})`,
-            },
-            session.displayName,
-            session.email
-          );
-        }
-      });
-      const latest = await repo.getAssignments(session.classId);
-      setAssignments(latest);
-    } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Classroom sync failed');
-    }
-  };
-
   const handleSaveSubject = async (data: {
     name: string;
     teacherName: string;
-    classroomCode?: string | null;
   }) => {
     if (!session) return;
 
@@ -111,35 +77,6 @@ export function SubjectsScreen() {
       setSubjects((prev) => [...prev, savedSubject]);
     }
 
-    if (data.classroomCode && classroomImportEnabled()) {
-      try {
-        const provider = new GoogleClassroomProvider();
-        if (provider.hasToken()) {
-          const existing = await repo.getAssignments(session.classId);
-          await provider.syncCourseworkForSubject(savedSubject, async (item) => {
-            const alreadyExists = existing.some(
-              (a) => a.subjectId === savedSubject.id && a.title.trim().toLowerCase() === item.title.trim().toLowerCase()
-            );
-            if (!alreadyExists) {
-              await repo.createAssignment(
-                session.classId,
-                {
-                  title: item.title,
-                  subjectId: savedSubject.id,
-                  dueDate: item.dueDate,
-                  notes: item.notes || `Imported from Google Classroom (${item.courseName})`,
-                },
-                session.displayName,
-                session.email
-              );
-            }
-          });
-        }
-      } catch {
-        // Fallback
-      }
-    }
-
     const latestAssignments = await repo.getAssignments(session.classId);
     setAssignments(latestAssignments);
   };
@@ -150,17 +87,27 @@ export function SubjectsScreen() {
     dueDate: string | null;
     notes?: string | null;
   }) => {
-    if (!session || !selectedAssignment) return;
+    if (!session) return;
 
-    const updated = await repo.updateAssignment(
-      selectedAssignment.id,
-      data,
-      session.displayName,
-      session.email
-    );
-    setAssignments((prev) =>
-      prev.map((a) => (a.id === updated.id ? updated : a))
-    );
+    if (selectedAssignment) {
+      const updated = await repo.updateAssignment(
+        selectedAssignment.id,
+        data,
+        session.displayName,
+        session.email
+      );
+      setAssignments((prev) =>
+        prev.map((a) => (a.id === updated.id ? updated : a))
+      );
+    } else {
+      const created = await repo.createAssignment(
+        session.classId,
+        data,
+        session.displayName,
+        session.email
+      );
+      setAssignments((prev) => [created, ...prev]);
+    }
   };
 
   const [subjectToDelete, setSubjectToDelete] = useState<Subject | null>(null);
@@ -186,17 +133,17 @@ export function SubjectsScreen() {
       {/* Top Header Row */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
+          <h2 className="text-2xl sm:text-3xl font-serif font-semibold tracking-tight text-[#141413]">
             Class Subjects
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#73726C] mt-1">
             {subjects.length} course{subjects.length === 1 ? '' : 's'} registered in {session?.className}
           </p>
         </div>
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition cursor-pointer shadow-sm"
+          className="flex min-h-[40px] items-center justify-center gap-1.5 rounded-full bg-[#141413] px-5 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-black transition cursor-pointer shadow-sm"
         >
           <Plus className="h-4 w-4" />
           <span>Add Subject</span>
@@ -213,7 +160,7 @@ export function SubjectsScreen() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-48 rounded-xl border border-zinc-800/80 bg-zinc-900/30 animate-pulse"
+              className="h-48 rounded-3xl border border-[#E2E1DA] bg-white/60 animate-pulse"
             />
           ))}
         </div>
@@ -222,17 +169,17 @@ export function SubjectsScreen() {
       {!isLoading && error && (
         <div
           role="alert"
-          className="flex flex-col items-center justify-center rounded-xl border border-red-900/50 bg-red-950/40 p-6 text-center"
+          className="flex flex-col items-center justify-center rounded-3xl border border-red-200 bg-red-50 p-6 text-center"
         >
-          <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
-          <h3 className="text-sm font-semibold text-red-200">
+          <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
+          <h3 className="text-sm font-semibold text-red-900">
             Failed to Load Subjects
           </h3>
-          <p className="text-xs text-red-300 mt-1 max-w-sm">{error}</p>
+          <p className="text-xs text-red-800 mt-1 max-w-sm">{error}</p>
           <button
             type="button"
-            onClick={loadSubjects}
-            className="mt-4 flex min-h-[40px] items-center gap-2 rounded-lg border border-red-800 bg-zinc-900 px-4 py-2 text-xs font-medium text-red-300 hover:bg-zinc-800 transition shadow-sm cursor-pointer"
+            onClick={loadData}
+            className="mt-4 flex min-h-[36px] items-center gap-2 rounded-full border border-red-300 bg-white px-4 py-1.5 text-xs font-semibold text-red-800 hover:bg-red-100 transition shadow-sm cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span>Retry</span>
@@ -240,21 +187,22 @@ export function SubjectsScreen() {
         </div>
       )}
 
+      {/* Empty State */}
       {!isLoading && !error && subjects.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/30 p-8 text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-400 mb-3">
-            <BookOpen className="h-5 w-5" />
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#D5D4CC] bg-white p-12 text-center shadow-sm">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EFEFE9] text-[#141413] mb-3">
+            <BookOpen className="h-6 w-6" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-200">
+          <h3 className="text-lg font-serif font-semibold text-[#141413]">
             No Subjects Added Yet
           </h3>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mb-4">
-            Add your subjects with teacher names and Google Classroom codes so classmates can post assignments.
+          <p className="text-xs sm:text-sm text-[#73726C] mt-1 max-w-sm mb-5">
+            Start by adding the subjects and teachers for your class cohort.
           </p>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="flex min-h-[40px] items-center gap-2 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition shadow-sm cursor-pointer"
+            className="flex min-h-[44px] items-center gap-2 rounded-full bg-[#141413] px-6 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-black transition cursor-pointer shadow-md"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Subject</span>
@@ -264,7 +212,7 @@ export function SubjectsScreen() {
 
       {/* 3-column desktop grid */}
       {!isLoading && !error && subjects.length > 0 && (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {subjects.map((subject) => (
             <SubjectCard
               key={subject.id}
@@ -273,7 +221,6 @@ export function SubjectsScreen() {
               onEdit={handleOpenEdit}
               onDelete={setSubjectToDelete}
               onAssignDeadline={handleOpenAssignDeadline}
-              onSyncClassroom={classroomImportEnabled() ? handleSyncClassroom : undefined}
             />
           ))}
         </div>
@@ -295,26 +242,29 @@ export function SubjectsScreen() {
         onSave={handleSaveAssignment}
       />
 
+      {/* Delete Subject Confirmation Dialog */}
       {subjectToDelete && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="delete-subject-title"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
         >
-          <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
-            <h3 id="delete-subject-title" className="text-base font-semibold text-zinc-100">
+          <div className="w-full max-w-sm rounded-3xl border border-[#E2E1DA] bg-[#FAF9F5] p-6 shadow-2xl animate-in fade-in-0 zoom-in-95">
+            <h3 id="delete-subject-title" className="text-lg font-serif font-semibold text-[#141413]">
               Delete Subject?
             </h3>
-            <p className="mt-2 text-xs sm:text-sm text-zinc-400">
-              Are you sure you want to delete <span className="font-semibold text-zinc-200">{subjectToDelete.name}</span>? All assignments linked to this subject will also be deleted.
+            <p className="mt-2 text-xs sm:text-sm text-[#52524E] leading-relaxed">
+              Are you sure you want to delete <strong>{subjectToDelete.name}</strong>?
+              All associated assignments will also be permanently removed.
             </p>
+
             <div className="mt-6 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setSubjectToDelete(null)}
                 disabled={isDeleting}
-                className="min-h-[40px] rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
+                className="min-h-[40px] rounded-full border border-[#DCDAD2] bg-white px-5 py-2 text-xs font-medium text-[#4A4A46] hover:bg-[#EFEFEA] transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -322,7 +272,7 @@ export function SubjectsScreen() {
                 type="button"
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
-                className="min-h-[40px] rounded-lg bg-red-950/80 border border-red-800/80 px-4 py-2 text-xs font-semibold text-red-200 hover:bg-red-900 disabled:opacity-50 cursor-pointer shadow-sm"
+                className="min-h-[40px] rounded-full bg-red-600 px-5 py-2 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition cursor-pointer shadow-sm"
               >
                 {isDeleting ? 'Deleting...' : 'Delete Subject'}
               </button>

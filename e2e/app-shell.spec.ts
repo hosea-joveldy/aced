@@ -1,13 +1,22 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('App Shell and Identity Flow', () => {
-  test('allows student to join class and navigate on mobile viewport (375px)', async ({
+  test('allows student to see landing page, join class, and navigate on mobile viewport (375px)', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
 
-    // Verify initial join screen
+    // Verify initial Landing page
+    await expect(
+      page.getByRole('heading', { name: /introducing aced/i })
+    ).toBeVisible();
+    await expect(page.getByText(/crowdsourced deadlines for your entire class/i)).toBeVisible();
+
+    // Click CTA to join class
+    await page.getByRole('button', { name: /join with code/i }).first().click();
+
+    // Verify join form screen
     await expect(
       page.getByRole('heading', { name: /join your class board/i })
     ).toBeVisible();
@@ -54,7 +63,7 @@ test.describe('App Shell and Identity Flow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('/');
+    await page.goto('/#/join');
 
     await page.getByLabel(/email address/i).fill('desktop@aced.school');
     await page.getByLabel(/your name/i).fill('Desktop Student');
@@ -63,5 +72,26 @@ test.describe('App Shell and Identity Flow', () => {
 
     await expect(page.getByRole('banner').getByText('Class of 2026 — Period 3')).toBeVisible();
     await expect(page.getByText('Desktop Student')).toBeVisible();
+  });
+
+  test('allows student to create a new class and automatically become class leader', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/');
+
+    // Click Create a class on landing page
+    await page.getByRole('button', { name: /create a class/i }).first().click();
+
+    await expect(page.getByRole('heading', { name: /create a new class/i })).toBeVisible();
+
+    await page.getByLabel(/class name/i).fill('AP Biology 2027');
+    await page.getByLabel(/email address/i).fill('creator@aced.school');
+    await page.getByLabel(/your name/i).fill('Jane Creator');
+    await page.getByRole('button', { name: /create class & become leader/i }).click();
+
+    // Check header displays the new class name and leader badge
+    await expect(page.getByRole('banner').getByText('AP Biology 2027')).toBeVisible();
+    await expect(page.getByText('Leader').first()).toBeVisible();
   });
 });

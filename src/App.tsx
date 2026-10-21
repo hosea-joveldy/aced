@@ -16,6 +16,8 @@ export default function App() {
               <Route path="/" element={<BoardScreen />} />
               <Route path="/subjects" element={<SubjectsScreen />} />
               <Route path="/history" element={<HistoryScreen />} />
+              <Route path="/auth" element={<Navigate to="/" replace />} />
+              <Route path="/join" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

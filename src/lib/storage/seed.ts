@@ -35,7 +35,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'AP Calculus BC',
       teacherName: 'Mr. Harrison',
-      classroomCode: 'mat-401',
       createdAt: offsetDate(today, -30),
     },
     {
@@ -43,7 +42,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'AP Chemistry',
       teacherName: 'Dr. Chen',
-      classroomCode: 'sci-302',
       createdAt: offsetDate(today, -30),
     },
     {
@@ -51,7 +49,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'English Literature',
       teacherName: 'Ms. Vance',
-      classroomCode: 'eng-104',
       createdAt: offsetDate(today, -30),
     },
     {
@@ -59,7 +56,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'World History',
       teacherName: 'Mr. Rodriguez',
-      classroomCode: 'his-205',
       createdAt: offsetDate(today, -30),
     },
     {
@@ -67,7 +63,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'Computer Science',
       teacherName: 'Mrs. Lin',
-      classroomCode: 'cs-501',
       createdAt: offsetDate(today, -30),
     },
     {
@@ -75,7 +70,6 @@ export function createInitialSeedData(): LocalDatabaseSchema {
       classId,
       name: 'Art & Design',
       teacherName: 'Ms. Taylor',
-      classroomCode: 'art-101',
       createdAt: offsetDate(today, -30),
     },
   ];

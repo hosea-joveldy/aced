@@ -8,7 +8,8 @@ test.describe('Full-App QA Comprehensive Walkthrough (375px mobile)', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
 
-    // 2. Join flow as Class Leader
+    // 2. Join flow as Class Leader from landing page
+    await page.getByRole('button', { name: /join with code/i }).first().click();
     await expect(page.getByRole('heading', { name: /join your class board/i })).toBeVisible();
     await page.getByLabel(/email address/i).fill('leader@aced.school');
     await page.getByLabel(/your name/i).fill('Sam QA Walkthrough');

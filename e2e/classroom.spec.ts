@@ -5,7 +5,7 @@ test.describe('Classroom Import Feature Flag Gating', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/#/join');
 
     // Join class
     await page.getByLabel(/email address/i).fill('flag@aced.school');

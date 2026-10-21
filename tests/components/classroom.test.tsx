@@ -64,7 +64,7 @@ describe('Classroom Feature & Noop Provider', () => {
     global.fetch = originalFetch;
   });
 
-  it('syncs coursework based strictly on classroomCode without depending on subject name', async () => {
+  it('fetches coursework assignments by courseId safely without requiring classroom code', async () => {
     const { GoogleClassroomProvider } = await import('@/lib/classroom');
     const provider = new GoogleClassroomProvider('test-client-id');
     provider.setToken('valid-token', 3600);
@@ -78,8 +78,7 @@ describe('Classroom Feature & Noop Provider', () => {
             courses: [
               {
                 id: 'course-999',
-                name: 'Completely Different Google Classroom Name',
-                enrollmentCode: 'mat-401',
+                name: 'AP Calculus BC',
               },
             ],
           }),
@@ -93,6 +92,7 @@ describe('Classroom Feature & Noop Provider', () => {
               {
                 id: 'cw-1',
                 title: 'Problem Set 1',
+                description: 'Complete even problems',
                 dueDate: { year: 2026, month: 10, day: 25 },
               },
             ],
@@ -103,29 +103,12 @@ describe('Classroom Feature & Noop Provider', () => {
       return new Response('Not Found', { status: 404 });
     };
 
-    const imported: Array<{ title: string; courseName: string }> = [];
-    const subject = {
-      id: 'sub-calc',
-      classId: 'c-1',
-      name: 'Unrelated Local Subject Name',
-      teacherName: 'Mr. Teacher',
-      classroomCode: 'mat-401',
-      createdAt: '2026-10-01',
-    };
+    const assignments = await provider.importAssignments('course-999');
 
-    const result = await provider.syncCourseworkForSubject(subject, async (item) => {
-      imported.push({ title: item.title, courseName: item.courseName });
-    });
-
-    expect(result.count).toBe(1);
-    expect(imported).toHaveLength(1);
-    expect(imported[0].title).toBe('Problem Set 1');
-
-    // Subject without a classroom code throws an error
-    const subjectWithoutCode = { ...subject, classroomCode: null };
-    await expect(
-      provider.syncCourseworkForSubject(subjectWithoutCode, async () => {})
-    ).rejects.toThrow(/does not have a Google Classroom code set/i);
+    expect(assignments).toHaveLength(1);
+    expect(assignments[0].title).toBe('Problem Set 1');
+    expect(assignments[0].dueDate).toBe('2026-10-25');
+    expect(assignments[0].notes).toBe('Complete even problems');
 
     global.fetch = originalFetch;
   });

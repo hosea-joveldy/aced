@@ -383,6 +383,95 @@
           ]
         }
       ]
+    },
+    {
+      "id": "T14",
+      "title": "Comprehensive redesign, landing page, classroom code removal, and class creation",
+      "type": "build",
+      "status": "finished",
+      "features": [
+        {
+          "id": "T14.1",
+          "title": "Remove classroom code across domain types, repository, forms, cards, import modal, and schema",
+          "done": true,
+          "done_when": [
+            "classroomCode is removed from Subject interface, CreateSubjectInput, UpdateSubjectInput, and seed subjects",
+            "Subject cards and modals no longer show or accept classroom codes",
+            "ClassroomImportModal removes classroom code auto-matching banner and relies on direct course selection or quick paste",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.2",
+          "title": "Class creation and leadership transfer in domain, repository, and session context",
+          "done": true,
+          "done_when": [
+            "AcedRepository defines createClass and updateClassLeader methods implemented in LocalRepository and SupabaseRepository",
+            "SessionContext provides createClass and reassignLeader actions",
+            "Creating a class sets user as Class Leader with unique class code",
+            "Class Leader can reassign leadership to a classmate",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.3",
+          "title": "Design system revamp in CSS and Tailwind tokens (warm stone, serif typography, pill styling)",
+          "done": true,
+          "done_when": [
+            "DESIGN_SYSTEM.md specifies warm stone palette, serif display typography, and pill button styles",
+            "src/index.css defines warm stone CSS variables, dark moss accents, and font families",
+            "npm run build succeeds and npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.4",
+          "title": "Interactive Landing Page with smooth canvas mouse interaction, bento feature cards, dark showcase section, and CTAs",
+          "done": true,
+          "done_when": [
+            "Landing page renders at root route for visitors without active session",
+            "Interactive canvas in hero section animates dots with fluid mouse avoidance physics",
+            "Bento feature cards, dark moss value banner, workflow steps, FAQ, and footer are rendered",
+            "CTA buttons navigate to Join or Create Class forms",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.5",
+          "title": "Redesign Auth / Join & Create Class screen using login-reference layout and new design system, removing requested texts",
+          "done": true,
+          "done_when": [
+            "JoinClassForm supports both Join Class and Create Class modes in a dual-pane layout",
+            "Removes 'Class of 2026 Live sync' text and removes 'Aced Crowdsourced Board' 'Zero-config offline mode' footer",
+            "Input fields and buttons match the warm stone editorial aesthetic",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.6",
+          "title": "Full app UI redesign (AppHeader, Sidebar, Board, Subjects, History, Modals) with new design system",
+          "done": true,
+          "done_when": [
+            "AppHeader and Sidebar reflect warm stone aesthetic with class code copy button and leader badge",
+            "BoardScreen renders modern bento metrics, pill subject filters, and refined cards",
+            "SubjectsScreen renders clean subject cards with teacher names and add/edit without classroom code",
+            "HistoryScreen renders audit log with revert dialog and leader transfer capability",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T14.7",
+          "title": "Full test suite update and verification passing all 4 gate checks",
+          "done": true,
+          "done_when": [
+            "Unit tests in tests/ reflect updated components and pass",
+            "Playwright e2e tests in e2e/ verify landing page, join/create, and full app workflows",
+            "npx tsc --noEmit passes with 0 errors",
+            "npm test passes 100%",
+            "npm run build succeeds",
+            "npx playwright test passes 100%"
+          ]
+        }
+      ]
     }
   ]
 }

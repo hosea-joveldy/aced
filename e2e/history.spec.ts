@@ -5,7 +5,7 @@ test.describe('Edit Attribution and Undo Flow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/#/join');
 
     // 1. Join as regular student
     await page.getByLabel(/email address/i).fill('regular.student@aced.school');

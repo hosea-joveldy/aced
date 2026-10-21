@@ -5,7 +5,7 @@ test.describe('Assignment Creation and Editing Flow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/#/join');
 
     // Join class
     await page.getByLabel(/email address/i).fill('morgan@aced.school');

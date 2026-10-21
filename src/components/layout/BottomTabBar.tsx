@@ -18,7 +18,7 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Main Navigation"
-      className="md:hidden fixed bottom-0 inset-x-0 bg-[#09090b]/95 backdrop-blur-md border-t border-zinc-800/80 z-40 shadow-xl"
+      className="md:hidden fixed bottom-0 inset-x-0 bg-[#FAF9F5]/95 backdrop-blur-md border-t border-[#E8E7E0] z-40 shadow-lg"
     >
       <div className="mx-auto flex h-16 max-w-md items-center justify-around px-2">
         {TABS.map((tab) => {
@@ -29,15 +29,22 @@ export function BottomTabBar() {
               to={tab.to}
               end={tab.to === '/'}
               className={({ isActive }) =>
-                `flex flex-1 min-h-[48px] min-w-[48px] flex-col items-center justify-center rounded-lg px-2 py-1 text-xs font-medium transition-colors ${
+                `flex flex-1 min-h-[48px] min-w-[48px] flex-col items-center justify-center rounded-full px-2 py-1 text-xs font-medium transition-colors ${
                   isActive
-                    ? 'text-zinc-100 font-semibold'
-                    : 'text-zinc-500 hover:text-zinc-300'
+                    ? 'text-[#141413] font-bold'
+                    : 'text-[#73726C] hover:text-[#141413]'
                 }`
               }
             >
-              <Icon className="h-5 w-5 mb-1" />
-              <span>{tab.label}</span>
+              {({ isActive }) => (
+                <>
+                  <Icon className="h-5 w-5 mb-0.5" />
+                  <span>{tab.label}</span>
+                  {isActive && (
+                    <span className="h-1 w-1 rounded-full bg-[#141413] mt-0.5" />
+                  )}
+                </>
+              )}
             </NavLink>
           );
         })}

@@ -16,6 +16,8 @@ interface SessionContextType {
   isLoading: boolean;
   error: string | null;
   joinClass: (email: string, displayName: string, classCode: string) => Promise<boolean>;
+  createClass: (className: string, displayName: string, email: string, customCode?: string) => Promise<boolean>;
+  reassignLeader: (newLeaderEmail: string) => Promise<boolean>;
   leaveClass: () => void;
   clearError: () => void;
 }
@@ -151,6 +153,85 @@ export const SessionProvider: FC<{ children: ReactNode }> = ({
     }
   };
 
+  const createClass = async (
+    className: string,
+    displayName: string,
+    email: string,
+    customCode?: string
+  ): Promise<boolean> => {
+    setError(null);
+    const trimmedClassName = className.trim();
+    const trimmedDisplayName = displayName.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedClassName) {
+      setError('Please enter a class name.');
+      return false;
+    }
+
+    if (!trimmedEmail) {
+      setError('Please enter your email address.');
+      return false;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
+
+    if (!trimmedDisplayName) {
+      setError('Please enter your name.');
+      return false;
+    }
+
+    try {
+      const newClass = await repo.createClass(trimmedClassName, trimmedEmail, customCode);
+
+      const newSession: StudentSession = {
+        email: trimmedEmail,
+        displayName: trimmedDisplayName,
+        classCode: newClass.code,
+        classId: newClass.id,
+        className: newClass.name,
+        isClassLeader: true, // Creator automatically becomes Class Leader
+      };
+
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newSession));
+      setSession(newSession);
+      return true;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to create class';
+      setError(msg);
+      return false;
+    }
+  };
+
+  const reassignLeader = async (newLeaderEmail: string): Promise<boolean> => {
+    if (!session) return false;
+    setError(null);
+    const trimmedEmail = newLeaderEmail.trim().toLowerCase();
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError('Please enter a valid email address to transfer leadership.');
+      return false;
+    }
+
+    try {
+      const updatedClass = await repo.updateClassLeader(session.classId, trimmedEmail);
+      const isLeader = updatedClass.leaderEmail.toLowerCase() === session.email.toLowerCase();
+      const updatedSession: StudentSession = {
+        ...session,
+        isClassLeader: isLeader,
+      };
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(updatedSession));
+      setSession(updatedSession);
+      return true;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to transfer leadership';
+      setError(msg);
+      return false;
+    }
+  };
+
   const leaveClass = () => {
     localStorage.removeItem(SESSION_STORAGE_KEY);
     setSession(null);
@@ -168,6 +249,8 @@ export const SessionProvider: FC<{ children: ReactNode }> = ({
         isLoading,
         error,
         joinClass,
+        createClass,
+        reassignLeader,
         leaveClass,
         clearError,
       }}

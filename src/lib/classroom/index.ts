@@ -1,5 +1,4 @@
 import { classroomImportEnabled, getGoogleClientId, isGoogleClassroomConfigured } from '@/lib/env';
-import type { Subject } from '@/types';
 
 export interface ClassroomCourse {
   id: string;
@@ -304,47 +303,6 @@ export class GoogleClassroomProvider implements ClassroomProvider {
         notes: cw.description || null,
       };
     });
-  }
-
-  async syncCourseworkForSubject(
-    subject: Subject,
-    importCallback: (item: ClassroomAssignmentImport) => Promise<void>
-  ): Promise<{ courseName: string; count: number }> {
-    const targetCode = subject.classroomCode?.trim().toLowerCase();
-    if (!targetCode) {
-      throw new Error(
-        `Subject "${subject.name}" does not have a Google Classroom code set.`
-      );
-    }
-
-    const courses = await this.listCourses();
-
-    const match = courses.find((c) => {
-      const enrollmentMatch = Boolean(
-        c.enrollmentCode &&
-          c.enrollmentCode.trim().toLowerCase() === targetCode
-      );
-      const idMatch = Boolean(
-        c.id && c.id.trim().toLowerCase() === targetCode
-      );
-      return enrollmentMatch || idMatch;
-    });
-
-    if (!match) {
-      throw new Error(
-        `No Google Classroom course found matching code or ID "${subject.classroomCode}".`
-      );
-    }
-
-    const assignments = await this.importAssignments(match.id);
-    for (const asg of assignments) {
-      await importCallback({
-        ...asg,
-        courseName: match.name,
-      });
-    }
-
-    return { courseName: match.name, count: assignments.length };
   }
 }
 
