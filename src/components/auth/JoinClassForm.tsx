@@ -111,11 +111,6 @@ export function JoinClassForm({ initialMode = 'join', onBackToLanding }: JoinCla
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-10 sm:px-10 lg:px-14 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
         {/* Left Editorial Branding Hero */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center max-w-xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#D5D4CC] bg-[#F2F1EB] px-3.5 py-1 text-xs font-medium text-[#52524E] mb-4 w-fit">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-            <span>Crowdsourced Deadline Board</span>
-          </div>
-
           <h1 className="text-4xl sm:text-5xl lg:text-6xl tracking-tight text-[#141413] font-serif font-normal leading-[1.1]">
             <span className="italic">Ace</span> with Aced.
           </h1>

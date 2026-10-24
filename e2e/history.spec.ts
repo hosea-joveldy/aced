@@ -71,5 +71,31 @@ test.describe('Edit Attribution and Undo Flow', () => {
 
     // Check Reverted badge appears
     await expect(page.getByText('Reverted').first()).toBeVisible();
+
+    // 3. Test multi-timestamp selection and batch revert as Class Leader
+    const selectCheckboxes = page.getByRole('checkbox', { name: /select edit at/i });
+    const count = await selectCheckboxes.count();
+    expect(count).toBeGreaterThanOrEqual(2);
+
+    // Select two remaining edits
+    await selectCheckboxes.nth(0).check({ force: true });
+    await selectCheckboxes.nth(1).check({ force: true });
+
+    // Verify batch revert button shows count 2
+    const batchRevertBtn = page.getByRole('button', { name: /revert selected \(2\)/i });
+    await expect(batchRevertBtn).toBeVisible();
+    await batchRevertBtn.click();
+
+    // Verify batch confirmation dialog
+    const batchDialog = page.getByRole('dialog');
+    await expect(batchDialog).toBeVisible();
+    await expect(batchDialog.getByRole('heading', { name: /confirm revert \(2 edits\)/i })).toBeVisible();
+
+    // Confirm batch revert
+    await batchDialog.getByRole('button', { name: /yes, revert 2 edits/i }).click();
+
+    // Dialog closes and all edits are now reverted
+    await expect(batchDialog).not.toBeVisible();
+    await expect(page.getByText('Reverted', { exact: true })).toHaveCount(3);
   });
 });

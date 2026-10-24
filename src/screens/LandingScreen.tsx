@@ -3,9 +3,7 @@ import { InteractiveHeroCanvas } from '@/components/landing/InteractiveHeroCanva
 import {
   Users,
   ShieldCheck,
-  Sparkles,
   ArrowRight,
-  CheckCircle2,
   ChevronDown,
   Layers,
   Clock,
@@ -79,11 +77,6 @@ export function LandingScreen({ onJoinClick, onCreateClick }: LandingScreenProps
         <InteractiveHeroCanvas />
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 py-24 sm:py-32 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#D5D4CC] bg-[#F2F1EB]/80 px-3.5 py-1 text-xs font-medium text-[#52524E] backdrop-blur-sm mb-6">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
-            <span>Crowdsourced Class Deadline Board</span>
-          </div>
-
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-[#141413] tracking-tight leading-[1.08] max-w-3xl mx-auto">
             Introducing Aced:
             <span className="block mt-2 font-serif italic">
@@ -114,21 +107,6 @@ export function LandingScreen({ onJoinClick, onCreateClick }: LandingScreenProps
               <span>Join with code</span>
               <span className="h-2 w-2 rounded-full bg-[#141413]" />
             </button>
-          </div>
-
-          <div className="mt-12 flex items-center justify-center gap-6 text-xs text-[#73726C]">
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-              100% Student Powered
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-              Instant Rollback
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-              Zero-Config Offline
-            </span>
           </div>
         </div>
       </section>
@@ -181,11 +159,6 @@ export function LandingScreen({ onJoinClick, onCreateClick }: LandingScreenProps
           {/* Sub-Showcase: Organize with Aced */}
           <div className="rounded-3xl border border-[#E2E1DA] bg-[#F7F6F1] p-8 sm:p-12 flex flex-col lg:flex-row items-center justify-between gap-10">
             <div className="max-w-xl space-y-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EAE9E2] px-3.5 py-1 text-xs font-semibold text-[#141413]">
-                <Sparkles className="h-3.5 w-3.5 text-amber-700" />
-                Crowdsourced Clarity
-              </span>
-
               <h2 className="text-3xl sm:text-4xl font-serif font-semibold text-[#141413] tracking-tight">
                 Organize every subject in one clean, grouped board.
               </h2>
@@ -248,10 +221,6 @@ export function LandingScreen({ onJoinClick, onCreateClick }: LandingScreenProps
             <div className="absolute -right-40 -bottom-40 w-[30rem] h-[30rem] rounded-full border border-white/5 pointer-events-none" />
 
             <div className="max-w-xl space-y-6 relative z-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-3.5 py-1 text-xs font-medium text-[#D4F24D]">
-                <span>No More Surprises</span>
-              </span>
-
               <h2 className="text-3xl sm:text-5xl font-serif font-normal tracking-tight text-white leading-tight">
                 Built for students who want zero surprises.
               </h2>

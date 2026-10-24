@@ -4,7 +4,7 @@ import { useRepository } from '@/context/RepositoryContext';
 import { useSession } from '@/context/SessionContext';
 import { HistoryCard } from '@/components/history/HistoryCard';
 import { RevertConfirmDialog } from '@/components/history/RevertConfirmDialog';
-import { History, AlertCircle, RotateCcw, ShieldCheck, UserCheck, X } from 'lucide-react';
+import { History, AlertCircle, RotateCcw, ShieldCheck, UserCheck, X, Check } from 'lucide-react';
 
 type HistoryFilter = 'all' | 'dueDate' | 'title' | 'status';
 
@@ -17,9 +17,12 @@ export function HistoryScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [selectedEntry, setSelectedEntry] = useState<EditHistoryEntry | null>(null);
+  // Multi-selection state for Class Leader
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [entriesToRevert, setEntriesToRevert] = useState<EditHistoryEntry[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isReverting, setIsReverting] = useState(false);
+  const [revertingProgress, setRevertingProgress] = useState<{ current: number; total: number } | null>(null);
 
   // Transfer leadership state
   const [isTransferOpen, setIsTransferOpen] = useState(false);
@@ -46,24 +49,102 @@ export function HistoryScreen() {
     loadHistory();
   }, [loadHistory]);
 
+  const isClassLeader = Boolean(session?.isClassLeader);
+
+  // Filter history entries by active filter chip
+  const filteredHistory = useMemo(() => {
+    if (activeFilter === 'all') return history;
+    if (activeFilter === 'dueDate') {
+      return history.filter((e) => e.field === 'dueDate');
+    }
+    if (activeFilter === 'title') {
+      return history.filter((e) => e.field === 'title');
+    }
+    if (activeFilter === 'status') {
+      return history.filter((e) => e.field === 'completed' || e.field.startsWith('reverted'));
+    }
+    return history;
+  }, [history, activeFilter]);
+
+  // Revertible entries in current view
+  const revertibleEntries = useMemo(() => {
+    return filteredHistory.filter((e) => !e.reverted && !e.field.startsWith('reverted'));
+  }, [filteredHistory]);
+
+  const isAllSelected =
+    revertibleEntries.length > 0 &&
+    revertibleEntries.every((e) => selectedIds.has(e.id));
+
+  const handleToggleSelect = (entry: EditHistoryEntry) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(entry.id)) {
+        next.delete(entry.id);
+      } else {
+        next.add(entry.id);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(revertibleEntries.map((e) => e.id)));
+    }
+  };
+
+  const handleClearSelection = () => {
+    setSelectedIds(new Set());
+  };
+
+  // Open single revert dialog
   const handleOpenRevert = (entry: EditHistoryEntry) => {
-    setSelectedEntry(entry);
+    setEntriesToRevert([entry]);
     setIsDialogOpen(true);
   };
 
+  // Open batch revert dialog for all selected entries
+  const handleOpenBatchRevert = () => {
+    const toRevert = history.filter(
+      (e) => selectedIds.has(e.id) && !e.reverted && !e.field.startsWith('reverted')
+    );
+    if (toRevert.length === 0) return;
+    setEntriesToRevert(toRevert);
+    setIsDialogOpen(true);
+  };
+
+  // Execute revert action (single or batch)
   const handleConfirmRevert = async () => {
-    if (!selectedEntry || !session) return;
+    if (entriesToRevert.length === 0 || !session) return;
     setIsReverting(true);
+    setError(null);
     try {
-      await repo.revertEdit(selectedEntry.id, session.displayName, session.email);
+      // Sort entries descending by timestamp so latest changes are rolled back first
+      const sortedEntries = [...entriesToRevert].sort((a, b) => {
+        const timeA = new Date(a.timestamp).getTime() || 0;
+        const timeB = new Date(b.timestamp).getTime() || 0;
+        return timeB - timeA;
+      });
+
+      setRevertingProgress({ current: 0, total: sortedEntries.length });
+      for (let i = 0; i < sortedEntries.length; i++) {
+        const item = sortedEntries[i];
+        setRevertingProgress({ current: i + 1, total: sortedEntries.length });
+        await repo.revertEdit(item.id, session.displayName, session.email);
+      }
+
       await loadHistory();
       setIsDialogOpen(false);
-      setSelectedEntry(null);
+      setEntriesToRevert([]);
+      setSelectedIds(new Set());
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to revert edit';
+      const msg = err instanceof Error ? err.message : 'Failed to revert edits';
       setError(msg);
     } finally {
       setIsReverting(false);
+      setRevertingProgress(null);
     }
   };
 
@@ -99,23 +180,6 @@ export function HistoryScreen() {
       setIsTransferring(false);
     }
   };
-
-  const isClassLeader = Boolean(session?.isClassLeader);
-
-  // Filter history entries by active filter chip
-  const filteredHistory = useMemo(() => {
-    if (activeFilter === 'all') return history;
-    if (activeFilter === 'dueDate') {
-      return history.filter((e) => e.field === 'dueDate');
-    }
-    if (activeFilter === 'title') {
-      return history.filter((e) => e.field === 'title');
-    }
-    if (activeFilter === 'status') {
-      return history.filter((e) => e.field === 'completed' || e.field.startsWith('reverted'));
-    }
-    return history;
-  }, [history, activeFilter]);
 
   return (
     <div className="space-y-6">
@@ -196,7 +260,7 @@ export function HistoryScreen() {
           <div className="leading-relaxed">
             {isClassLeader ? (
               <span>
-                <strong className="text-[#141413] font-semibold">Class Leader privileges:</strong> You have permissions to revert edits to preserve board integrity.
+                <strong className="text-[#141413] font-semibold">Class Leader privileges:</strong> You can select multiple timestamps to batch-revert edits or revert individually to preserve board integrity.
                 <span className="text-[#73726C] text-xs ml-1">(other students see: View only)</span>
               </span>
             ) : (
@@ -221,6 +285,59 @@ export function HistoryScreen() {
           </button>
         )}
       </div>
+
+      {/* Class Leader Multi-Selection Action Toolbar */}
+      {isClassLeader && revertibleEntries.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E2E1DA] bg-white px-4 py-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <label className="relative flex items-center gap-2.5 cursor-pointer text-xs font-semibold text-[#141413] select-none">
+              <input
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={handleToggleSelectAll}
+                className="sr-only peer"
+                aria-label="Select all revertible edits"
+              />
+              <div className="h-5 w-5 rounded-lg border border-[#D5D4CC] bg-white peer-checked:bg-[#141413] peer-checked:border-[#141413] flex items-center justify-center transition-all">
+                <Check
+                  className={`h-3.5 w-3.5 text-white transition-opacity ${
+                    isAllSelected ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              </div>
+              <span>Select all ({revertibleEntries.length})</span>
+            </label>
+
+            {selectedIds.size > 0 && (
+              <span className="text-xs text-[#73726C] border-l border-[#E8E7E0] pl-3">
+                <span className="font-semibold text-[#141413]">{selectedIds.size} selected</span>
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {selectedIds.size > 0 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleClearSelection}
+                  className="min-h-[34px] rounded-full px-3.5 py-1 text-xs font-medium text-[#73726C] hover:text-[#141413] hover:bg-[#F2F1EB] transition cursor-pointer"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  onClick={handleOpenBatchRevert}
+                  className="inline-flex min-h-[36px] items-center gap-2 rounded-full bg-[#141413] px-4 py-1.5 text-xs font-semibold text-white hover:bg-black transition cursor-pointer shadow-sm"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  <span>Revert Selected ({selectedIds.size})</span>
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {isLoading && (
         <div role="status" aria-busy="true" className="space-y-4">
@@ -288,20 +405,27 @@ export function HistoryScreen() {
               key={entry.id}
               entry={entry}
               canRevert={isClassLeader}
+              isSelected={selectedIds.has(entry.id)}
+              onToggleSelect={handleToggleSelect}
               onRevertClick={handleOpenRevert}
             />
           ))}
         </div>
       )}
 
-      {/* Revert Dialog */}
+      {/* Revert Dialog (Supports Single or Multiple/Batch) */}
       <RevertConfirmDialog
         isOpen={isDialogOpen}
-        entry={selectedEntry}
+        entry={entriesToRevert.length === 1 ? entriesToRevert[0] : null}
+        entries={entriesToRevert}
         editorName={session?.displayName || 'Student'}
         onConfirm={handleConfirmRevert}
-        onClose={() => setIsDialogOpen(false)}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setEntriesToRevert([]);
+        }}
         isSubmitting={isReverting}
+        progress={revertingProgress}
       />
 
       {/* Transfer Leadership Modal */}

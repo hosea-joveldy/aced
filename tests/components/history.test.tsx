@@ -108,4 +108,109 @@ describe('HistoryScreen Component', () => {
     // Check that a Reverted badge is now displayed
     expect(screen.getAllByText('Reverted').length).toBeGreaterThanOrEqual(1);
   });
+
+  it('allows class leader to select multiple timestamps and batch revert them', async () => {
+    localStorage.setItem(
+      'aced.session.v1',
+      JSON.stringify({
+        email: 'leader@aced.school',
+        displayName: 'Jamie Leader',
+        classCode: 'ACED2026',
+        classId: 'class-aced-2026',
+        className: 'Class of 2026 — Period 3',
+        isClassLeader: true,
+      })
+    );
+
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('Calculus Problem Set 4')).toBeInTheDocument();
+    });
+
+    // Check that select all is present
+    const selectAllCheckbox = screen.getByRole('checkbox', {
+      name: /select all revertible edits/i,
+    });
+    expect(selectAllCheckbox).toBeInTheDocument();
+
+    // Select individual items by checking their checkboxes
+    const itemCheckboxes = screen.getAllByRole('checkbox', {
+      name: /select edit at/i,
+    });
+    expect(itemCheckboxes.length).toBeGreaterThanOrEqual(2);
+
+    fireEvent.click(itemCheckboxes[0]);
+    fireEvent.click(itemCheckboxes[1]);
+
+    // Verify selected count badge and batch revert button appear
+    expect(screen.getByText(/2 selected/i)).toBeInTheDocument();
+    const batchRevertBtn = screen.getByRole('button', {
+      name: /revert selected \(2\)/i,
+    });
+    expect(batchRevertBtn).toBeInTheDocument();
+
+    // Open batch revert modal
+    fireEvent.click(batchRevertBtn);
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole('heading', { name: /confirm revert \(2 edits\)/i })
+    ).toBeInTheDocument();
+
+    // Confirm batch revert
+    const confirmBtn = within(dialog).getByRole('button', {
+      name: /yes, revert 2 edits/i,
+    });
+    fireEvent.click(confirmBtn);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    // Both should now be reverted
+    expect(screen.getAllByText('Reverted').length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('allows class leader to use select all and clear selection', async () => {
+    localStorage.setItem(
+      'aced.session.v1',
+      JSON.stringify({
+        email: 'leader@aced.school',
+        displayName: 'Jamie Leader',
+        classCode: 'ACED2026',
+        classId: 'class-aced-2026',
+        className: 'Class of 2026 — Period 3',
+        isClassLeader: true,
+      })
+    );
+
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('Calculus Problem Set 4')).toBeInTheDocument();
+    });
+
+    const selectAllCheckbox = screen.getByRole('checkbox', {
+      name: /select all revertible edits/i,
+    });
+
+    // Click select all
+    fireEvent.click(selectAllCheckbox);
+
+    expect(screen.getByText(/3 selected/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /revert selected \(3\)/i })
+    ).toBeInTheDocument();
+
+    // Click clear selection
+    const clearBtn = screen.getByRole('button', { name: /clear/i });
+    fireEvent.click(clearBtn);
+
+    expect(screen.queryByText(/3 selected/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /revert selected/i })
+    ).not.toBeInTheDocument();
+  });
 });
