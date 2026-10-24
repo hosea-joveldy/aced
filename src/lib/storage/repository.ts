@@ -38,9 +38,23 @@ export interface AcedRepository {
 
   // Subjects
   getSubjects(classId: string): Promise<Subject[]>;
-  createSubject(classId: string, input: CreateSubjectInput): Promise<Subject>;
-  updateSubject(id: string, input: UpdateSubjectInput): Promise<Subject>;
-  deleteSubject(id: string): Promise<void>;
+  createSubject(
+    classId: string,
+    input: CreateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
+  ): Promise<Subject>;
+  updateSubject(
+    id: string,
+    input: UpdateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
+  ): Promise<Subject>;
+  deleteSubject(
+    id: string,
+    editorName?: string,
+    editorEmail?: string
+  ): Promise<void>;
 
   // Assignments
   getAssignments(classId: string): Promise<Assignment[]>;

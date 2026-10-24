@@ -6,7 +6,7 @@ import { HistoryCard } from '@/components/history/HistoryCard';
 import { RevertConfirmDialog } from '@/components/history/RevertConfirmDialog';
 import { History, AlertCircle, RotateCcw, ShieldCheck, UserCheck, X, Check } from 'lucide-react';
 
-type HistoryFilter = 'all' | 'dueDate' | 'title' | 'status';
+type HistoryFilter = 'all' | 'dueDate' | 'title' | 'subjects' | 'status';
 
 export function HistoryScreen() {
   const repo = useRepository();
@@ -58,7 +58,16 @@ export function HistoryScreen() {
       return history.filter((e) => e.field === 'dueDate');
     }
     if (activeFilter === 'title') {
-      return history.filter((e) => e.field === 'title');
+      return history.filter((e) => e.field === 'title' || e.field === 'name');
+    }
+    if (activeFilter === 'subjects') {
+      return history.filter(
+        (e) =>
+          e.entityType === 'subject' ||
+          e.field === 'name' ||
+          e.field === 'teacherName' ||
+          e.field === 'subjectId'
+      );
     }
     if (activeFilter === 'status') {
       return history.filter((e) => e.field === 'completed' || e.field.startsWith('reverted'));
@@ -228,6 +237,17 @@ export function HistoryScreen() {
             }`}
           >
             Titles
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('subjects')}
+            className={`min-h-[34px] rounded-full px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
+              activeFilter === 'subjects'
+                ? 'bg-[#141413] text-white shadow-sm'
+                : 'border border-[#E2E1DA] bg-white text-[#73726C] hover:text-[#141413] hover:bg-[#F4F1EA]'
+            }`}
+          >
+            Subjects
           </button>
           <button
             type="button"

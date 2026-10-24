@@ -159,6 +159,66 @@ describe('SubjectsScreen Component', () => {
     // Verify it persists in storage and does not return upon reload/remount
     const updatedSubjects = await repo.getSubjects('class-aced-2026');
     expect(updatedSubjects.some((s) => s.name === 'AP Calculus BC')).toBe(false);
+
+    // Verify deletion is recorded in history
+    const history = await repo.getHistory('class-aced-2026');
+    const deleteEntry = history.find(
+      (h) => h.field === 'deleted' && h.assignmentTitle === 'AP Calculus BC'
+    );
+    expect(deleteEntry).toBeDefined();
+    expect(deleteEntry?.editorName).toBe('Test Student');
+  });
+
+  it('records subject creation and edits to history with student attribution', async () => {
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getByText('AP Calculus BC')).toBeInTheDocument();
+    });
+
+    // 1. Add subject
+    fireEvent.click(screen.getByRole('button', { name: /add subject/i }));
+    let dialog = screen.getByRole('dialog');
+    fireEvent.change(within(dialog).getByLabelText(/subject name \*/i), {
+      target: { value: 'Astrophysics' },
+    });
+    fireEvent.change(within(dialog).getByLabelText(/teacher name \*/i), {
+      target: { value: 'Dr. Sagan' },
+    });
+    fireEvent.click(within(dialog).getByRole('button', { name: /add subject/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Astrophysics')).toBeInTheDocument();
+    });
+
+    let history = await repo.getHistory('class-aced-2026');
+    const createEntry = history.find(
+      (h) => h.field === 'created' && h.assignmentTitle === 'Astrophysics'
+    );
+    expect(createEntry).toBeDefined();
+    expect(createEntry?.editorName).toBe('Test Student');
+    expect(createEntry?.entityType).toBe('subject');
+
+    // 2. Edit subject
+    fireEvent.click(screen.getByRole('button', { name: /edit astrophysics/i }));
+    dialog = screen.getByRole('dialog');
+    fireEvent.change(within(dialog).getByLabelText(/teacher name \*/i), {
+      target: { value: 'Prof. Hawking' },
+    });
+    fireEvent.click(within(dialog).getByRole('button', { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Prof. Hawking')).toBeInTheDocument();
+    });
+
+    history = await repo.getHistory('class-aced-2026');
+    const editEntry = history.find(
+      (h) => h.field === 'teacherName' && h.assignmentTitle === 'Astrophysics'
+    );
+    expect(editEntry).toBeDefined();
+    expect(editEntry?.beforeValue).toBe('Dr. Sagan');
+    expect(editEntry?.afterValue).toBe('Prof. Hawking');
+    expect(editEntry?.editorName).toBe('Test Student');
   });
 });
 

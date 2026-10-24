@@ -41,18 +41,30 @@ export function RevertConfirmDialog({
     return time ? `${date} ${time}` : date;
   };
 
-  const formatField = (field: string) => {
+  const formatField = (field: string, entityType?: string) => {
     switch (field) {
       case 'dueDate':
         return 'Due Date';
       case 'title':
         return 'Title';
+      case 'name':
+        return 'Subject Name';
+      case 'teacherName':
+        return 'Teacher Name';
+      case 'subjectId':
+        return 'Subject';
       case 'notes':
         return 'Notes';
       case 'completed':
         return 'Completion Status';
       case 'created':
-        return 'Created Assignment';
+        return entityType === 'subject' ? 'Created Subject' : 'Created Assignment';
+      case 'createdSubject':
+        return 'Created Subject';
+      case 'deleted':
+        return entityType === 'subject' ? 'Deleted Subject' : 'Deleted Assignment';
+      case 'deletedSubject':
+        return 'Deleted Subject';
       default:
         return field;
     }
@@ -118,7 +130,9 @@ export function RevertConfirmDialog({
 
               <div className="rounded-2xl bg-[#F2F1EB] border border-[#E2E1DA] p-3.5 text-xs text-[#52524E]">
                 <span>Target Field: </span>
-                <strong className="font-semibold text-[#141413] uppercase">{singleEntry.field}</strong>
+                <strong className="font-semibold text-[#141413]">
+                  {formatField(singleEntry.field, singleEntry.entityType)}
+                </strong>
                 <p className="mt-1 text-[#73726C]">
                   This rollback will be transparently attributed to <strong className="text-[#141413]">{editorName}</strong> in the class audit log.
                 </p>
@@ -148,7 +162,7 @@ export function RevertConfirmDialog({
 
                     <div className="flex items-center gap-2">
                       <span className="rounded-md bg-[#F2F1EB] px-2 py-0.5 text-[10px] font-semibold text-[#52524E]">
-                        {formatField(item.field)}
+                        {formatField(item.field, item.entityType)}
                       </span>
                       <span className="text-[#73726C]">•</span>
                       <div className="flex items-center gap-1 font-mono text-[11px] truncate">

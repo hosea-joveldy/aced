@@ -46,4 +46,59 @@ test.describe('Subjects Management Flow', () => {
 
     await expect(page.getByText('Dr. Beethoven')).toBeVisible();
   });
+
+  test('records subject creation and deletion in history and allows class leader to rollback deletion', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto('/#/join');
+
+    // Join as class leader
+    await page.getByLabel(/email address/i).fill('leader@aced.school');
+    await page.getByLabel(/your name/i).fill('Leader Alex');
+    await page.getByLabel(/class code/i).fill('ACED2026');
+    await page.getByRole('button', { name: /enter class/i }).click();
+
+    // Navigate to Subjects
+    const nav = page.getByRole('navigation', { name: /main navigation/i });
+    await nav.getByRole('link', { name: /subjects/i }).click();
+
+    // Add subject
+    await page.getByRole('button', { name: /add subject/i }).click();
+    await page.getByLabel(/subject name \*/i).fill('Astronomy');
+    await page.getByLabel(/teacher name \*/i).fill('Dr. Hubble');
+    await page.getByRole('dialog').getByRole('button', { name: /add subject/i }).click();
+
+    await expect(page.getByText('Astronomy')).toBeVisible();
+    await expect(page.getByText('Dr. Hubble')).toBeVisible();
+
+    // Delete subject
+    await page.getByRole('button', { name: /delete astronomy/i }).click();
+    const deleteDialog = page.getByRole('dialog', { name: /delete subject\?/i });
+    await expect(deleteDialog).toBeVisible();
+    await deleteDialog.getByRole('button', { name: /^delete subject$/i }).click();
+    await expect(page.getByText('Astronomy')).not.toBeVisible();
+
+    // Navigate to History
+    await nav.getByRole('link', { name: /history/i }).click();
+    await expect(page.getByRole('heading', { name: /edit history & undo/i })).toBeVisible();
+
+    // Check that Astronomy deletion is visible with Deleted Subject tag
+    await expect(page.getByText('Astronomy').first()).toBeVisible();
+    await expect(page.getByText('Deleted Subject')).toBeVisible();
+
+    // Revert the deletion
+    const revertBtn = page.getByRole('button', { name: /revert edit on astronomy/i }).first();
+    await revertBtn.click();
+
+    const confirmDialog = page.getByRole('dialog');
+    await expect(confirmDialog).toBeVisible();
+    await confirmDialog.getByRole('button', { name: /yes, revert edit/i }).click();
+    await expect(confirmDialog).not.toBeVisible();
+
+    // Navigate back to Subjects and confirm Astronomy has been restored
+    await nav.getByRole('link', { name: /subjects/i }).click();
+    await expect(page.getByText('Astronomy')).toBeVisible();
+    await expect(page.getByText('Dr. Hubble')).toBeVisible();
+  });
 });

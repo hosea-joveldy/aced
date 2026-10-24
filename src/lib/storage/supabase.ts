@@ -223,7 +223,9 @@ export class SupabaseRepository implements AcedRepository {
 
   async createSubject(
     classId: string,
-    input: CreateSubjectInput
+    input: CreateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
   ): Promise<Subject> {
     const validId = await this.resolveValidClassId(classId);
     const { data, error } = await this.client
@@ -248,13 +250,34 @@ export class SupabaseRepository implements AcedRepository {
       createdAt: data.created_at,
     };
 
+    // Insert history record
+    await this.client.from('edit_history').insert({
+      class_id: validId,
+      assignment_id: null,
+      assignment_title: created.name,
+      field: 'created',
+      before_value: null,
+      after_value: `${created.name} (${created.teacherName})`,
+      editor_name: (editorName || 'Student').trim(),
+      editor_email: editorEmail ? editorEmail.trim() : null,
+    });
+
     return created;
   }
 
   async updateSubject(
     id: string,
-    input: UpdateSubjectInput
+    input: UpdateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
   ): Promise<Subject> {
+    // Fetch current subject for history diff
+    const { data: current } = await this.client
+      .from('subjects')
+      .select('*')
+      .eq('id', id)
+      .single();
+
     const updates: Record<string, unknown> = {};
     if (input.name !== undefined) updates.name = input.name.trim();
     if (input.teacherName !== undefined)
@@ -279,10 +302,67 @@ export class SupabaseRepository implements AcedRepository {
       createdAt: data.created_at,
     };
 
+    if (current) {
+      const editor = (editorName || 'Student').trim();
+      const email = editorEmail ? editorEmail.trim() : null;
+
+      if (input.name !== undefined && current.name !== input.name.trim()) {
+        await this.client.from('edit_history').insert({
+          class_id: current.class_id,
+          assignment_id: null,
+          assignment_title: input.name.trim(),
+          field: 'name',
+          before_value: current.name,
+          after_value: input.name.trim(),
+          editor_name: editor,
+          editor_email: email,
+        });
+      }
+
+      if (
+        input.teacherName !== undefined &&
+        current.teacher_name !== input.teacherName.trim()
+      ) {
+        await this.client.from('edit_history').insert({
+          class_id: current.class_id,
+          assignment_id: null,
+          assignment_title: updates.name ? String(updates.name) : current.name,
+          field: 'teacherName',
+          before_value: current.teacher_name,
+          after_value: input.teacherName.trim(),
+          editor_name: editor,
+          editor_email: email,
+        });
+      }
+    }
+
     return updated;
   }
 
-  async deleteSubject(id: string): Promise<void> {
+  async deleteSubject(
+    id: string,
+    editorName?: string,
+    editorEmail?: string
+  ): Promise<void> {
+    const { data: current } = await this.client
+      .from('subjects')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (current) {
+      await this.client.from('edit_history').insert({
+        class_id: current.class_id,
+        assignment_id: null,
+        assignment_title: current.name,
+        field: 'deleted',
+        before_value: `${current.name} (${current.teacher_name})`,
+        after_value: null,
+        editor_name: (editorName || 'Student').trim(),
+        editor_email: editorEmail ? editorEmail.trim() : null,
+      });
+    }
+
     // 1. Find all assignments for this subject so we can remove associated edit history
     const { data: asgs } = await this.client
       .from('assignments')
@@ -529,7 +609,7 @@ export class SupabaseRepository implements AcedRepository {
     return data.map((row) => ({
       id: row.id,
       classId: row.class_id,
-      assignmentId: row.assignment_id,
+      assignmentId: row.assignment_id || row.subject_id || '',
       assignmentTitle: row.assignment_title,
       field: row.field,
       beforeValue: row.before_value,
@@ -540,6 +620,8 @@ export class SupabaseRepository implements AcedRepository {
       reverted: row.reverted,
       revertedBy: row.reverted_by,
       revertedAt: row.reverted_at,
+      entityType: row.assignment_id ? 'assignment' : 'subject',
+      subjectId: row.assignment_id ? null : row.subject_id || null,
     }));
   }
 
@@ -562,33 +644,61 @@ export class SupabaseRepository implements AcedRepository {
       throw new Error(`Edit ${historyId} has already been reverted`);
     }
 
-    // Apply reverted before_value to assignment
-    const asgUpdates: Record<string, unknown> = {
-      updated_at: new Date().toISOString(),
-    };
+    const isSubject =
+      !entry.assignment_id || ['name', 'teacherName'].includes(entry.field);
 
-    if (entry.field === 'title') {
-      asgUpdates.title = entry.before_value || 'Untitled Assignment';
-    } else if (entry.field === 'dueDate') {
-      asgUpdates.due_date = entry.before_value;
-    } else if (entry.field === 'notes') {
-      asgUpdates.notes = entry.before_value;
-    } else if (entry.field === 'subjectId') {
-      if (entry.before_value) asgUpdates.subject_id = entry.before_value;
-    } else if (entry.field === 'completed') {
-      asgUpdates.completed = entry.before_value === 'true';
-    }
-
-    if (entry.field !== 'created') {
-      await this.client
-        .from('assignments')
-        .update(asgUpdates)
-        .eq('id', entry.assignment_id);
+    if (isSubject) {
+      if (entry.field === 'name') {
+        await this.client
+          .from('subjects')
+          .update({ name: entry.before_value })
+          .eq('name', entry.after_value);
+      } else if (entry.field === 'teacherName') {
+        await this.client
+          .from('subjects')
+          .update({ teacher_name: entry.before_value })
+          .eq('name', entry.assignment_title);
+      } else if (entry.field === 'created') {
+        await this.client
+          .from('subjects')
+          .delete()
+          .eq('name', entry.assignment_title);
+      } else if (entry.field === 'deleted') {
+        await this.client.from('subjects').insert({
+          class_id: entry.class_id,
+          name: entry.assignment_title,
+          teacher_name: 'Teacher',
+        });
+      }
     } else {
-      await this.client
-        .from('assignments')
-        .delete()
-        .eq('id', entry.assignment_id);
+      // Apply reverted before_value to assignment
+      const asgUpdates: Record<string, unknown> = {
+        updated_at: new Date().toISOString(),
+      };
+
+      if (entry.field === 'title') {
+        asgUpdates.title = entry.before_value || 'Untitled Assignment';
+      } else if (entry.field === 'dueDate') {
+        asgUpdates.due_date = entry.before_value;
+      } else if (entry.field === 'notes') {
+        asgUpdates.notes = entry.before_value;
+      } else if (entry.field === 'subjectId') {
+        if (entry.before_value) asgUpdates.subject_id = entry.before_value;
+      } else if (entry.field === 'completed') {
+        asgUpdates.completed = entry.before_value === 'true';
+      }
+
+      if (entry.field !== 'created') {
+        await this.client
+          .from('assignments')
+          .update(asgUpdates)
+          .eq('id', entry.assignment_id);
+      } else {
+        await this.client
+          .from('assignments')
+          .delete()
+          .eq('id', entry.assignment_id);
+      }
     }
 
     const nowIso = new Date().toISOString();

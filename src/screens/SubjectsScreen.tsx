@@ -68,12 +68,22 @@ export function SubjectsScreen() {
 
     let savedSubject: Subject;
     if (selectedSubject) {
-      savedSubject = await repo.updateSubject(selectedSubject.id, data);
+      savedSubject = await repo.updateSubject(
+        selectedSubject.id,
+        data,
+        session.displayName,
+        session.email
+      );
       setSubjects((prev) =>
         prev.map((s) => (s.id === savedSubject.id ? savedSubject : s))
       );
     } else {
-      savedSubject = await repo.createSubject(session.classId, data);
+      savedSubject = await repo.createSubject(
+        session.classId,
+        data,
+        session.displayName,
+        session.email
+      );
       setSubjects((prev) => [...prev, savedSubject]);
     }
 
@@ -117,7 +127,11 @@ export function SubjectsScreen() {
     if (!session || !subjectToDelete) return;
     setIsDeleting(true);
     try {
-      await repo.deleteSubject(subjectToDelete.id);
+      await repo.deleteSubject(
+        subjectToDelete.id,
+        session.displayName,
+        session.email
+      );
       setSubjects((prev) => prev.filter((s) => s.id !== subjectToDelete.id));
       setAssignments((prev) => prev.filter((a) => a.subjectId !== subjectToDelete.id));
       setSubjectToDelete(null);

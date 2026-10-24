@@ -40,6 +40,13 @@ export interface EditHistoryEntry {
   reverted: boolean;
   revertedBy?: string | null;
   revertedAt?: string | null;
+  entityType?: 'assignment' | 'subject';
+  subjectId?: string | null;
+  metadata?: {
+    deletedSubject?: Subject;
+    deletedAssignments?: Assignment[];
+    [key: string]: unknown;
+  } | null;
 }
 
 export interface StudentSession {

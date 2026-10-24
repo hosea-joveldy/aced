@@ -124,7 +124,9 @@ export class LocalRepository implements AcedRepository {
 
   async createSubject(
     classId: string,
-    input: CreateSubjectInput
+    input: CreateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
   ): Promise<Subject> {
     const data = this.loadData();
     const newSubject: Subject = {
@@ -135,13 +137,33 @@ export class LocalRepository implements AcedRepository {
       createdAt: getToday(),
     };
     data.subjects.push(newSubject);
+
+    // Record subject creation in history
+    data.history.unshift({
+      id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      classId,
+      assignmentId: newSubject.id,
+      assignmentTitle: newSubject.name,
+      field: 'created',
+      beforeValue: null,
+      afterValue: `${newSubject.name} (${newSubject.teacherName})`,
+      editorName: (editorName || 'Student').trim(),
+      editorEmail: editorEmail ? editorEmail.trim() : null,
+      timestamp: new Date().toISOString(),
+      reverted: false,
+      entityType: 'subject',
+      subjectId: newSubject.id,
+    });
+
     this.saveData(data);
     return newSubject;
   }
 
   async updateSubject(
     id: string,
-    input: UpdateSubjectInput
+    input: UpdateSubjectInput,
+    editorName?: string,
+    editorEmail?: string
   ): Promise<Subject> {
     const data = this.loadData();
     const index = data.subjects.findIndex((s) => s.id === id);
@@ -150,6 +172,54 @@ export class LocalRepository implements AcedRepository {
     }
 
     const current = data.subjects[index];
+    const nowIso = new Date().toISOString();
+    const editor = (editorName || 'Student').trim();
+    const email = editorEmail ? editorEmail.trim() : null;
+
+    if (input.name !== undefined) {
+      const beforeName = current.name;
+      const afterName = input.name.trim();
+      if (beforeName !== afterName) {
+        data.history.unshift({
+          id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          classId: current.classId,
+          assignmentId: current.id,
+          assignmentTitle: afterName,
+          field: 'name',
+          beforeValue: beforeName,
+          afterValue: afterName,
+          editorName: editor,
+          editorEmail: email,
+          timestamp: nowIso,
+          reverted: false,
+          entityType: 'subject',
+          subjectId: current.id,
+        });
+      }
+    }
+
+    if (input.teacherName !== undefined) {
+      const beforeTeacher = current.teacherName;
+      const afterTeacher = input.teacherName.trim();
+      if (beforeTeacher !== afterTeacher) {
+        data.history.unshift({
+          id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          classId: current.classId,
+          assignmentId: current.id,
+          assignmentTitle: input.name !== undefined ? input.name.trim() : current.name,
+          field: 'teacherName',
+          beforeValue: beforeTeacher,
+          afterValue: afterTeacher,
+          editorName: editor,
+          editorEmail: email,
+          timestamp: nowIso,
+          reverted: false,
+          entityType: 'subject',
+          subjectId: current.id,
+        });
+      }
+    }
+
     const updated: Subject = {
       ...current,
       name: input.name !== undefined ? input.name.trim() : current.name,
@@ -163,10 +233,46 @@ export class LocalRepository implements AcedRepository {
     return updated;
   }
 
-  async deleteSubject(id: string): Promise<void> {
+  async deleteSubject(
+    id: string,
+    editorName?: string,
+    editorEmail?: string
+  ): Promise<void> {
     const data = this.loadData();
+    const subjectIndex = data.subjects.findIndex((s) => s.id === id);
+    if (subjectIndex === -1) {
+      return;
+    }
+    const subjectToDelete = data.subjects[subjectIndex];
+    const deletedAssignments = data.assignments.filter((a) => a.subjectId === id);
+
     data.subjects = data.subjects.filter((s) => s.id !== id);
     data.assignments = data.assignments.filter((a) => a.subjectId !== id);
+
+    const nowIso = new Date().toISOString();
+    const editor = (editorName || 'Student').trim();
+    const email = editorEmail ? editorEmail.trim() : null;
+
+    data.history.unshift({
+      id: `hist-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      classId: subjectToDelete.classId,
+      assignmentId: subjectToDelete.id,
+      assignmentTitle: subjectToDelete.name,
+      field: 'deleted',
+      beforeValue: `${subjectToDelete.name} (${subjectToDelete.teacherName})`,
+      afterValue: null,
+      editorName: editor,
+      editorEmail: email,
+      timestamp: nowIso,
+      reverted: false,
+      entityType: 'subject',
+      subjectId: subjectToDelete.id,
+      metadata: {
+        deletedSubject: subjectToDelete,
+        deletedAssignments,
+      },
+    });
+
     this.saveData(data);
   }
 
@@ -348,29 +454,84 @@ export class LocalRepository implements AcedRepository {
       throw new Error(`Edit ${historyId} has already been reverted`);
     }
 
-    // Apply revert to assignment if field was a modified property
-    const asgIndex = data.assignments.findIndex((a) => a.id === entry.assignmentId);
-    if (asgIndex !== -1) {
-      const asg = data.assignments[asgIndex];
-      const today = getToday();
+    const targetSubjectId = entry.subjectId || entry.assignmentId;
+    const isSubject =
+      entry.entityType === 'subject' ||
+      entry.field === 'name' ||
+      entry.field === 'teacherName' ||
+      entry.field === 'createdSubject' ||
+      entry.field === 'deletedSubject' ||
+      Boolean(entry.metadata?.deletedSubject) ||
+      (!data.assignments.some((a) => a.id === entry.assignmentId) &&
+        data.subjects.some((s) => s.id === targetSubjectId));
 
-      if (entry.field === 'title') {
-        asg.title = entry.beforeValue || 'Untitled Assignment';
-      } else if (entry.field === 'dueDate') {
-        asg.dueDate = entry.beforeValue;
-      } else if (entry.field === 'notes') {
-        asg.notes = entry.beforeValue;
-      } else if (entry.field === 'subjectId') {
-        if (entry.beforeValue) asg.subjectId = entry.beforeValue;
-      } else if (entry.field === 'completed') {
-        asg.completed = entry.beforeValue === 'true';
-      } else if (entry.field === 'created') {
-        // If created is reverted, remove the assignment
-        data.assignments.splice(asgIndex, 1);
+    if (isSubject) {
+      const subIndex = data.subjects.findIndex((s) => s.id === targetSubjectId);
+
+      if (entry.field === 'created' || entry.field === 'createdSubject') {
+        if (subIndex !== -1) {
+          data.subjects.splice(subIndex, 1);
+          data.assignments = data.assignments.filter((a) => a.subjectId !== targetSubjectId);
+        }
+      } else if (entry.field === 'name') {
+        if (subIndex !== -1 && entry.beforeValue) {
+          data.subjects[subIndex].name = entry.beforeValue;
+        }
+      } else if (entry.field === 'teacherName') {
+        if (subIndex !== -1 && entry.beforeValue) {
+          data.subjects[subIndex].teacherName = entry.beforeValue;
+        }
+      } else if (entry.field === 'deleted' || entry.field === 'deletedSubject') {
+        if (entry.metadata?.deletedSubject) {
+          const restoredSubject = entry.metadata.deletedSubject as Subject;
+          if (!data.subjects.some((s) => s.id === restoredSubject.id)) {
+            data.subjects.push(restoredSubject);
+          }
+          if (Array.isArray(entry.metadata.deletedAssignments)) {
+            for (const asg of entry.metadata.deletedAssignments as Assignment[]) {
+              if (!data.assignments.some((a) => a.id === asg.id)) {
+                data.assignments.push(asg);
+              }
+            }
+          }
+        } else {
+          // Fallback if metadata is not present
+          if (!data.subjects.some((s) => s.id === targetSubjectId)) {
+            data.subjects.push({
+              id: targetSubjectId,
+              classId: entry.classId,
+              name: entry.assignmentTitle,
+              teacherName: 'Teacher',
+              createdAt: getToday(),
+            });
+          }
+        }
       }
+    } else {
+      // Apply revert to assignment if field was a modified property
+      const asgIndex = data.assignments.findIndex((a) => a.id === entry.assignmentId);
+      if (asgIndex !== -1) {
+        const asg = data.assignments[asgIndex];
+        const today = getToday();
 
-      if (entry.field !== 'created') {
-        asg.updatedAt = today;
+        if (entry.field === 'title') {
+          asg.title = entry.beforeValue || 'Untitled Assignment';
+        } else if (entry.field === 'dueDate') {
+          asg.dueDate = entry.beforeValue;
+        } else if (entry.field === 'notes') {
+          asg.notes = entry.beforeValue;
+        } else if (entry.field === 'subjectId') {
+          if (entry.beforeValue) asg.subjectId = entry.beforeValue;
+        } else if (entry.field === 'completed') {
+          asg.completed = entry.beforeValue === 'true';
+        } else if (entry.field === 'created') {
+          // If created is reverted, remove the assignment
+          data.assignments.splice(asgIndex, 1);
+        }
+
+        if (entry.field !== 'created') {
+          asg.updatedAt = today;
+        }
       }
     }
 
@@ -400,6 +561,8 @@ export class LocalRepository implements AcedRepository {
       editorEmail: editorEmail ? editorEmail.trim() : null,
       timestamp: nowIso,
       reverted: false,
+      entityType: entry.entityType,
+      subjectId: entry.subjectId,
     });
 
     this.saveData(data);

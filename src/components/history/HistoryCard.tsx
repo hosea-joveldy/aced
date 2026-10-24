@@ -26,18 +26,30 @@ export function HistoryCard({
 
   const formattedTimestamp = formatTimestamp(entry.timestamp);
 
-  const formatField = (field: string) => {
+  const formatField = (field: string, entityType?: string) => {
     switch (field) {
       case 'dueDate':
         return 'Due Date';
       case 'title':
         return 'Title';
+      case 'name':
+        return 'Subject Name';
+      case 'teacherName':
+        return 'Teacher Name';
+      case 'subjectId':
+        return 'Subject';
       case 'notes':
         return 'Notes';
       case 'completed':
         return 'Completion Status';
       case 'created':
-        return 'Created Assignment';
+        return entityType === 'subject' ? 'Created Subject' : 'Created Assignment';
+      case 'createdSubject':
+        return 'Created Subject';
+      case 'deleted':
+        return entityType === 'subject' ? 'Deleted Subject' : 'Deleted Assignment';
+      case 'deletedSubject':
+        return 'Deleted Subject';
       default:
         return field;
     }
@@ -109,7 +121,7 @@ export function HistoryCard({
               {entry.assignmentTitle}
             </h4>
             <span className="inline-block rounded-full bg-[#F2F1EB] px-3 py-0.5 text-[11px] font-semibold text-[#52524E] border border-[#E2E1DA]">
-              {formatField(entry.field)}
+              {formatField(entry.field, entry.entityType)}
             </span>
           </div>
 

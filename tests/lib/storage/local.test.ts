@@ -119,4 +119,100 @@ describe('LocalRepository', () => {
     const updated = await repo.updateClassLeader(newClass.id, 'newleader@school.edu');
     expect(updated.leaderEmail).toBe('newleader@school.edu');
   });
+
+  it('tracks history and supports rollback for subject creation, edit, and deletion', async () => {
+    const cls = await repo.getClassByCode('ACED2026');
+    const classId = cls!.id;
+
+    // 1. Create a subject
+    const subject = await repo.createSubject(
+      classId,
+      { name: 'Philosophy', teacherName: 'Prof. Socrates' },
+      'Plato',
+      'plato@aced.school'
+    );
+    expect(subject.name).toBe('Philosophy');
+
+    let history = await repo.getHistory(classId);
+    const createEntry = history[0];
+    expect(createEntry.field).toBe('created');
+    expect(createEntry.entityType).toBe('subject');
+    expect(createEntry.assignmentTitle).toBe('Philosophy');
+    expect(createEntry.editorName).toBe('Plato');
+    expect(createEntry.editorEmail).toBe('plato@aced.school');
+
+    // Also add an assignment to this subject
+    const asg = await repo.createAssignment(
+      classId,
+      {
+        subjectId: subject.id,
+        title: 'The Republic Reading',
+        dueDate: '2026-10-25',
+      },
+      'Plato'
+    );
+
+    // 2. Edit subject name and teacherName
+    const editedSubject = await repo.updateSubject(
+      subject.id,
+      { name: 'Ancient Philosophy', teacherName: 'Prof. Aristotle' },
+      'Xenophon',
+      'xenophon@aced.school'
+    );
+    expect(editedSubject.name).toBe('Ancient Philosophy');
+    expect(editedSubject.teacherName).toBe('Prof. Aristotle');
+
+    history = await repo.getHistory(classId);
+    const teacherEditEntry = history.find(
+      (h) => h.subjectId === subject.id && h.field === 'teacherName'
+    );
+    const nameEditEntry = history.find(
+      (h) => h.subjectId === subject.id && h.field === 'name'
+    );
+    expect(teacherEditEntry).toBeDefined();
+    expect(teacherEditEntry?.beforeValue).toBe('Prof. Socrates');
+    expect(teacherEditEntry?.afterValue).toBe('Prof. Aristotle');
+
+    expect(nameEditEntry).toBeDefined();
+    expect(nameEditEntry?.beforeValue).toBe('Philosophy');
+    expect(nameEditEntry?.afterValue).toBe('Ancient Philosophy');
+
+    // Rollback teacher edit
+    await repo.revertEdit(teacherEditEntry!.id, 'Leader Jamie', 'leader@aced.school');
+    let subjects = await repo.getSubjects(classId);
+    let currentSub = subjects.find((s) => s.id === subject.id);
+    expect(currentSub?.teacherName).toBe('Prof. Socrates');
+
+    // 3. Delete subject (which also removes associated assignments)
+    await repo.deleteSubject(subject.id, 'Alexander', 'alexander@aced.school');
+    subjects = await repo.getSubjects(classId);
+    expect(subjects.some((s) => s.id === subject.id)).toBe(false);
+    let asgs = await repo.getAssignments(classId);
+    expect(asgs.some((a) => a.id === asg.id)).toBe(false);
+
+    history = await repo.getHistory(classId);
+    const deleteEntry = history.find(
+      (h) => h.subjectId === subject.id && h.field === 'deleted'
+    );
+    expect(deleteEntry).toBeDefined();
+    expect(deleteEntry?.assignmentTitle).toBe('Ancient Philosophy');
+    expect(deleteEntry?.editorName).toBe('Alexander');
+
+    // 4. Rollback deletion: restores both the subject and its assignments!
+    await repo.revertEdit(deleteEntry!.id, 'Leader Jamie', 'leader@aced.school');
+    subjects = await repo.getSubjects(classId);
+    const restoredSub = subjects.find((s) => s.id === subject.id);
+    expect(restoredSub).toBeDefined();
+    expect(restoredSub?.name).toBe('Ancient Philosophy');
+
+    asgs = await repo.getAssignments(classId);
+    const restoredAsg = asgs.find((a) => a.id === asg.id);
+    expect(restoredAsg).toBeDefined();
+    expect(restoredAsg?.title).toBe('The Republic Reading');
+
+    // 5. Rollback subject creation: deletes the subject
+    await repo.revertEdit(createEntry.id, 'Leader Jamie', 'leader@aced.school');
+    subjects = await repo.getSubjects(classId);
+    expect(subjects.some((s) => s.id === subject.id)).toBe(false);
+  });
 });

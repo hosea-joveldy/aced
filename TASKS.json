@@ -472,6 +472,48 @@
           ]
         }
       ]
+    },
+    {
+      "id": "T15",
+      "title": "Subject history tracking and comprehensive rollback support",
+      "type": "build",
+      "status": "finished",
+      "features": [
+        {
+          "id": "T15.1",
+          "title": "Extend domain types, AcedRepository, LocalRepository, and SupabaseRepository to record and revert subject creation, edit, and deletion",
+          "done": true,
+          "done_when": [
+            "createSubject, updateSubject, and deleteSubject record history entries with editor attribution",
+            "revertEdit restores modified subject fields, deletes created subjects, and restores deleted subjects and their assignments",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T15.2",
+          "title": "Update UI screens and dialogs (SubjectsScreen, HistoryScreen, HistoryCard, RevertConfirmDialog) with subject history formatting, filters, and attribution",
+          "done": true,
+          "done_when": [
+            "SubjectsScreen passes editor credentials to createSubject, updateSubject, and deleteSubject",
+            "HistoryCard and RevertConfirmDialog format subject fields and display clear diffs",
+            "HistoryScreen includes subjects filter and displays subject activity rows",
+            "npx tsc --noEmit passes"
+          ]
+        },
+        {
+          "id": "T15.3",
+          "title": "Unit and e2e tests for subject history tracking and rollback passing all 4 gate checks",
+          "done": true,
+          "done_when": [
+            "Unit tests in tests/ verify subject creation, edit, and deletion history and rollback",
+            "Playwright e2e tests in e2e/ verify subject history and rollback in the browser",
+            "npx tsc --noEmit passes",
+            "npm test passes",
+            "npm run build passes",
+            "npx playwright test passes"
+          ]
+        }
+      ]
     }
   ]
 }

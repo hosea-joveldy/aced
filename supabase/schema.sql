@@ -41,6 +41,7 @@ create table if not exists edit_history (
   id uuid primary key default gen_random_uuid(),
   class_id uuid not null references classes(id) on delete cascade,
   assignment_id uuid references assignments(id) on delete set null,
+  subject_id uuid references subjects(id) on delete set null,
   assignment_title text not null,
   field text not null,
   before_value text,

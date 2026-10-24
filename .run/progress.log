@@ -43,3 +43,9 @@
 [BUILDER] T14: Removed classroomCode, wiped Supabase, implemented Class Creation & Transfer, Landing page with canvas, and redesigned UI in warm stone.
 [QA] T14: Updated test suites; verified landing page, auth, create class, and board workflows across mobile (375px) and desktop (1280px).
 [QA] T14: All 4 gate checks passed with exit code 0 (tsc, vitest 37/37, build, playwright 9/9). T14 marked finished.
+
+[2026-10-24] Planner/Builder: Planned and implemented T15 (Subject history tracking and comprehensive rollback).
+[BUILDER] T15: Extended domain types, AcedRepository, LocalRepository, and SupabaseRepository to log and rollback subject creation, edit, and deletion.
+[BUILDER] T15: Wired editor credentials in SubjectsScreen, added Subjects filter, and updated HistoryCard / RevertConfirmDialog.
+[QA] T15: Added unit and Playwright e2e tests for subject creation, editing, deletion, and class leader rollback.
+[QA] T15: All 4 gate checks passed with exit code 0 (tsc, vitest 42/42, build, playwright 10/10). T15 marked finished.

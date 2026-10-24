@@ -213,4 +213,72 @@ describe('HistoryScreen Component', () => {
       screen.queryByRole('button', { name: /revert selected/i })
     ).not.toBeInTheDocument();
   });
+
+  it('displays subject history, filters by subjects, and allows class leader to revert subject changes', async () => {
+    localStorage.setItem(
+      'aced.session.v1',
+      JSON.stringify({
+        email: 'leader@aced.school',
+        displayName: 'Jamie Leader',
+        classCode: 'ACED2026',
+        classId: 'class-aced-2026',
+        className: 'Class of 2026 — Period 3',
+        isClassLeader: true,
+      })
+    );
+
+    // Create a subject and edit it
+    const sub = await repo.createSubject(
+      'class-aced-2026',
+      { name: 'Philosophy', teacherName: 'Prof. Socrates' },
+      'Student Plato',
+      'plato@aced.school'
+    );
+    await repo.updateSubject(
+      sub.id,
+      { teacherName: 'Prof. Aristotle' },
+      'Student Plato',
+      'plato@aced.school'
+    );
+
+    renderScreen();
+
+    await waitFor(() => {
+      expect(screen.getAllByText('Philosophy').length).toBe(2);
+      expect(screen.getByText('Created Subject')).toBeInTheDocument();
+      expect(screen.getByText('Teacher Name')).toBeInTheDocument();
+    });
+
+    // Test "Subjects" filter chip
+    const subjectsChip = screen.getByRole('button', { name: /^subjects$/i });
+    fireEvent.click(subjectsChip);
+
+    // Philosophy entries should be visible
+    expect(screen.getAllByText('Philosophy').length).toBe(2);
+    // Non-subject assignment entries should be filtered out
+    expect(screen.queryByText('Calculus Problem Set 4')).not.toBeInTheDocument();
+
+    // Revert the teacher edit as Class Leader (first entry is latest)
+    const revertButtons = screen.getAllByRole('button', {
+      name: /revert edit on philosophy/i,
+    });
+    fireEvent.click(revertButtons[0]);
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(within(dialog).getByText(/confirm revert/i)).toBeInTheDocument();
+    expect(within(dialog).getByText(/teacher name/i)).toBeInTheDocument();
+
+    // Confirm revert
+    fireEvent.click(within(dialog).getByRole('button', { name: /yes, revert edit/i }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    // Verify storage has been reverted back to Prof. Socrates
+    const subjects = await repo.getSubjects('class-aced-2026');
+    const phil = subjects.find((s) => s.id === sub.id);
+    expect(phil?.teacherName).toBe('Prof. Socrates');
+  });
 });
