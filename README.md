@@ -1,22 +1,38 @@
-# Aced 🎯
+<div align="center">
 
-> **Crowdsourced Deadline Board per Class**  
-> A mobile-first, zero-config collaborative web app solving deadline tracking for students. Any classmate can add, update, or fill in missing assignment deadlines, with transparent attribution and Class Leader rollback.
+<img src="public/favicon.svg" alt="Aced Official Icon" width="80" height="80" />
 
----
+# Aced
 
-## Table of Contents
-1. [What Problem This App Solves](#1-what-problem-this-app-solves)
-2. [Target Demography](#2-target-demography)
-3. [Core Features](#3-core-features)
-4. [Wireframes & Visual References](#4-wireframes--visual-references)
-5. [AI Prompt & Multi-Agent Orchestration](#5-ai-prompt--multi-agent-orchestration)
-6. [Testing Strategy & Quality Assurance](#6-testing-strategy--quality-assurance)
-7. [Problem Resolution & Bug-Fixing Architecture](#7-problem-resolution--bug-fixing-architecture)
-8. [Quickstart & Zero-Config Demo](#8-quickstart--zero-config-demo)
-9. [Technology Stack & Architecture](#9-technology-stack--architecture)
-10. [Gate Commands & Build Verification](#10-gate-commands--build-verification)
-11. [Project Documentation](#11-project-documentation)
+**Crowdsourced Deadline Board per Class**  
+*A mobile-first, zero-config collaborative web app solving deadline tracking for students.*
+
+<p align="center">
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Strict%20Mode-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript Strict" /></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-6.x-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 6" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-42%2F42%20Passing-22C55E?style=flat-square&logo=vitest&logoColor=white" alt="Vitest 42/42 Passing" /></a>
+  <a href="https://playwright.dev/"><img src="https://img.shields.io/badge/Playwright-10%2F10%20Passing-45BA4B?style=flat-square&logo=playwright&logoColor=white" alt="Playwright 10/10 Passing" /></a>
+  <a href="data/README.md"><img src="https://img.shields.io/badge/Storage-Zero--Config%20Offline-141413?style=flat-square&logo=databricks&logoColor=FAF9F5" alt="Zero-Config Offline" /></a>
+  <a href="DESIGN_SYSTEM.md"><img src="https://img.shields.io/badge/Design-Warm%20Stone%20%26%20Editorial-162417?style=flat-square" alt="Warm Stone Design System" /></a>
+  <a href="AGENTS.md"><img src="https://img.shields.io/badge/Architecture-Autonomous%20Multi--Agent-6366F1?style=flat-square" alt="Multi-Agent Pipeline" /></a>
+</p>
+
+<p align="center">
+  <a href="#1-what-problem-this-app-solves">Problem</a> •
+  <a href="#2-target-demography">Target Demography</a> •
+  <a href="#3-core-features">Features</a> •
+  <a href="#4-wireframes--visual-references">Wireframes</a> •
+  <a href="#5-ai-prompt--multi-agent-orchestration">AI Prompts</a> •
+  <a href="#6-testing-strategy--quality-assurance">Testing</a> •
+  <a href="#7-problem-resolution--bug-fixing-architecture">Bug Fixing</a> •
+  <a href="#8-quickstart--zero-config-demo">Quickstart</a>
+</p>
+
+<img src="references/landing-page-section1.png" alt="Aced Interface Preview" width="760" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" />
+
+</div>
 
 ---
 
@@ -28,8 +44,8 @@ Students frequently miss homework, project deadlines, and test preparation windo
 - **Ephemeral Group Chats**: Other deadlines are announced in rapid-fire class group chats (WhatsApp, Telegram, Discord), where critical dates quickly get buried under chatter and lost.
 - **No Single Source of Truth**: Because announcements are scattered across different platforms and formats, students lack a single, reliable board to see everything due for their class.
 
-**The Solution — Aced**:  
-Aced provides a shared, crowdsourced deadline board designed specifically per class. Any student in the class can add upcoming assignments, supply missing due dates, and update course notes. To safeguard collaborative editing against mistakes or vandalism, every change is tracked in an audit history log with editor attribution, and the designated Class Leader can revert any edit with a single tap.
+> [!NOTE]
+> **The Aced Solution**: A shared, crowdsourced deadline board designed specifically per class. Any student in the class can add upcoming assignments, supply missing due dates, and update course notes. To safeguard collaborative editing against mistakes or vandalism, every change is tracked in an audit history log with editor attribution, and the designated Class Leader can revert any edit with a single tap.
 
 ---
 
