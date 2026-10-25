@@ -123,7 +123,7 @@ The [`references/`](references/) directory contains real-world visual references
 | Format | File | Rationale |
 | :--- | :--- | :--- |
 | **HTML Wireframe** | [`wireframes.html`](wireframes.html) | **1. Token Efficiency**: A declarative HTML/CSS document consumes a fraction of the token budget compared to encoding multiple high-resolution image files into LLM context windows.<br>**2. Universal Model Compatibility**: Ensures text-only models and environments without multimodal vision capabilities can parse, understand, and build the UI accurately.<br>**3. Explicit Semantic Hierarchy**: Exposes actual DOM elements, button classes, nesting relationships, and text labels directly, eliminating visual ambiguity. |
-| **PNG References** | [`references/*.png`](references/) | **1. Taken from Live Production Websites**: Reference screenshots were captured from live, production web applications (e.g. Linear, Notion, modern SaaS tools).<br>**2. Preserves Layout Fidelity Without Asset Breakdown**: Saving modern production web pages as raw HTML frequently breaks due to cross-origin CDN stylesheets, client-side rendering bundles, third-party scripts, and missing web assets. PNG screenshots faithfully capture the typography, color tones, micro-spacing, and mood without dependency fragility. |
+| **PNG References** | [`references/*.png`](references/) | **1. Taken from Live Production Websites**: Reference screenshots were captured from live, production web applications.<br>**2. Preserves Layout Fidelity Without Asset Breakdown**: Saving modern production web pages as raw HTML frequently breaks due to cross-origin CDN stylesheets, client-side rendering bundles, third-party scripts, and missing web assets. PNG screenshots faithfully capture the typography, color tones, micro-spacing, and mood without dependency fragility. |
 
 ---
 
@@ -211,7 +211,7 @@ Before any task can be marked `finished`, the QA agent enforces that all four ga
 4. `npx playwright test` (Playwright end-to-end browser tests)
 
 ### 6.4 Human-in-the-Loop Final Sign-off
-Automated testing is supplemented by human verification. At the end of development sessions and major milestones, the human developer runs the application locally (`npm run dev`), interacts with the UI in a real browser, validates micro-interactions and tactile feel, and records final sign-off in [`docs/07-ai-usage-log.md`](docs/07-ai-usage-log.md).
+Automated testing is supplemented by human verification. At the end of development sessions and major milestones, the human developer runs the application locally (`npm run dev`), interacts with the UI in a real browser, validates micro-interactions and tactile feel.
 
 ---
 
@@ -316,5 +316,4 @@ Detailed project documentation is available in the [`docs/`](docs/) directory:
 - [`docs/04-wireframes.md`](docs/04-wireframes.md): Mobile ASCII wireframes and layout structures.
 - [`docs/05-test-results.md`](docs/05-test-results.md): Real test suite output and coverage metrics.
 - [`docs/06-bugs-and-fixes.md`](docs/06-bugs-and-fixes.md): Log of real bugs encountered and resolved.
-- [`docs/07-ai-usage-log.md`](docs/07-ai-usage-log.md): AI usage disclosure and pipeline logs.
 - [`data/README.md`](data/README.md): Database schema and optional Supabase instructions.
