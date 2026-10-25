@@ -5,7 +5,7 @@
 # Aced
 
 **Crowdsourced Deadline Board per Class**  
-*A mobile-first, zero-config collaborative web app solving deadline tracking for students.*
+*A collaborative web app solving deadline tracking for students.*
 
 <p align="center">
   <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" /></a>
